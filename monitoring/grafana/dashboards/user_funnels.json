@@ -1,0 +1,211 @@
+{
+  "uid": "user-funnels",
+  "title": "User Funnels & Analytics",
+  "tags": ["analytics", "postgresql"],
+  "timezone": "browser",
+  "refresh": "5m",
+  "schemaVersion": 38,
+  "time": { "from": "now-30d", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "period",
+        "type": "interval",
+        "label": "Period",
+        "current": { "text": "1d", "value": "1d" },
+        "options": [
+          { "text": "1h",  "value": "1h" },
+          { "text": "6h",  "value": "6h" },
+          { "text": "1d",  "value": "1d" },
+          { "text": "7d",  "value": "7d" },
+          { "text": "30d", "value": "30d" }
+        ],
+        "auto": false
+      }
+    ]
+  },
+  "panels": [
+
+    {
+      "id": 1,
+      "title": "Total Users",
+      "type": "stat",
+      "gridPos": { "x": 0, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT COUNT(*) FROM users",
+        "format": "table"
+      }],
+      "fieldConfig": { "defaults": { "unit": "none" } },
+      "options": { "colorMode": "background" }
+    },
+    {
+      "id": 2,
+      "title": "New Users (period)",
+      "type": "stat",
+      "gridPos": { "x": 4, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT COUNT(*) FROM users WHERE created_at >= $__timeFrom()",
+        "format": "table"
+      }],
+      "fieldConfig": { "defaults": { "unit": "none" } },
+      "options": { "colorMode": "background" }
+    },
+    {
+      "id": 3,
+      "title": "Active Subscriptions",
+      "type": "stat",
+      "gridPos": { "x": 8, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT COUNT(*) FROM subscriptions WHERE status = 'active' AND (end_date IS NULL OR end_date > NOW())",
+        "format": "table"
+      }],
+      "fieldConfig": { "defaults": { "unit": "none" } },
+      "options": { "colorMode": "background" }
+    },
+    {
+      "id": 4,
+      "title": "Revenue (period, RUB)",
+      "type": "stat",
+      "gridPos": { "x": 12, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT COALESCE(SUM(cost_rub), 0) FROM subscriptions WHERE created_at >= $__timeFrom() AND status = 'active'",
+        "format": "table"
+      }],
+      "fieldConfig": { "defaults": { "unit": "currencyRUB" } },
+      "options": { "colorMode": "background" }
+    },
+    {
+      "id": 5,
+      "title": "Conversion Rate (registered → subscribed)",
+      "type": "stat",
+      "gridPos": { "x": 16, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT ROUND(100.0 * COUNT(DISTINCT s.user_id) / NULLIF(COUNT(DISTINCT u.id), 0), 1) FROM users u LEFT JOIN subscriptions s ON s.user_id = u.id",
+        "format": "table"
+      }],
+      "fieldConfig": { "defaults": { "unit": "percent" } },
+      "options": { "colorMode": "background" }
+    },
+
+    {
+      "id": 10,
+      "title": "Registration Funnel",
+      "description": "Сколько пользователей прошли каждый шаг онбординга",
+      "type": "barchart",
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 9 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT step, cnt FROM (\n  SELECT 'Registered'            AS step, 1 AS ord, COUNT(*) AS cnt FROM users\n  UNION ALL\n  SELECT 'Nutrition Profile',       2, COUNT(*) FROM nutrition_profiles\n  UNION ALL\n  SELECT 'Training Profile',        3, COUNT(*) FROM training_profiles\n  UNION ALL\n  SELECT 'Has Subscription',        4, COUNT(DISTINCT user_id) FROM subscriptions\n  UNION ALL\n  SELECT 'Active Subscription',     5, COUNT(DISTINCT user_id) FROM subscriptions WHERE status = 'active'\n) t ORDER BY ord",
+        "format": "table"
+      }],
+      "fieldConfig": {
+        "defaults": { "unit": "none" },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xField": "step",
+        "barWidth": 0.7,
+        "groupWidth": 0.7
+      }
+    },
+
+    {
+      "id": 11,
+      "title": "Subscription Funnel",
+      "description": "Воронка по статусам подписок",
+      "type": "barchart",
+      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 9 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT COALESCE(status, 'unknown') AS status, COUNT(*) AS cnt FROM subscriptions GROUP BY status ORDER BY cnt DESC",
+        "format": "table"
+      }],
+      "fieldConfig": { "defaults": { "unit": "none" } },
+      "options": { "orientation": "horizontal", "xField": "status" }
+    },
+
+    {
+      "id": 20,
+      "title": "New Users per Day",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 13, "w": 12, "h": 7 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT\n  date_trunc('day', created_at) AS time,\n  COUNT(*) AS new_users\nFROM users\nWHERE $__timeFilter(created_at)\nGROUP BY 1 ORDER BY 1",
+        "format": "time_series",
+        "timeColumn": "time"
+      }],
+      "fieldConfig": { "defaults": { "unit": "none", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 21,
+      "title": "Revenue per Day",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 13, "w": 12, "h": 7 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT\n  date_trunc('day', created_at) AS time,\n  SUM(cost_rub) AS revenue\nFROM subscriptions\nWHERE status = 'active' AND $__timeFilter(created_at)\nGROUP BY 1 ORDER BY 1",
+        "format": "time_series",
+        "timeColumn": "time"
+      }],
+      "fieldConfig": { "defaults": { "unit": "currencyRUB", "custom": { "lineWidth": 2 } } }
+    },
+
+    {
+      "id": 30,
+      "title": "Subscription Plans Distribution",
+      "type": "piechart",
+      "gridPos": { "x": 0, "y": 20, "w": 8, "h": 8 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT sp.name AS plan, COUNT(s.id) AS cnt\nFROM subscriptions s\nJOIN subscription_plans sp ON sp.id = s.plan_id\nWHERE s.status = 'active'\nGROUP BY sp.name ORDER BY cnt DESC",
+        "format": "table"
+      }],
+      "options": { "pieType": "donut", "displayLabels": ["name", "percent"] }
+    },
+    {
+      "id": 31,
+      "title": "Users by Goal",
+      "type": "piechart",
+      "gridPos": { "x": 8, "y": 20, "w": 8, "h": 8 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT COALESCE(goal, 'not set') AS goal, COUNT(*) AS cnt FROM nutrition_profiles GROUP BY goal ORDER BY cnt DESC",
+        "format": "table"
+      }],
+      "options": { "pieType": "donut", "displayLabels": ["name", "percent"] }
+    },
+    {
+      "id": 32,
+      "title": "Users by Training Experience",
+      "type": "piechart",
+      "gridPos": { "x": 16, "y": 20, "w": 8, "h": 8 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT COALESCE(experience, 'not set') AS experience, COUNT(*) AS cnt FROM training_profiles GROUP BY experience ORDER BY cnt DESC",
+        "format": "table"
+      }],
+      "options": { "pieType": "donut", "displayLabels": ["name", "percent"] }
+    },
+
+    {
+      "id": 40,
+      "title": "Recent Registrations",
+      "type": "table",
+      "gridPos": { "x": 0, "y": 28, "w": 24, "h": 8 },
+      "datasource": { "type": "postgres", "uid": "postgresql" },
+      "targets": [{
+        "rawSql": "SELECT\n  u.id,\n  COALESCE(u.email, 'telegram:' || u.telegram_user_id::text) AS user,\n  u.fullname,\n  u.created_at,\n  CASE WHEN np.user_id IS NOT NULL THEN 'yes' ELSE 'no' END AS nutrition_profile,\n  CASE WHEN tp.user_id IS NOT NULL THEN 'yes' ELSE 'no' END AS training_profile,\n  COALESCE(s.status, '—') AS subscription\nFROM users u\nLEFT JOIN nutrition_profiles np ON np.user_id = u.id\nLEFT JOIN training_profiles tp ON tp.user_id = u.id\nLEFT JOIN LATERAL (\n  SELECT status FROM subscriptions WHERE user_id = u.id ORDER BY created_at DESC LIMIT 1\n) s ON true\nORDER BY u.created_at DESC\nLIMIT 50",
+        "format": "table"
+      }],
+      "options": { "sortBy": [{ "displayName": "created_at", "desc": true }] }
+    }
+
+  ]
+}
