@@ -1,0 +1,24 @@
+{
+    "name": "Consult",
+    "strict": true,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "answer_message": {
+                "type": "string"
+            },
+            "patterns": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "string"
+                }
+            }
+        },
+        "required": [
+            "answer_message",
+            "patterns"
+        ],
+        "additionalProperties": false
+    }
+}
+

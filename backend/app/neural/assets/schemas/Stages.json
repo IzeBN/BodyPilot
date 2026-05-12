@@ -1,0 +1,15 @@
+{
+    "name": "Stages",
+    "strict": true,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "stages": {
+                "type": "array",
+                "items": { "type": "string" }
+            }
+        },
+        "required": ["stages"],
+        "additionalProperties": false
+    }
+}

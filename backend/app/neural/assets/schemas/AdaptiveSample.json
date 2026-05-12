@@ -1,0 +1,27 @@
+{
+    "name": "AdaptiveExercizes",
+    "strict": true,
+    "schema": {
+        "type": "object",
+        "properties": {
+                "expected_result_for_the_user": { "type": "string" },
+                "description_of_changes_for_the_user": { "type": "string" },
+                "change_exercizes": {
+                    "type": ["array", "null"],
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "training_id": { "type": "integer" },
+                            "exercize_id": { "type": "integer" },
+                            "new_exercize_id": { "type": "integer" },
+                            "delete": { "type": "boolean" }
+                    },
+                    "required": ["exercize_id", "new_exercize_id", "training_id", "delete"],
+                    "additionalProperties": false
+                }
+            }
+        },
+        "required": ["change_exercizes", "description_of_changes_for_the_user", "expected_result_for_the_user"],
+        "additionalProperties": false
+    }
+}

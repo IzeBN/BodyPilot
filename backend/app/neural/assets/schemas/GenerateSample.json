@@ -1,0 +1,112 @@
+{
+    "name": "GenerateSample",
+    "strict": true,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "title": {"type": "string"},
+            "training_count": {"type": "integer",
+                "enum": [ 1, 2, 3, 4, 5, 6, 7 ]
+            },
+            "gender": {
+                "type": "string",
+                "enum": [
+                    "М",
+                    "Ж",
+                    "all"
+                ]
+            },
+            "experience": {
+                "type": "string",
+                "enum": [
+                    "junior",
+                    "middle",
+                    "senior"
+                ]
+            },
+            "intensity": {
+                "type": "integer"
+            },
+            "category": {
+                "type": "string"
+            },
+            "trainings": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "td": {
+                            "type": "string",
+                            "description": "Training date strictly in YYYY-MM-DD format, e.g. 2024-03-15. Must use dashes only, no dots, commas or slashes."
+                        },
+                        "mg": {
+                            "type": "string"
+                        },
+                        "exs": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "eid": {
+                                        "type": "integer"
+                                    },
+                                    "ce": {
+                                        "type": "object",
+                                        "properties": {
+                                            "aps": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "r": { "type": "integer" },
+                                                        "pmw": { "type": "integer" },
+                                                        "rs": { "type": "integer" }
+                                                    },
+                                                    "required": [
+                                                        "r",
+                                                        "pmw",
+                                                        "rs"
+                                                    ],
+                                                    "additionalProperties": false
+                                                }
+                                            }
+                                        },
+                                        "required": [
+                                            "aps"
+                                        ],
+                                        "additionalProperties": false
+                                    }
+                                },
+                                "required": [
+                                    "eid",
+                                    "ce"
+                                ],
+                                "additionalProperties": false
+                            }
+                        }
+                    },
+                    "required": [
+                        "title",    
+                        "td",
+                        "mg",
+                        "exs"
+                    ],
+                    "additionalProperties": false
+                }
+            }
+        },
+        "required": [
+            "title",
+            "training_count",
+            "gender",
+            "experience",
+            "intensity",
+            "category",
+            "trainings"
+        ],
+        "additionalProperties": false
+    }
+}
