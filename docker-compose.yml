@@ -74,6 +74,7 @@ services:
       - internal
     depends_on:
       - backend
+      - grafana
 
   prometheus:
     image: prom/prometheus:v2.55.1
@@ -128,8 +129,8 @@ services:
       - grafana_data:/var/lib/grafana
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     networks:
       - internal
     depends_on:
