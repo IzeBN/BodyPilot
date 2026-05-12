@@ -31,6 +31,7 @@ htmlcov/
 Thumbs.db
 
 # Secrets
+.env
 firebase-credentials.json
 *.pem
 *.key
