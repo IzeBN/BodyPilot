@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(ls:*)",
+      "Bash(cp -r \"C:/Data/projects/FitnesBot/neural/assets/promts/.\" \"C:/Data/projects/KayFit_Fitkeep/backend/app/neural/assets/promts/\")",
+      "Bash(cp -r \"C:/Data/projects/FitnesBot/neural/assets/schemas/.\" \"C:/Data/projects/KayFit_Fitkeep/backend/app/neural/assets/schemas/\")",
+      "Bash(cp -r \"C:/Data/projects/FitnesBot/neural/assets/docs/.\" \"C:/Data/projects/KayFit_Fitkeep/backend/app/neural/assets/docs/\")",
+      "Bash(cp -r \"C:/Data/projects/FitnesBot/neural/assets/faiss/.\" \"C:/Data/projects/KayFit_Fitkeep/backend/app/neural/assets/faiss/\")",
+      "Bash(find C:/Data/projects/KayFit_Fitkeep/backend -maxdepth 2 -name *.env* -o -name Dockerfile* -o -name docker-compose*)",
+      "Bash(pip install:*)",
+      "Bash(find C:DataprojectsFitnesBot -name *.sql)",
+      "Bash(find C:DataprojectsFitnesBot -name *.json)",
+      "Bash(find C:DataprojectsFitnesBot -name exercise* -o -name *exercise*)",
+      "Bash(grep -rn \"quiz_translations\\\\|new.*question\\\\|question.*quiz\" C:DataprojectsKayFit_Fitkeepbackendapp --include=*.py -l)"
+    ]
+  }
+}

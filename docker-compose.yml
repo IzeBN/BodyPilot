@@ -44,8 +44,8 @@ services:
     env_file: ./backend/.env
     environment:
       DB_DSN: postgresql://${POSTGRES_USER:-kayfit}:${POSTGRES_PASSWORD:-kayfit_secret}@postgres:5432/${POSTGRES_DB:-kayfit_fitkeep}
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     volumes:
       - ./backend/firebase-credentials.json:/app/firebase-credentials.json:ro
       - backend_logs:/app/logs
@@ -60,6 +60,20 @@ services:
         max-size: "10m"
         max-file: "5"
         tag: "backend"
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/api.bodypilot.online.conf:/etc/nginx/conf.d/api.bodypilot.online.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    networks:
+      - internal
+    depends_on:
+      - backend
 
   prometheus:
     image: prom/prometheus:v2.55.1
