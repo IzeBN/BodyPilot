@@ -69,6 +69,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/api.bodypilot.online.conf:/etc/nginx/conf.d/api.bodypilot.online.conf:ro
+      - ./nginx/grafana.bodypilot.online.conf:/etc/nginx/conf.d/grafana.bodypilot.online.conf:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
     networks:
       - internal
