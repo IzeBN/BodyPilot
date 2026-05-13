@@ -12,6 +12,14 @@ class ShellScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: child,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.go('/chat'),
+        backgroundColor: AppColors.brandBlue,
+        elevation: 4,
+        shape: const CircleBorder(),
+        child: const Text('+', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w300, height: 1)),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const _BottomNav(),
     );
   }
@@ -45,7 +53,7 @@ class _BottomNav extends StatelessWidget {
                   onTap: () => context.go('/journal'),
                 ),
               ),
-              _CenterAddButton(onTap: () => context.go('/chat')),
+              const SizedBox(width: 72),
               Expanded(
                 child: _NavItem(
                   icon: _ChatIcon(active: !isJournal),
@@ -88,39 +96,6 @@ class _NavItem extends StatelessWidget {
           const SizedBox(height: 4),
           Text(label, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: color)),
         ],
-      ),
-    );
-  }
-}
-
-class _CenterAddButton extends StatelessWidget {
-  final VoidCallback onTap;
-  const _CenterAddButton({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Transform.translate(
-        offset: const Offset(0, -16),
-        child: Container(
-          width: 54,
-          height: 54,
-          decoration: BoxDecoration(
-            color: AppColors.brandBlue,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.brandBlue.withValues(alpha: 0.4),
-                blurRadius: 22,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Text('+', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w300, height: 1)),
-          ),
-        ),
       ),
     );
   }

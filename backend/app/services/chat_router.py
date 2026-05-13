@@ -106,7 +106,7 @@ async def _build_nutrition_context(user_id: int, pool: Pool) -> str:
             parts.append(f"User name: {user['fullname']}")
 
         profile = await conn.fetchrow(
-            "SELECT * FROM user_nutrition_profiles WHERE user_id = $1", user_id
+            "SELECT * FROM nutrition_profiles WHERE user_id = $1", user_id
         )
         if profile:
             if profile.get("weight_kg"):
