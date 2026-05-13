@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -32,7 +33,7 @@ class ChatMessageItem(BaseModel):
     content: str = Field(..., description="Message text")
     agent_type: Optional[str] = Field(None, description="'training' or 'nutrition'")
     thread_id: Optional[str] = Field(None, description="Conversation thread ID")
-    created_at: str = Field(..., description="Timestamp (ISO 8601)")
+    created_at: datetime = Field(..., description="Timestamp (ISO 8601)")
 
 
 class ChatHistoryResponse(BaseModel):

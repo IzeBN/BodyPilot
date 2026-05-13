@@ -52,15 +52,26 @@ class UserService:
                    WHERE user_id = $1 AND scheduled_date BETWEEN $2 AND $3""",
                 user_id, start_date, end_date,
             )
-
+            name_rows = await conn.fetch(
+                """SELECT us.scheduled_date, tp.title
+                   FROM user_schedules us
+                   JOIN training_programs tp ON tp.id = us.program_id
+                   WHERE us.user_id = $1 AND us.scheduled_date BETWEEN $2 AND $3""",
+                user_id, start_date, end_date,
+            )
+        name_map = {r["scheduled_date"]: r["title"] for r in name_rows}
         progress_map = {r["scheduled_date"]: r["status"] for r in rows}
+        days = []
+        for i in range(7):
+            d = start_date + datetime.timedelta(days=i)
+            days.append({
+                "date": str(d),
+                "status": progress_map.get(d, "none"),
+                "workout_name": name_map.get(d),
+            })
         return {
-            "user_id": user_id,
-            "today_weekday": week_day,
-            "progress": {
-                str(i): progress_map.get(start_date + datetime.timedelta(days=i), "none")
-                for i in range(7)
-            },
+            "week_start": str(start_date),
+            "days": days,
         }
 
     async def clear_training_data(self, user_id: int) -> None:

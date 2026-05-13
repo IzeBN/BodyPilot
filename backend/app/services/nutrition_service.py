@@ -69,7 +69,17 @@ class NutritionService:
 
     async def get_goals(self, user_id: int) -> dict:
         row = await self._repo.get_nutrition_goals(user_id)
-        return dict(row) if row else {}
+        if row:
+            return dict(row)
+        return {
+            "user_id": user_id,
+            "calories": 2000,
+            "protein_g": None,
+            "fat_g": None,
+            "carbs_g": None,
+            "water_ml": None,
+            "valid_from": date.today(),
+        }
 
     async def get_stats(self, user_id: int, date_from: date, date_to: date) -> list[dict]:
         if date_from > date_to:

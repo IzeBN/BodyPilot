@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, UploadFile, File, Form
+from fastapi import APIRouter, Depends, UploadFile, File, Form, Query
 from datetime import date
 from app.dependencies import get_nutrition_service, get_food_recognition_service, get_current_user_id, get_lang
 from app.models.nutrition import (
@@ -45,11 +45,13 @@ async def add_meal(
     ),
 )
 async def get_meals(
-    log_date: date,
+    log_date: date = Query(None, alias="log_date"),
+    date_param: date = Query(None, alias="date"),
     user_id: int = Depends(get_current_user_id),
     service: NutritionService = Depends(get_nutrition_service),
 ):
-    return await service.get_meals(user_id, log_date)
+    target = log_date or date_param or date.today()
+    return await service.get_meals(user_id, target)
 
 
 @router.patch(
