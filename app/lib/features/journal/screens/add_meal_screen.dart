@@ -46,7 +46,7 @@ class _AddMealScreenState extends ConsumerState<AddMealScreen> {
     final cal = double.tryParse(_calCtrl.text.trim());
 
     if (food.isEmpty || amount == null || cal == null) {
-      setState(() => _error = 'Заполните название, количество и калории');
+      setState(() => _error = AppL10n.of(context).fillFoodFields);
       return;
     }
 
@@ -73,7 +73,7 @@ class _AddMealScreenState extends ConsumerState<AddMealScreen> {
         context.pop();
       }
     } catch (_) {
-      if (mounted) setState(() { _saving = false; _error = 'Не удалось сохранить'; });
+      if (mounted) setState(() { _saving = false; _error = AppL10n.of(context).saveError; });
     }
   }
 
@@ -148,7 +148,7 @@ class _AddMealScreenState extends ConsumerState<AddMealScreen> {
               // Food name
               _FieldLabel(l.foodNameLabel),
               const SizedBox(height: 6),
-              _TextField(controller: _foodCtrl, hint: 'Гречка с курицей', keyboardType: TextInputType.text),
+              _TextField(controller: _foodCtrl, hint: l.foodNameHint, keyboardType: TextInputType.text),
               const SizedBox(height: 16),
 
               // Amount + Calories row

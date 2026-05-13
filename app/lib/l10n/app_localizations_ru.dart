@@ -606,4 +606,42 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get select => 'Выбрать';
+
+  @override
+  String get barcodeLoading => 'Загружаю...';
+
+  @override
+  String get retryLabel => 'Повторить';
+
+  @override
+  String get barcodeManualHint => 'Ввести код вручную';
+
+  @override
+  String get barcodeManualTitle => 'Введите штрихкод';
+
+  @override
+  String get barcodeManualFormats => 'EAN-8, EAN-13, UPC-A и другие форматы';
+
+  @override
+  String get barcodeManualPlaceholder => 'Например: 4607086562619';
+
+  @override
+  String get barcodeSearch => 'Найти';
+
+  @override
+  String recognizedCount(int count) {
+    return 'РАСПОЗНАНО · $count';
+  }
+
+  @override
+  String get fillFoodFields => 'Заполните название, количество и калории';
+
+  @override
+  String get foodNameHint => 'Гречка с курицей';
+
+  @override
+  String get aiRecognize => 'AI распознать';
+
+  @override
+  String get aiDetermines => 'AI определяет состав блюда';
 }

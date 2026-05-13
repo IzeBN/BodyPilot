@@ -36,7 +36,12 @@
       "Bash(grep:*)",
       "Bash(grep -n ['']\\\\\\([А-Яа-яЁё][^'']*\\\\\\)[''] C:/Data/projects/KayFit_Fitkeep/app/lib/features/account/screens/account_screen.dart C:/Data/projects/KayFit_Fitkeep/app/lib/features/onboarding/screens/equipment_selector_screen.dart)",
       "Read(//c/Users/izeb/.claude/**)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(find C:DataprojectsKayFitMobile -name *.dart)",
+      "Bash(done)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Data/projects/KayFit_Fitkeep/app/**)"
     ]
   }
 }

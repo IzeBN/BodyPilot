@@ -305,5 +305,22 @@
   "programSelectError": "Ошибка выбора программы",
   "labelWeeks": "НЕДЕЛЬ",
   "labelType": "ТИП",
-  "select": "Выбрать"
+  "select": "Выбрать",
+  "barcodeLoading": "Загружаю...",
+  "retryLabel": "Повторить",
+  "barcodeManualHint": "Ввести код вручную",
+  "barcodeManualTitle": "Введите штрихкод",
+  "barcodeManualFormats": "EAN-8, EAN-13, UPC-A и другие форматы",
+  "barcodeManualPlaceholder": "Например: 4607086562619",
+  "barcodeSearch": "Найти",
+  "recognizedCount": "РАСПОЗНАНО · {count}",
+  "@recognizedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "fillFoodFields": "Заполните название, количество и калории",
+  "foodNameHint": "Гречка с курицей",
+  "aiRecognize": "AI распознать",
+  "aiDetermines": "AI определяет состав блюда"
 }

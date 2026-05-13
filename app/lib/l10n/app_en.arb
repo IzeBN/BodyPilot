@@ -303,5 +303,22 @@
   "programSelectError": "Error selecting program",
   "labelWeeks": "WEEKS",
   "labelType": "TYPE",
-  "select": "Select"
+  "select": "Select",
+  "barcodeLoading": "Loading...",
+  "retryLabel": "Retry",
+  "barcodeManualHint": "Enter code manually",
+  "barcodeManualTitle": "Enter barcode",
+  "barcodeManualFormats": "EAN-8, EAN-13, UPC-A and other formats",
+  "barcodeManualPlaceholder": "Example: 4607086562619",
+  "barcodeSearch": "Search",
+  "recognizedCount": "RECOGNIZED · {count}",
+  "@recognizedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "fillFoodFields": "Fill in name, amount and calories",
+  "foodNameHint": "Buckwheat with chicken",
+  "aiRecognize": "AI Recognize",
+  "aiDetermines": "AI determines meal composition"
 }

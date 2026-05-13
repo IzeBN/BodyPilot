@@ -1231,6 +1231,78 @@ abstract class AppL10n {
   /// In ru, this message translates to:
   /// **'Выбрать'**
   String get select;
+
+  /// No description provided for @barcodeLoading.
+  ///
+  /// In ru, this message translates to:
+  /// **'Загружаю...'**
+  String get barcodeLoading;
+
+  /// No description provided for @retryLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторить'**
+  String get retryLabel;
+
+  /// No description provided for @barcodeManualHint.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ввести код вручную'**
+  String get barcodeManualHint;
+
+  /// No description provided for @barcodeManualTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Введите штрихкод'**
+  String get barcodeManualTitle;
+
+  /// No description provided for @barcodeManualFormats.
+  ///
+  /// In ru, this message translates to:
+  /// **'EAN-8, EAN-13, UPC-A и другие форматы'**
+  String get barcodeManualFormats;
+
+  /// No description provided for @barcodeManualPlaceholder.
+  ///
+  /// In ru, this message translates to:
+  /// **'Например: 4607086562619'**
+  String get barcodeManualPlaceholder;
+
+  /// No description provided for @barcodeSearch.
+  ///
+  /// In ru, this message translates to:
+  /// **'Найти'**
+  String get barcodeSearch;
+
+  /// No description provided for @recognizedCount.
+  ///
+  /// In ru, this message translates to:
+  /// **'РАСПОЗНАНО · {count}'**
+  String recognizedCount(int count);
+
+  /// No description provided for @fillFoodFields.
+  ///
+  /// In ru, this message translates to:
+  /// **'Заполните название, количество и калории'**
+  String get fillFoodFields;
+
+  /// No description provided for @foodNameHint.
+  ///
+  /// In ru, this message translates to:
+  /// **'Гречка с курицей'**
+  String get foodNameHint;
+
+  /// No description provided for @aiRecognize.
+  ///
+  /// In ru, this message translates to:
+  /// **'AI распознать'**
+  String get aiRecognize;
+
+  /// No description provided for @aiDetermines.
+  ///
+  /// In ru, this message translates to:
+  /// **'AI определяет состав блюда'**
+  String get aiDetermines;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

@@ -606,4 +606,42 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get select => 'Select';
+
+  @override
+  String get barcodeLoading => 'Loading...';
+
+  @override
+  String get retryLabel => 'Retry';
+
+  @override
+  String get barcodeManualHint => 'Enter code manually';
+
+  @override
+  String get barcodeManualTitle => 'Enter barcode';
+
+  @override
+  String get barcodeManualFormats => 'EAN-8, EAN-13, UPC-A and other formats';
+
+  @override
+  String get barcodeManualPlaceholder => 'Example: 4607086562619';
+
+  @override
+  String get barcodeSearch => 'Search';
+
+  @override
+  String recognizedCount(int count) {
+    return 'RECOGNIZED · $count';
+  }
+
+  @override
+  String get fillFoodFields => 'Fill in name, amount and calories';
+
+  @override
+  String get foodNameHint => 'Buckwheat with chicken';
+
+  @override
+  String get aiRecognize => 'AI Recognize';
+
+  @override
+  String get aiDetermines => 'AI determines meal composition';
 }

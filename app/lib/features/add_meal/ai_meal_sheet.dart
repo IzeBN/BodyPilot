@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:dio/dio.dart';
@@ -84,7 +83,7 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
     if (manageLoading) setState(() => _loading = _Loading.parsing);
     try {
       final resp = await apiDio.post(
-        '/api/v2/parse_meal_suggestions',
+        '/api/v1/nutrition/recognize/text',
         data: {'text': text, 'language': _lang},
         options: Options(receiveTimeout: const Duration(seconds: 90)),
       );
@@ -140,13 +139,40 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
     setState(() { _isRecording = false; _loading = _Loading.voice; });
     try {
       final form = FormData.fromMap({
-        'audio': await MultipartFile.fromFile(_recordPath!, filename: 'voice.m4a'),
+        'file': await MultipartFile.fromFile(_recordPath!, filename: 'voice.m4a'),
+        'language': _lang,
       });
-      final resp = await apiDio.post('/api/transcribe?language=$_lang', data: form);
+      final resp = await apiDio.post('/api/v1/nutrition/recognize/voice', data: form);
       final raw = resp.data;
-      final text = raw is Map ? (raw['text'] as String? ?? '') : (raw?.toString() ?? '');
-      if (text.isNotEmpty) {
-        await _parseText(text, manageLoading: false);
+      if (raw is! Map) throw Exception('unexpected response');
+      final rawItems = (raw['items'] as List<dynamic>?)
+              ?.map((e) => e as Map<String, dynamic>)
+              .toList() ??
+          [];
+      if (!mounted) return;
+      if (rawItems.isNotEmpty) {
+        if (mounted) setState(() => _loading = _Loading.none);
+        final dishName = rawItems
+            .map((e) => e['name'] as String? ?? '')
+            .where((n) => n.isNotEmpty)
+            .join(', ');
+        final saved = await showModalBottomSheet<bool>(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (_) => DraggableScrollableSheet(
+            initialChildSize: 0.92, minChildSize: 0.5, maxChildSize: 0.95,
+            builder: (_, __) => RecognitionResultSheet(
+              date: widget.date, items: rawItems, dishName: dishName),
+          ),
+        );
+        if (saved == true && mounted) Navigator.of(context).pop();
+        return;
+      }
+      // Fallback: re-parse from transcript if items are empty
+      final transcript = raw['transcript'] as String? ?? '';
+      if (transcript.isNotEmpty) {
+        await _parseText(transcript, manageLoading: false);
       } else if (mounted) {
         _switchMode(_Mode.choose);
       }
@@ -181,8 +207,8 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
             contentType: DioMediaType('image', 'jpeg'));
       }
       final resp = await apiDio.post(
-        '/api/v2/recognize_photo?language=$lang',
-        data: FormData.fromMap({'image': multipart}),
+        '/api/v1/nutrition/recognize/photo',
+        data: FormData.fromMap({'file': multipart, 'language': lang}),
         options: Options(receiveTimeout: const Duration(seconds: 120), sendTimeout: const Duration(seconds: 60)),
       );
       if (!mounted) return;
@@ -397,12 +423,11 @@ class _ChooseViewState extends State<_ChooseView> with SingleTickerProviderState
   @override
   Widget build(BuildContext context) {
     final l = AppL10n.of(context);
-    final ru = Localizations.localeOf(context).languageCode == 'ru';
     final methods = [
-      _MethodData(emoji: '📸', title: '📸 ' + l.methodPhotoTitle, desc: l.methodPhotoDesc, onTap: widget.onPhoto),
-      _MethodData(emoji: '🎙️', title: '🎙️ ' + l.methodVoiceTitle, desc: l.methodVoiceDesc, onTap: widget.onVoice),
-      _MethodData(emoji: '✏️', title: '✏️ ' + l.methodTextTitle, desc: l.methodTextDesc, onTap: widget.onText),
-      _MethodData(emoji: '📱', title: '📱 ' + l.methodBarcodeTitle, desc: l.methodBarcodeDesc, onTap: widget.onBarcode),
+      _MethodData(emoji: '📸', title: '📸 ${l.methodPhotoTitle}', desc: l.methodPhotoDesc, onTap: widget.onPhoto),
+      _MethodData(emoji: '🎙️', title: '🎙️ ${l.methodVoiceTitle}', desc: l.methodVoiceDesc, onTap: widget.onVoice),
+      _MethodData(emoji: '✏️', title: '✏️ ${l.methodTextTitle}', desc: l.methodTextDesc, onTap: widget.onText),
+      _MethodData(emoji: '📱', title: '📱 ${l.methodBarcodeTitle}', desc: l.methodBarcodeDesc, onTap: widget.onBarcode),
     ];
 
     return Column(
@@ -600,11 +625,11 @@ class _TextViewState extends State<_TextView> {
                 child: InkWell(
                   onTap: _hasText ? widget.onParse : null,
                   borderRadius: BorderRadius.circular(AppRadius.button),
-                  child: const Center(
+                  child: Center(
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 18),
-                      SizedBox(width: 8),
-                      Text('AI распознать', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600)),
+                      const Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 18),
+                      const SizedBox(width: 8),
+                      Text(AppL10n.of(context).aiRecognize, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600)),
                     ]),
                   ),
                 ),
@@ -831,7 +856,7 @@ class _RecognizingOverlayState extends State<_RecognizingOverlay> with SingleTic
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary, letterSpacing: -0.2),
           ),
           const SizedBox(height: 6),
-          const Text('AI определяет состав блюда', style: TextStyle(fontSize: 14, color: AppColors.textMuted)),
+          Text(AppL10n.of(context).aiDetermines, style: const TextStyle(fontSize: 14, color: AppColors.textMuted)),
           const SizedBox(height: 20),
           AnimatedBuilder(
             animation: _ctrl,
@@ -913,7 +938,7 @@ class _ParsingOverlayState extends State<_ParsingOverlay> with SingleTickerProvi
               const SizedBox(width: 16),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(l.analyzingTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
-                Text('AI считает КБЖУ', style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                Text(AppL10n.of(context).aiDetermines, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
               ]),
             ]),
             const SizedBox(height: 32),
