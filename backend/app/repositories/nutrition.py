@@ -60,7 +60,7 @@ class NutritionRepository(BaseRepository):
         vitamin_b12_mcg: "float | None" = None,
         source: "str | None" = None,
         source_url: "str | None" = None,
-    ) -> int:
+    ) -> asyncpg.Record:
         extra_vals = (
             food_name_en,
             fiber, sugar, sugar_alcohols, saturated_fat, unsaturated_fat, glycemic_index,
@@ -82,12 +82,12 @@ class NutritionRepository(BaseRepository):
             "vitamin_b7_mcg, vitamin_b9_mcg, vitamin_b12_mcg, source, source_url"
         )
         async with self.pool.acquire() as conn:
-            return await conn.fetchval(
+            return await conn.fetchrow(
                 f"""INSERT INTO meal_logs
                        (user_id, log_date, meal_type, food_id, food_name, amount_g,
                         calories, protein, fat, carbs, net_carbs, {extra_cols})
                    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,{placeholders})
-                   RETURNING id""",
+                   RETURNING *""",
                 user_id, log_date, meal_type, food_id, food_name, amount_g,
                 calories, protein, fat, carbs, None,
                 *extra_vals,

@@ -19,7 +19,7 @@ class NutritionService:
 
     async def add_meal(self, user_id: int, data: dict) -> dict:
         micro = {k: data.get(k) for k in _MICRO_FIELDS}
-        meal_id = await self._repo.add_meal(
+        row = await self._repo.add_meal(
             user_id,
             data["log_date"], data["meal_type"],
             data.get("food_id"), data.get("food_name"),
@@ -27,7 +27,7 @@ class NutritionService:
             data.get("protein"), data.get("fat"), data.get("carbs"),
             **micro,
         )
-        return {"id": meal_id}
+        return dict(row)
 
     async def get_meals(self, user_id: int, log_date: date) -> dict:
         rows = await self._repo.get_meals_by_date(user_id, log_date)
