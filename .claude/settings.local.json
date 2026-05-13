@@ -26,7 +26,10 @@
       "Bash(flutter pub:*)",
       "Bash(dart run:*)",
       "Bash(flutter analyze:*)",
-      "Bash(flutter gen-l10n:*)"
+      "Bash(flutter gen-l10n:*)",
+      "Bash(flutter emulators:*)",
+      "Bash(flutter devices:*)",
+      "Bash(flutter run:*)"
     ]
   }
 }
