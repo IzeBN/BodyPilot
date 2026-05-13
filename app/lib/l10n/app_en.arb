@@ -1,0 +1,238 @@
+{
+  "@@locale": "en",
+
+  "appName": "KayFit",
+
+  "loginTitle": "Sign in",
+  "loginSubtitle": "Enter your account credentials",
+  "loginButton": "Sign in",
+  "loginError": "Invalid email or password",
+  "noAccount": "No account? Register",
+
+  "registerTitle": "Register",
+  "createAccountButton": "Create account",
+  "registerError": "Registration failed. Please try again.",
+
+  "emailHint": "Email",
+  "passwordHint": "Password",
+  "nameHint": "Name",
+
+  "obModulesTitle": "Tell us about your goals",
+  "obModulesSubtitle": "Enable the modules you need — the app will adapt to you.",
+  "obModulesHint": "You can change this in Settings at any time",
+
+  "nutritionModuleName": "Nutrition",
+  "nutritionModuleDesc": "Diary, macros, AI nutritionist",
+
+  "trainingModuleName": "Training",
+  "trainingModuleDesc": "Programs, exercises, AI trainer",
+
+  "obEquipTitle": "What do you train with?",
+  "obEquipSubtitle": "We'll build a plan for your available equipment.",
+  "obEquipBanner": "{count} selected — ~{exercises} exercises available",
+  "@obEquipBanner": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "exercises": { "type": "int" }
+    }
+  },
+
+  "continueButton": "Continue",
+
+  "journalTitle": "Journal",
+  "journalSubtitle": "{dayName}, {month} {day} · Week {week} of {totalWeeks}",
+  "@journalSubtitle": {
+    "placeholders": {
+      "dayName": { "type": "String" },
+      "day": { "type": "int" },
+      "month": { "type": "String" },
+      "week": { "type": "int" },
+      "totalWeeks": { "type": "int" }
+    }
+  },
+
+  "sectionFood": "Food",
+  "sectionTraining": "Training",
+
+  "caloriesLabel": "CALORIES TODAY",
+  "caloriesGoal": "/ {goal} kcal",
+  "@caloriesGoal": {
+    "placeholders": {
+      "goal": { "type": "int" }
+    }
+  },
+
+  "macroProtein": "P",
+  "macroFat": "F",
+  "macroCarbs": "C",
+
+  "foodSectionSub": "{kcal} kcal · PFC {p}/{c}/{f}",
+  "@foodSectionSub": {
+    "placeholders": {
+      "kcal": { "type": "int" },
+      "p": { "type": "int" },
+      "c": { "type": "int" },
+      "f": { "type": "int" }
+    }
+  },
+
+  "trainingSectionSub": "Today · Week {week}/{total}",
+  "@trainingSectionSub": {
+    "placeholders": {
+      "week": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "addMeal": "+ Add meal",
+  "nextWorkout": "Next: {workout} ›",
+  "@nextWorkout": {
+    "placeholders": {
+      "workout": { "type": "String" }
+    }
+  },
+
+  "unitMin": "min",
+  "unitExercises": "ex.",
+  "unitKcal": "kcal",
+  "unitG": "g",
+  "unitKg": "kg",
+  "unitCm": "cm",
+
+  "dayMon": "MO",
+  "dayTue": "TU",
+  "dayWed": "WE",
+  "dayThu": "TH",
+  "dayFri": "FR",
+  "daySat": "SA",
+  "daySun": "SU",
+
+  "monthJan": "January",
+  "monthFeb": "February",
+  "monthMar": "March",
+  "monthApr": "April",
+  "monthMay": "May",
+  "monthJun": "June",
+  "monthJul": "July",
+  "monthAug": "August",
+  "monthSep": "September",
+  "monthOct": "October",
+  "monthNov": "November",
+  "monthDec": "December",
+
+  "workoutDetailCta": "Start workout",
+  "exercisesSection": "Exercises",
+
+  "statMin": "MIN",
+  "statKcal": "KCAL",
+  "statExercises": "EX.",
+
+  "liveExerciseProgress": "Exercise {current} of {total}",
+  "@liveExerciseProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "liveSetLabel": "Set {n}",
+  "@liveSetLabel": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "liveSetProgress": "Set {current} of {total}",
+  "@liveSetProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "liveReps": "Repetitions",
+  "liveWeightKg": "Weight, kg",
+  "liveSkip": "Skip",
+  "liveDone": "Set complete",
+
+  "chatTitle": "AI assistant",
+  "chatModeNutrition": "Nutrition",
+  "chatModeNutritionDesc": "Calories, macros, recipes",
+  "chatModeTraining": "Training",
+  "chatModeTrainingDesc": "Program, form, tips",
+  "chatPlaceholderNutrition": "What did you eat today?",
+  "chatPlaceholderTraining": "Ask about technique…",
+  "chatNetworkError": "Network error. Please try again.",
+
+  "accountTitle": "Account",
+  "accountSubtitle": "Profile · settings",
+
+  "sectionProgram": "PROGRAM",
+  "sectionEquipment": "EQUIPMENT",
+  "sectionLegal": "LEGAL & DATA",
+  "sectionBody": "BODY PARAMETERS",
+  "sectionApp": "APP",
+
+  "equipmentCount": "{count} selected",
+  "@equipmentCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "equipmentHint": "Workouts are matched to your available equipment. Tap to toggle.",
+  "equipmentBanner": "~{count} exercises available in the library",
+  "@equipmentBanner": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "equipmentExtended": "Advanced equipment selection",
+  "equipmentExtendedSub": "weight / types ›",
+
+  "rowGoal": "Goal",
+  "rowNutrition": "Nutrition",
+  "rowTrainings": "Training",
+  "rowAiServices": "AI services",
+  "rowAiServicesSub": "OpenAI · USDA database",
+  "rowPrivacy": "Privacy",
+  "rowPrivacySub": "Data settings",
+  "rowPrivacyPolicy": "Privacy Policy",
+  "rowTerms": "Terms of Use",
+  "rowAiModels": "AI models",
+  "rowAiModelsSub": "Processing consent",
+  "rowAiModelsAction": "On ›",
+  "rowExport": "Export data",
+  "rowWeight": "Weight",
+  "rowHeight": "Height",
+  "rowAge": "Age",
+  "rowNotifications": "Notifications",
+  "rowLanguage": "Language",
+  "rowSubscription": "Subscription",
+  "rowDeleteAccount": "Delete account",
+  "rowHelp": "Help & support",
+
+  "logout": "Sign out",
+  "appVersion": "KayFit · v{version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
+
+  "statsTrainings": "workouts",
+  "statsWeeks": "weeks",
+  "statsKgLost": "kg",
+
+  "proLabel": "★ Pro · until {date}",
+  "@proLabel": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "freeLabel": "Free plan",
+
+  "tabJournal": "Journal",
+  "tabChat": "Chat",
+
+  "loading": "Loading…",
+  "errorLoading": "Failed to load",
+  "errorNetwork": "Network error",
+  "retry": "Retry"
+}

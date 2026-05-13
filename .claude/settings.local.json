@@ -12,7 +12,21 @@
       "Bash(find C:DataprojectsFitnesBot -name *.sql)",
       "Bash(find C:DataprojectsFitnesBot -name *.json)",
       "Bash(find C:DataprojectsFitnesBot -name exercise* -o -name *exercise*)",
-      "Bash(grep -rn \"quiz_translations\\\\|new.*question\\\\|question.*quiz\" C:DataprojectsKayFit_Fitkeepbackendapp --include=*.py -l)"
+      "Bash(grep -rn \"quiz_translations\\\\|new.*question\\\\|question.*quiz\" C:DataprojectsKayFit_Fitkeepbackendapp --include=*.py -l)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(mkdir -p /tmp/kayfit_design)",
+      "Bash(tar -xf /tmp/kayfit_design.html -C /tmp/kayfit_design)",
+      "Bash(node -e \"const fs=require\\(''''fs''''\\); console.log\\(fs.readFileSync\\(''''/tmp/kayfit_design/untitled/project/clickable-B.jsx'''',''''utf8''''\\)\\);\")",
+      "Bash(cp /tmp/kayfit_design/untitled/project/clickable-B.jsx /mnt/c/tmp_jsx.jsx)",
+      "Bash(cp /tmp/kayfit_design/untitled/project/clickable-B.jsx ~/Desktop/clickable-B.jsx)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''''paths:'''', list\\(d.get\\(''''paths'''',{}\\).keys\\(\\)\\)\\)\")",
+      "Bash(node -e \"const d=require\\(''''/c/Data/projects/KayFit_Fitkeep/openapi.json''''\\); console.log\\(''''title:'''', d.info?.title\\); Object.keys\\(d.paths||{}\\).forEach\\(p=>{ const methods=Object.keys\\(d.paths[p]\\); console.log\\(methods.map\\(m=>m.toUpperCase\\(\\)\\).join\\(''''|''''\\), p\\) }\\)\")",
+      "Bash(node:*)",
+      "Bash(flutter create:*)",
+      "Bash(flutter pub:*)",
+      "Bash(dart run:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter gen-l10n:*)"
     ]
   }
 }

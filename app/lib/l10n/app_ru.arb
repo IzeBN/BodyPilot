@@ -1,0 +1,240 @@
+{
+  "@@locale": "ru",
+
+  "appName": "KayFit",
+
+  "loginTitle": "Войти",
+  "loginSubtitle": "Введите данные вашего аккаунта",
+  "loginButton": "Войти",
+  "loginError": "Неверный email или пароль",
+  "noAccount": "Нет аккаунта? Зарегистрироваться",
+
+  "registerTitle": "Регистрация",
+  "createAccountButton": "Создать аккаунт",
+  "registerError": "Ошибка регистрации. Попробуйте снова.",
+
+  "emailHint": "Email",
+  "passwordHint": "Пароль",
+  "nameHint": "Имя",
+
+  "obModulesTitle": "Расскажи о своих целях",
+  "obModulesSubtitle": "Включи нужные модули — приложение перестроится под тебя.",
+  "obModulesHint": "Можешь поменять в Настройках в любой момент",
+
+  "nutritionModuleName": "Питание",
+  "nutritionModuleDesc": "Дневник, БЖУ, AI-нутрициолог",
+
+  "trainingModuleName": "Тренировки",
+  "trainingModuleDesc": "Программы, упражнения, AI-тренер",
+
+  "obEquipTitle": "Чем тренируешься?",
+  "obEquipSubtitle": "Подберём план под доступное оборудование.",
+  "obEquipBanner": "{count} выбрано — доступно ~{exercises} упражнений",
+  "@obEquipBanner": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "exercises": { "type": "int" }
+    }
+  },
+
+  "continueButton": "Продолжить",
+
+  "journalTitle": "Журнал",
+  "@journalTitle": {},
+
+  "journalSubtitle": "{dayName}, {day} {month} · Неделя {week} из {totalWeeks}",
+  "@journalSubtitle": {
+    "placeholders": {
+      "dayName": { "type": "String" },
+      "day": { "type": "int" },
+      "month": { "type": "String" },
+      "week": { "type": "int" },
+      "totalWeeks": { "type": "int" }
+    }
+  },
+
+  "sectionFood": "Еда",
+  "sectionTraining": "Тренировки",
+
+  "caloriesLabel": "КАЛОРИИ СЕГОДНЯ",
+  "caloriesGoal": "/ {goal} ккал",
+  "@caloriesGoal": {
+    "placeholders": {
+      "goal": { "type": "int" }
+    }
+  },
+
+  "macroProtein": "Б",
+  "macroFat": "Ж",
+  "macroCarbs": "У",
+
+  "foodSectionSub": "{kcal} ккал · БЖУ {p}/{c}/{f}",
+  "@foodSectionSub": {
+    "placeholders": {
+      "kcal": { "type": "int" },
+      "p": { "type": "int" },
+      "c": { "type": "int" },
+      "f": { "type": "int" }
+    }
+  },
+
+  "trainingSectionSub": "На сегодня · Неделя {week}/{total}",
+  "@trainingSectionSub": {
+    "placeholders": {
+      "week": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "addMeal": "+ Добавить приём пищи",
+  "nextWorkout": "Следующая: {workout} ›",
+  "@nextWorkout": {
+    "placeholders": {
+      "workout": { "type": "String" }
+    }
+  },
+
+  "unitMin": "мин",
+  "unitExercises": "упр.",
+  "unitKcal": "ккал",
+  "unitG": "г",
+  "unitKg": "кг",
+  "unitCm": "см",
+
+  "dayMon": "ПН",
+  "dayTue": "ВТ",
+  "dayWed": "СР",
+  "dayThu": "ЧТ",
+  "dayFri": "ПТ",
+  "daySat": "СБ",
+  "daySun": "ВС",
+
+  "monthJan": "января",
+  "monthFeb": "февраля",
+  "monthMar": "марта",
+  "monthApr": "апреля",
+  "monthMay": "мая",
+  "monthJun": "июня",
+  "monthJul": "июля",
+  "monthAug": "августа",
+  "monthSep": "сентября",
+  "monthOct": "октября",
+  "monthNov": "ноября",
+  "monthDec": "декабря",
+
+  "workoutDetailCta": "Начать тренировку",
+  "exercisesSection": "Упражнения",
+
+  "statMin": "МИН",
+  "statKcal": "ККАЛ",
+  "statExercises": "УПР.",
+
+  "liveExerciseProgress": "Упражнение {current} из {total}",
+  "@liveExerciseProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "liveSetLabel": "Подход {n}",
+  "@liveSetLabel": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "liveSetProgress": "Подход {current} из {total}",
+  "@liveSetProgress": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "liveReps": "Повторения",
+  "liveWeightKg": "Вес, кг",
+  "liveSkip": "Пропустить",
+  "liveDone": "Подход выполнен",
+
+  "chatTitle": "AI ассистент",
+  "chatModeNutrition": "Питание",
+  "chatModeNutritionDesc": "Калории, БЖУ, рецепты",
+  "chatModeTraining": "Тренировки",
+  "chatModeTrainingDesc": "Программа, форма, советы",
+  "chatPlaceholderNutrition": "Что ты ел сегодня?",
+  "chatPlaceholderTraining": "Спроси про технику…",
+  "chatNetworkError": "Ошибка сети. Попробуйте снова.",
+
+  "accountTitle": "Аккаунт",
+  "accountSubtitle": "Профиль · настройки",
+
+  "sectionProgram": "ПРОГРАММА",
+  "sectionEquipment": "ОБОРУДОВАНИЕ",
+  "sectionLegal": "ПРАВОВЫЕ И ДАННЫЕ",
+  "sectionBody": "ПАРАМЕТРЫ ТЕЛА",
+  "sectionApp": "ПРИЛОЖЕНИЕ",
+
+  "equipmentCount": "{count} выбрано",
+  "@equipmentCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "equipmentHint": "Тренировки подбираются под доступный инвентарь. Тапни, чтобы включить или выключить.",
+  "equipmentBanner": "Доступно ~{count} упражнений в библиотеке",
+  "@equipmentBanner": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "equipmentExtended": "Расширенный выбор оборудования",
+  "equipmentExtendedSub": "вес / типы ›",
+
+  "rowGoal": "Цель",
+  "rowNutrition": "Питание",
+  "rowTrainings": "Тренировки",
+  "rowAiServices": "AI сервисы",
+  "rowAiServicesSub": "OpenAI · USDA database",
+  "rowPrivacy": "Конфиденциальность",
+  "rowPrivacySub": "Настройки данных",
+  "rowPrivacyPolicy": "Privacy Policy",
+  "rowTerms": "Terms of Use",
+  "rowAiModels": "AI-модели",
+  "rowAiModelsSub": "Согласие на обработку",
+  "rowAiModelsAction": "Вкл ›",
+  "rowExport": "Экспорт данных",
+  "rowWeight": "Вес",
+  "rowHeight": "Рост",
+  "rowAge": "Возраст",
+  "rowNotifications": "Уведомления",
+  "rowLanguage": "Язык",
+  "rowSubscription": "Подписка",
+  "rowDeleteAccount": "Удалить аккаунт",
+  "rowHelp": "Помощь и поддержка",
+
+  "logout": "Выйти из аккаунта",
+  "appVersion": "Кайфит · v{version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
+
+  "statsTrainings": "тренировок",
+  "statsWeeks": "недель",
+  "statsKgLost": "кг",
+
+  "proLabel": "★ Pro · до {date}",
+  "@proLabel": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "freeLabel": "Бесплатный",
+
+  "tabJournal": "Журнал",
+  "tabChat": "Чат",
+
+  "loading": "Загрузка…",
+  "errorLoading": "Ошибка загрузки",
+  "errorNetwork": "Ошибка сети",
+  "retry": "Повторить"
+}
