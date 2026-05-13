@@ -16,8 +16,13 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
 
     openai_api_key: str = ""
-    openai_model: str = "gpt-4o-mini"
+    openai_token: str = ""  # alias used on server
+    openai_model: str = "gpt-4o"
     openai_proxy: str = "http://artemeree:MKQabwq3sU@63.125.95.89:50100"
+
+    @property
+    def effective_openai_key(self) -> str:
+        return self.openai_api_key or self.openai_token
 
     anthropic_api_key: str = ""
 

@@ -30,9 +30,9 @@ OPENAPI_TAGS = [
 async def lifespan(app: FastAPI):
     await get_pool()
     s = get_settings()
-    if s.openai_api_key:
+    if s.effective_openai_key:
         from app.neural.assistant import init_assistant
-        await init_assistant(s.openai_api_key, s.openai_proxy or None)
+        await init_assistant(s.effective_openai_key, s.openai_proxy or None)
     yield
     await close_pool()
 

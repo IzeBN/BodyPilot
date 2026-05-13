@@ -302,7 +302,7 @@ class FoodRecognitionService:
     async def _transcribe_voice(self, audio_data: bytes, filename: str, language: str) -> str:
         """Transcribe audio via OpenAI Whisper."""
         settings = get_settings()
-        key = settings.openai_api_key
+        key = settings.effective_openai_key
         if not key:
             return ""
         suffix = (filename or "").lower()

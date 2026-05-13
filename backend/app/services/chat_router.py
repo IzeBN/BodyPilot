@@ -190,7 +190,7 @@ async def _process(
     import httpx
     _proxy = s.openai_proxy or None
     client = AsyncOpenAI(
-        api_key=s.openai_api_key,
+        api_key=s.effective_openai_key,
         http_client=httpx.AsyncClient(proxy=_proxy) if _proxy else None,
     )
     chat_repo = ChatRepository(pool)
