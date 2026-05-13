@@ -13,6 +13,7 @@ import '../../features/chat/screens/chat_screen.dart';
 import '../../features/account/screens/account_screen.dart';
 import '../../features/training/screens/workout_detail_screen.dart';
 import '../../features/training/screens/live_workout_screen.dart';
+import '../../features/training/screens/programs_screen.dart';
 import '../../shared/widgets/shell_scaffold.dart';
 
 part 'router.g.dart';
@@ -69,6 +70,9 @@ GoRouter router(Ref ref) {
 
       // Account (pushed from journal avatar, not tab)
       GoRoute(path: '/account', builder: (_, __) => const AccountScreen()),
+
+      // Training programs list
+      GoRoute(path: '/training/programs', builder: (_, __) => const ProgramsScreen()),
 
       // Training detail / live
       GoRoute(

@@ -137,11 +137,12 @@ class _LiveWorkoutScreenState extends ConsumerState<LiveWorkoutScreen> {
 
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(22),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Exercise image with warm gradient
                         Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 22),
                           height: 180,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
@@ -155,21 +156,34 @@ class _LiveWorkoutScreenState extends ConsumerState<LiveWorkoutScreen> {
                             child: Text(ex.icon, style: const TextStyle(fontSize: 64)),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        Text(ex.name, style: AppText.sectionHead()),
-                        const SizedBox(height: 4),
-                        Text(
-                          l.liveSetProgress(_setIdx + 1, totalSets),
-                          style: AppText.meta12(color: AppColors.textMuted),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(22, 16, 22, 0),
+                          child: Text(
+                            ex.name,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: -0.3,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(22, 4, 22, 16),
+                          child: Text(
+                            l.liveSetProgress(_setIdx + 1, totalSets),
+                            style: AppText.meta12(color: AppColors.textMuted),
+                          ),
+                        ),
 
                         // Set card
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          margin: const EdgeInsets.symmetric(horizontal: 22),
+                          padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
                           decoration: BoxDecoration(
                             color: AppColors.surfaceSoft,
                             borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: AppColors.borderStrong, width: 0.5),
                           ),
                           child: Column(
                             children: [

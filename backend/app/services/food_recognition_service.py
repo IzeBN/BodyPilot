@@ -5,9 +5,28 @@ import base64
 import asyncio
 import io
 
+import httpx
 from asyncpg import Pool
 
 from app.config import get_settings
+
+
+def _make_anthropic_client(api_key: str):
+    import anthropic
+    proxy = get_settings().openai_proxy or None
+    return anthropic.AsyncAnthropic(
+        api_key=api_key,
+        http_client=httpx.AsyncClient(proxy=proxy) if proxy else None,
+    )
+
+
+def _make_openai_client(api_key: str):
+    from openai import AsyncOpenAI
+    proxy = get_settings().openai_proxy or None
+    return AsyncOpenAI(
+        api_key=api_key,
+        http_client=httpx.AsyncClient(proxy=proxy) if proxy else None,
+    )
 
 CLAUDE_MODEL = "claude-sonnet-4-6"
 
@@ -200,8 +219,7 @@ class FoodRecognitionService:
         lang = language if language in _PARSE_PROMPTS else "ru"
         prompt = _PARSE_PROMPTS[lang] + text.strip()
         try:
-            import anthropic
-            client = anthropic.AsyncAnthropic(api_key=key)
+            client = _make_anthropic_client(key)
             resp = await client.messages.create(
                 model=CLAUDE_MODEL,
                 max_tokens=600,
@@ -247,8 +265,7 @@ class FoodRecognitionService:
 
         b64 = base64.standard_b64encode(image_data).decode("ascii")
         try:
-            import anthropic
-            client = anthropic.AsyncAnthropic(api_key=key)
+            client = _make_anthropic_client(key)
             resp = await client.messages.create(
                 model=CLAUDE_MODEL,
                 max_tokens=512,
@@ -329,8 +346,7 @@ class FoodRecognitionService:
                         pass
 
         import tempfile, os
-        from openai import AsyncOpenAI
-        client = AsyncOpenAI(api_key=key)
+        client = _make_openai_client(key)
         with tempfile.NamedTemporaryFile(mode="wb", suffix=".mp3" if name.endswith(".mp3") else ".webm", delete=False) as tmp:
             tmp.write(data)
             tmp_path = tmp.name
@@ -484,8 +500,7 @@ class FoodRecognitionService:
         prompt = _NUTRIENTS_PROMPTS[lang] + "\n".join(f"- {n}" for n in names)
         max_tokens = 400 + len(names) * 400
         try:
-            import anthropic
-            client = anthropic.AsyncAnthropic(api_key=key)
+            client = _make_anthropic_client(key)
             resp = await client.messages.create(
                 model=CLAUDE_MODEL,
                 max_tokens=max_tokens,

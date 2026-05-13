@@ -6,7 +6,7 @@ part of 'profile_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userProfileHash() => r'37268f0bee598b695330adf9d298a17044bdf6a5';
+String _$userProfileHash() => r'849e99cc1a9d5906dd135e5b32c0a0b45e1dba79';
 
 /// See also [userProfile].
 @ProviderFor(userProfile)
@@ -22,7 +22,7 @@ final userProfileProvider = AutoDisposeFutureProvider<UserProfile>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserProfileRef = AutoDisposeFutureProviderRef<UserProfile>;
-String _$nutritionGoalsHash() => r'f6586f702f68f6c4cb91b5e84f1880b9c917eada';
+String _$nutritionGoalsHash() => r'a098bf4e49a5a55fc0e90f693b1a8cf25c5857ef';
 
 /// See also [nutritionGoals].
 @ProviderFor(nutritionGoals)
@@ -40,7 +40,7 @@ final nutritionGoalsProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef NutritionGoalsRef = AutoDisposeFutureProviderRef<NutritionGoals>;
-String _$weeklyProgressHash() => r'06c0bb42b88ad264ee825bbb9c1347251e43176a';
+String _$weeklyProgressHash() => r'ab5d06f253c0e911092cdbaf8d1841470a1d2619';
 
 /// See also [weeklyProgress].
 @ProviderFor(weeklyProgress)

@@ -187,7 +187,12 @@ async def _process(
     pool: Pool,
 ) -> dict:
     s = get_settings()
-    client = AsyncOpenAI(api_key=s.openai_api_key)
+    import httpx
+    _proxy = s.openai_proxy or None
+    client = AsyncOpenAI(
+        api_key=s.openai_api_key,
+        http_client=httpx.AsyncClient(proxy=_proxy) if _proxy else None,
+    )
     chat_repo = ChatRepository(pool)
 
     if not thread_id:

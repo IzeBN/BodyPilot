@@ -38,10 +38,22 @@ class WorkoutDetailScreen extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(22, 0, 22, 8),
                 child: Builder(
-                  builder: (ctx) => Text(
-                    '${AppL10n.of(ctx).exercisesSection}  ${detail.exerciseCount}',
-                    style: AppText.sectionHead(),
-                  ),
+                  builder: (ctx) {
+                    final l = AppL10n.of(ctx);
+                    return Row(
+                      children: [
+                        Text(
+                          l.exercisesSection.toUpperCase(),
+                          style: AppText.labelCaps11(),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '${detail.exerciseCount}',
+                          style: AppText.monoSmall(),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -193,8 +205,11 @@ class _ExRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Color(0xFFF3F4F6), width: 0.5)),
+      ),
       child: Row(
         children: [
           Container(
@@ -207,7 +222,7 @@ class _ExRow extends StatelessWidget {
             child: Center(
               child: Text(
                 '${ex.number}',
-                style: AppText.monoCount(color: AppColors.textPrimary),
+                style: AppText.monoCount(color: AppColors.textHint),
               ),
             ),
           ),

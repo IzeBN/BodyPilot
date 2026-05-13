@@ -1,26 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
+import '../../features/add_meal/add_sheet.dart';
 
 class ShellScaffold extends StatelessWidget {
   final Widget child;
   const ShellScaffold({super.key, required this.child});
 
+  void _showAddSheet(BuildContext context) {
+    HapticFeedback.mediumImpact();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const AddSheet(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: child,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final today = DateTime.now().toIso8601String().substring(0, 10);
-          context.push('/add-meal?date=$today');
-        },
-        backgroundColor: AppColors.brandBlue,
-        elevation: 4,
-        shape: const CircleBorder(),
-        child: const Text('+', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w300, height: 1)),
+      floatingActionButton: GestureDetector(
+        onTap: () => _showAddSheet(context),
+        child: Container(
+          width: 54,
+          height: 54,
+          decoration: BoxDecoration(
+            color: AppColors.brandBlue,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.blueShadow,
+                blurRadius: 22,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: const Center(
+            child: Text('+', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w300, height: 1)),
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const _BottomNav(),

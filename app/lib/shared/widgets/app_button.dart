@@ -9,6 +9,7 @@ class AppButton extends StatelessWidget {
   final AppButtonVariant variant;
   final bool loading;
   final bool expand;
+  final bool small;
 
   const AppButton({
     super.key,
@@ -17,6 +18,7 @@ class AppButton extends StatelessWidget {
     this.variant = AppButtonVariant.blue,
     this.loading = false,
     this.expand = true,
+    this.small = false,
   });
 
   @override
@@ -30,7 +32,7 @@ class AppButton extends StatelessWidget {
   Widget _buildButton() {
     switch (variant) {
       case AppButtonVariant.blue:
-        return _BlueButton(label: label, onPressed: onPressed, loading: loading);
+        return _BlueButton(label: label, onPressed: onPressed, loading: loading, small: small);
       case AppButtonVariant.coral:
         return _CoralButton(label: label, onPressed: onPressed, loading: loading);
       case AppButtonVariant.outline:
@@ -43,7 +45,8 @@ class _BlueButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
   final bool loading;
-  const _BlueButton({required this.label, this.onPressed, required this.loading});
+  final bool small;
+  const _BlueButton({required this.label, this.onPressed, required this.loading, this.small = false});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,9 @@ class _BlueButton extends StatelessWidget {
         opacity: onPressed == null ? 0.4 : 1.0,
         duration: const Duration(milliseconds: 150),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: small
+              ? const EdgeInsets.symmetric(horizontal: 14, vertical: 10)
+              : const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           decoration: BoxDecoration(
             color: AppColors.brandBlue,
             borderRadius: BorderRadius.circular(AppRadius.button),
@@ -75,7 +80,7 @@ class _BlueButton extends StatelessWidget {
                       strokeWidth: 2,
                     ),
                   )
-                : Text(label, style: AppText.btn()),
+                : Text(label, style: small ? AppText.btn().copyWith(fontSize: 13) : AppText.btn()),
           ),
         ),
       ),

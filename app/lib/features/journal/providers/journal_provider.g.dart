@@ -6,7 +6,7 @@ part of 'journal_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$journalDayHash() => r'c10b22f80f1ce83816460bf348bc2286a3cebda0';
+String _$journalDayHash() => r'22afdd89569203d17cc86f8e11f8c910840f724d';
 
 /// Copied from Dart SDK
 class _SystemHash {

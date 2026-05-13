@@ -6,7 +6,7 @@ part of 'equipment_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$equipmentCatalogHash() => r'ad0c855da7b83d058b75e18bc790dc1cd554dbae';
+String _$equipmentCatalogHash() => r'ab2495c92855179ddcd5772f4ba4385941f32d45';
 
 /// See also [equipmentCatalog].
 @ProviderFor(equipmentCatalog)

@@ -236,5 +236,19 @@
   "loading": "Загрузка…",
   "errorLoading": "Ошибка загрузки",
   "errorNetwork": "Ошибка сети",
-  "retry": "Повторить"
+  "retry": "Повторить",
+
+  "addMealTitle": "Добавить приём пищи",
+  "mealTypeBreakfast": "Завтрак",
+  "mealTypeLunch": "Обед",
+  "mealTypeDinner": "Ужин",
+  "mealTypeSnack": "Перекус",
+  "foodNameLabel": "Название блюда",
+  "amountLabel": "Количество, г",
+  "caloriesFieldLabel": "Ккал",
+  "proteinLabel": "Белки, г",
+  "fatLabel": "Жиры, г",
+  "carbsLabel": "Углеводы, г",
+  "saveMeal": "Добавить",
+  "mealSaved": "Приём пищи добавлен"
 }

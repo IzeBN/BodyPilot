@@ -234,5 +234,19 @@
   "loading": "Loading…",
   "errorLoading": "Failed to load",
   "errorNetwork": "Network error",
-  "retry": "Retry"
+  "retry": "Retry",
+
+  "addMealTitle": "Add meal",
+  "mealTypeBreakfast": "Breakfast",
+  "mealTypeLunch": "Lunch",
+  "mealTypeDinner": "Dinner",
+  "mealTypeSnack": "Snack",
+  "foodNameLabel": "Food name",
+  "amountLabel": "Amount, g",
+  "caloriesFieldLabel": "Kcal",
+  "proteinLabel": "Protein, g",
+  "fatLabel": "Fat, g",
+  "carbsLabel": "Carbs, g",
+  "saveMeal": "Add",
+  "mealSaved": "Meal added"
 }

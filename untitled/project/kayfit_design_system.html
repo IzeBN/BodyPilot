@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KayFit 2.0 — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────
+   TOKENS — извлечены прямо из kayfit_screens.html
+───────────────────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --brand-blue:        #2563EB;
+  --brand-blue-soft:   #DBEAFE;
+  --brand-blue-deep:   #1D4ED8;
+
+  /* Macros */
+  --macro-calories:    #EF4444;   /* red    — calories ring + missed days */
+  --macro-protein:     #22C55E;   /* green  — protein ring */
+  --macro-carbs:       #06B6D4;   /* cyan   — carbs ring */
+  --macro-fat:         #EAB308;   /* yellow — fat ring (bg) */
+  --macro-fat-text:    #CA8A04;   /* deeper yellow for type */
+
+  /* Text */
+  --ink-900:           #111827;   /* primary text */
+  --ink-700:           #374151;   /* secondary text */
+  --ink-500:           #9CA3AF;   /* muted / meta */
+  --ink-400:           #6B7280;   /* hint inside labels */
+
+  /* Surfaces */
+  --surface:           #FFFFFF;
+  --surface-soft:      #F9FAFB;
+  --surface-tint:      #F3F4F6;
+  --border-faint:      #F3F4F6;
+  --border-row:        #F9FAFB;
+  --border-strong:     #E5E7EB;
+
+  /* Accents (cards) */
+  --accent-coral-a:    #F97316;
+  --accent-coral-b:    #F43F5E;
+  --accent-yellow-bg:  #FEF9C3;   /* barcode scan area */
+  --accent-plate-a:    #6B7C5A;   /* meal scan photo gradient */
+  --accent-plate-b:    #8A9B73;
+  --accent-plate-c:    #5A6B4A;
+  --accent-plate-d:    #4A5A3E;
+
+  /* Radii — извлечены из исходника */
+  --r-xs:  4px;
+  --r-sm:  6px;
+  --r-md:  8px;
+  --r-lg:  10px;
+  --r-xl:  12px;
+  --r-2xl: 14px;
+  --r-3xl: 16px;
+  --r-pill: 18px;       /* chat bubbles */
+  --r-screen: 38px;     /* iPhone screen */
+  --r-frame:  46px;     /* iPhone frame */
+
+  /* Spacing — реальные значения из экранов */
+  --sp-2:  2px;
+  --sp-4:  4px;
+  --sp-6:  6px;
+  --sp-8:  8px;
+  --sp-10: 10px;
+  --sp-12: 12px;
+  --sp-14: 14px;
+  --sp-16: 16px;
+  --sp-20: 20px;
+  --sp-24: 24px;
+
+  /* Shadows */
+  --sh-blue-btn:  0 4px 18px rgba(37,99,235,0.38);
+  --sh-mic-ring:  0 0 0 6px rgba(37,99,235,0.10), 0 6px 20px rgba(37,99,235,0.4);
+  --sh-label:     0 2px 6px rgba(0,0,0,0.2);
+
+  /* ── Canvas (Figma-like) — оформление страницы, не токены продукта */
+  --cv-bg:        #1C1C1E;
+  --cv-panel:     #2C2C2E;
+  --cv-line:      #3A3A3C;
+  --cv-mute:      #48484A;
+  --cv-mute-2:    #636366;
+  --cv-text:      #E5E5EA;
+  --cv-text-soft: #8E8E93;
+}
+
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+svg { display: block; }
+
+body {
+  background: var(--cv-bg);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--cv-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Top toolbar */
+.toolbar {
+  height: 44px;
+  background: var(--cv-panel);
+  border-bottom: 1px solid var(--cv-line);
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 16px;
+  position: sticky; top: 0; z-index: 100;
+}
+.tb-dots { display: flex; gap: 6px; }
+.tb-dot { width: 12px; height: 12px; border-radius: 50%; }
+.tb-title {
+  flex: 1; text-align: center;
+  font-size: 12px; font-weight: 600;
+  color: var(--cv-text-soft); letter-spacing: 0.02em;
+}
+.tb-tag {
+  font-size: 11px; color: var(--cv-mute);
+  background: var(--cv-line); padding: 3px 10px;
+  border-radius: 6px;
+}
+
+/* ── Page */
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 56px 48px 120px;
+}
+.hero {
+  display: flex; flex-direction: column; gap: 14px;
+  padding-bottom: 40px; border-bottom: 1px solid var(--cv-line);
+  margin-bottom: 56px;
+}
+.hero h1 {
+  font-size: 48px; font-weight: 800;
+  letter-spacing: -0.02em; color: #fff;
+}
+.hero p {
+  font-size: 15px; color: var(--cv-text-soft);
+  max-width: 640px; line-height: 1.6;
+}
+.hero-meta {
+  display: flex; gap: 24px; margin-top: 10px;
+  font-size: 11px; color: var(--cv-mute-2);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.hero-meta span strong { color: var(--cv-text); font-weight: 600; letter-spacing: 0; text-transform: none; }
+
+/* ── Section */
+section.sec { margin-bottom: 88px; }
+.sec-hd {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--cv-line);
+}
+.sec-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--cv-mute);
+  letter-spacing: 0.08em;
+}
+.sec-hd h2 {
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.01em; color: #fff;
+}
+.sec-hd p {
+  margin-left: auto;
+  font-size: 12px; color: var(--cv-text-soft);
+  max-width: 360px; text-align: right;
+}
+
+.sub {
+  font-size: 11px; font-weight: 600;
+  color: var(--cv-mute); letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 28px 0 14px;
+}
+
+/* ── Grid helpers */
+.grid {
+  display: grid; gap: 14px;
+}
+.g-3 { grid-template-columns: repeat(3, 1fr); }
+.g-4 { grid-template-columns: repeat(4, 1fr); }
+.g-5 { grid-template-columns: repeat(5, 1fr); }
+.g-6 { grid-template-columns: repeat(6, 1fr); }
+.g-auto { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.row {
+  display: flex; flex-wrap: wrap;
+  gap: 14px; align-items: flex-start;
+}
+
+/* ── Cards */
+.card {
+  background: var(--cv-panel);
+  border: 1px solid var(--cv-line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.card-body {
+  padding: 18px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.card-label {
+  font-size: 11px; color: var(--cv-text-soft);
+  letter-spacing: 0.06em;
+}
+.card-label .name {
+  color: #fff; font-weight: 600;
+  letter-spacing: 0; text-transform: none; font-size: 13px;
+  display: block; margin-bottom: 4px;
+}
+.code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--cv-text-soft);
+}
+.use {
+  font-size: 11px; color: var(--cv-mute-2);
+  line-height: 1.5;
+}
+
+/* ── Color swatches */
+.swatch {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--cv-panel);
+  border: 1px solid var(--cv-line);
+}
+.swatch-fill {
+  height: 96px;
+  position: relative;
+}
+.swatch-fill.checker {
+  background-image:
+    linear-gradient(45deg, #2C2C2E 25%, transparent 25%),
+    linear-gradient(-45deg, #2C2C2E 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #2C2C2E 75%),
+    linear-gradient(-45deg, transparent 75%, #2C2C2E 75%);
+  background-size: 14px 14px;
+  background-position: 0 0, 0 7px, 7px -7px, -7px 0;
+  background-color: #1C1C1E;
+}
+.swatch-meta {
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 3px;
+  border-top: 1px solid var(--cv-line);
+}
+.swatch-meta .nm {
+  font-size: 12px; font-weight: 600; color: #fff;
+}
+.swatch-meta .hx {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--cv-text-soft);
+}
+.swatch-meta .us {
+  font-size: 10px; color: var(--cv-mute-2);
+  line-height: 1.45;
+}
+
+/* ── Type specimens */
+.type-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 200px;
+  gap: 24px; align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--cv-line);
+}
+.type-row:last-child { border-bottom: none; }
+.type-meta {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.type-meta .tn {
+  font-size: 13px; font-weight: 600; color: #fff;
+}
+.type-meta .ts {
+  font-size: 11px; color: var(--cv-text-soft);
+  font-family: 'JetBrains Mono', monospace;
+}
+.type-spec {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 18px 22px;
+  color: var(--ink-900);
+}
+.type-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--cv-mute-2);
+  line-height: 1.7;
+}
+
+/* ── Scale viz */
+.scale-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 100px;
+  align-items: center; gap: 16px;
+  padding: 8px 0;
+}
+.scale-name { font-size: 12px; color: var(--cv-text); font-family: 'JetBrains Mono', monospace; }
+.scale-bar { height: 14px; background: var(--brand-blue); border-radius: 4px; }
+.scale-val { font-size: 11px; color: var(--cv-text-soft); font-family: 'JetBrains Mono', monospace; text-align: right; }
+
+.radius-row {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.radius-box {
+  width: 96px; height: 96px;
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  border: 2px solid var(--brand-blue-soft);
+}
+.radius-meta {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--cv-text-soft);
+}
+.radius-meta strong { color: #fff; font-weight: 600; }
+
+/* ── Component stage */
+.stage {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 24px;
+  color: var(--ink-900);
+  display: flex; flex-wrap: wrap; gap: 20px;
+  align-items: flex-start;
+  border: 1px solid var(--cv-line);
+}
+.stage.dark { background: #0F1115; border-color: #1F2937; }
+.stage.tight { padding: 18px; gap: 14px; }
+.stage-cell {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+}
+.stage-cell .lbl {
+  font-size: 10px; color: var(--cv-mute-2);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+.stage-cell .desc { font-size: 11px; color: var(--cv-text-soft); }
+
+/* ─────────────────────────────────────────────────────────
+   APP-LEVEL COMPONENT STYLES — copy of the screen primitives
+───────────────────────────────────────────────────────── */
+
+/* Macro dot + legend row */
+.macro-row {
+  display: flex; align-items: center; gap: 6px;
+  min-width: 180px;
+}
+.macro-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.macro-lbl {
+  font-size: 9px; font-weight: 600; color: var(--ink-500);
+  letter-spacing: 0.05em; flex: 1;
+}
+.macro-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700; color: var(--ink-900);
+}
+.macro-val .g { color: var(--ink-500); font-weight: 400; font-size: 10px; }
+.fill-red   { background: var(--macro-calories); }
+.fill-green { background: var(--macro-protein); }
+.fill-cyan  { background: var(--macro-carbs); }
+.fill-yel   { background: var(--macro-fat); }
+.clr-red    { color: var(--macro-calories); }
+.clr-green  { color: var(--macro-protein); }
+.clr-cyan   { color: var(--macro-carbs); }
+.clr-yel    { color: var(--macro-fat-text); }
+.clr-blue   { color: var(--brand-blue); }
+
+/* Calendar */
+.cal-day {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.cal-dn { font-size: 9px; font-weight: 500; color: var(--ink-500); text-transform: uppercase; }
+.cal-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: var(--ink-700);
+  background: transparent; border: 1.5px solid transparent;
+  transition: transform 0.15s ease;
+  cursor: pointer;
+}
+.cal-num.empty   { color: var(--ink-700); }
+.cal-num.logged  { border-color: var(--macro-protein); }
+.cal-num.missed  { border-color: var(--macro-calories); color: var(--macro-calories); }
+.cal-num.active  { background: var(--brand-blue); color: #fff; border-color: transparent; }
+.cal-num:hover   { transform: scale(1.08); }
+
+/* Meal row */
+.meal-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--border-row);
+  width: 260px;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.meal-row:hover { background: var(--surface-soft); }
+.meal-row:active { background: var(--surface-tint); }
+.meal-name { font-size: 13px; font-weight: 600; color: var(--ink-900); letter-spacing: -0.1px; }
+.meal-meta { font-size: 10px; color: var(--ink-500); margin-top: 2px; }
+.meal-kcal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px; font-weight: 700; color: var(--ink-900);
+}
+
+/* Chat bubbles */
+.bubble-user {
+  background: var(--brand-blue);
+  color: #fff;
+  border-radius: var(--r-pill) var(--r-pill) var(--r-xs) var(--r-pill);
+  padding: 10px 14px;
+  font-size: 13px; font-weight: 500;
+  max-width: 220px; line-height: 1.4;
+}
+.bubble-ai {
+  background: var(--surface-tint);
+  color: var(--ink-900);
+  border-radius: var(--r-xs) var(--r-pill) var(--r-pill) var(--r-pill);
+  padding: 10px 14px;
+  font-size: 13px; max-width: 220px; line-height: 1.4;
+}
+.bubble-think {
+  background: var(--surface-tint);
+  border-radius: var(--r-xs) var(--r-pill) var(--r-pill) var(--r-pill);
+  padding: 12px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; max-width: 240px; line-height: 2;
+  color: var(--ink-700);
+  display: flex; flex-direction: column;
+}
+.think-step { display: flex; align-items: center; gap: 7px; }
+.step-icon { font-size: 11px; }
+.step-txt.blue { color: var(--brand-blue); }
+.step-txt.gray { color: var(--ink-500); }
+
+/* Food sheet */
+.food-sheet {
+  background: #fff;
+  border: 0.5px solid var(--border-strong);
+  border-radius: 14px;
+  padding: 14px 16px 12px;
+  width: 260px;
+}
+.food-sheet-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.food-sheet-name { font-size: 15px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.2px; }
+.food-check-btn {
+  width: 28px; height: 28px;
+  background: var(--brand-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+}
+.food-check-btn:hover { transform: scale(1.08); box-shadow: var(--sh-blue-btn); }
+.food-logged-lbl {
+  font-size: 9px; font-weight: 700; color: var(--ink-500);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;
+}
+.food-bottom-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  background: var(--surface-soft); border-radius: 8px; padding: 8px 10px;
+}
+.food-kcal-num { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--ink-900); }
+.food-kcal-unit { font-size: 10px; color: var(--ink-500); font-weight: 400; margin-left: 2px; }
+.food-macros-row { display: flex; gap: 12px; }
+.food-m { display: flex; flex-direction: column; align-items: center; }
+.food-m-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; }
+.food-m-lbl { font-size: 8px; color: var(--ink-500); }
+
+/* Ingredient check row */
+.ing-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 0.5px solid var(--border-row);
+  width: 260px;
+  cursor: pointer;
+}
+.ing-check {
+  width: 20px; height: 20px;
+  background: var(--brand-blue); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: transform 0.15s;
+}
+.ing-check.unchecked {
+  background: #fff; border: 1.5px solid var(--ink-500);
+}
+.ing-row:hover .ing-check { transform: scale(1.08); }
+.ing-info { flex: 1; }
+.ing-name { font-size: 12px; font-weight: 600; color: var(--ink-900); }
+.ing-sub { font-size: 10px; color: var(--ink-500); margin-top: 1px; }
+.ing-kcal { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: var(--ink-900); }
+
+/* Plan cards */
+.plan-card-blue {
+  background: var(--brand-blue);
+  border-radius: var(--r-3xl);
+  padding: 14px 16px;
+  width: 240px;
+}
+.plan-card-blue-lbl {
+  font-size: 9px; font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.plan-card-blue-lbl::before {
+  content: ''; width: 18px; height: 18px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px; display: inline-block;
+}
+.plan-card-blue-text {
+  font-size: 12px; color: #fff; line-height: 1.55; font-weight: 500;
+}
+.plan-card-coral {
+  background: linear-gradient(135deg, var(--accent-coral-a) 0%, var(--accent-coral-b) 100%);
+  border-radius: var(--r-3xl);
+  padding: 18px 16px 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  width: 240px;
+}
+.plan-coral-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
+.plan-coral-box { background: rgba(255,255,255,0.18); border-radius: 10px; padding: 8px 32px; }
+.plan-coral-kcal { font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 700; color: #fff; letter-spacing: -1px; }
+.plan-coral-sub { font-size: 10px; color: rgba(255,255,255,0.65); }
+
+/* Macro nutrient pill (inline) */
+.pmp { display: flex; flex-direction: column; align-items: center; }
+.pmp-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; }
+.pmp-lbl { font-size: 8px; color: var(--ink-500); }
+
+/* Tab bar */
+.tabbar {
+  width: 260px;
+  padding: 8px 28px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 0.5px solid var(--border-strong);
+  background: #fff;
+  border-radius: 0 0 14px 14px;
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  min-width: 52px; cursor: pointer;
+}
+.tab-lbl { font-size: 10px; font-weight: 500; color: var(--ink-500); }
+.tab-lbl.on { color: var(--brand-blue); }
+.tab-add-btn {
+  width: 50px; height: 50px;
+  background: var(--brand-blue); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--sh-blue-btn);
+  margin-top: -10px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.tab-add-btn:hover { transform: scale(1.06); }
+.tab-add-btn:active { transform: scale(0.96); }
+.tab-add-btn.disabled { opacity: 0.4; pointer-events: none; }
+.tab-plus { color: #fff; font-size: 28px; font-weight: 200; line-height: 1; margin-top: -2px; }
+
+/* Mic button */
+.mic-btn {
+  width: 56px; height: 56px;
+  background: var(--brand-blue); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--sh-mic-ring);
+  cursor: pointer; transition: transform 0.18s;
+}
+.mic-btn:hover { transform: scale(1.05); }
+.mic-btn:active { transform: scale(0.95); }
+.mic-btn.recording {
+  background: var(--macro-calories);
+  box-shadow: 0 0 0 6px rgba(239,68,68,0.18), 0 6px 20px rgba(239,68,68,0.4);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 6px rgba(239,68,68,0.18), 0 6px 20px rgba(239,68,68,0.4); }
+  50%     { box-shadow: 0 0 0 14px rgba(239,68,68,0.06), 0 6px 24px rgba(239,68,68,0.5); }
+}
+
+/* Clarification chips */
+.clarify-q {
+  align-self: flex-start;
+  background: var(--surface-tint);
+  border-radius: 14px;
+  padding: 6px 12px;
+  font-size: 11px; color: var(--ink-700);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.clarify-q .k-tag {
+  font-size: 9px; font-weight: 700;
+  background: var(--brand-blue); color: #fff;
+  border-radius: 4px; padding: 1px 5px;
+}
+.clarify-a {
+  align-self: flex-end;
+  background: var(--brand-blue-soft);
+  border-radius: 14px;
+  padding: 6px 12px;
+  font-size: 11px; color: var(--brand-blue-deep);
+  font-weight: 700;
+}
+
+/* Barcode */
+.barcode-scan-area {
+  background: var(--accent-yellow-bg);
+  border-radius: var(--r-2xl);
+  width: 280px; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.bc-corner { position: absolute; width: 20px; height: 20px; }
+.bc-corner::before, .bc-corner::after {
+  content: ''; position: absolute; background: var(--ink-500); border-radius: 1px;
+}
+.bc-corner::before { width: 2px; height: 100%; }
+.bc-corner::after  { width: 100%; height: 2px; }
+.bc-tl { top: 10px; left: 10px; }
+.bc-tr { top: 10px; right: 10px; transform: scaleX(-1); }
+.bc-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+.bc-br { bottom: 10px; right: 10px; transform: scale(-1); }
+.barcode-bars { display: flex; align-items: stretch; gap: 1.5px; height: 64px; }
+.bb { background: var(--ink-900); border-radius: 1px; flex-shrink: 0; }
+.barcode-scanline {
+  position: absolute; left: 20px; right: 20px; height: 2px;
+  background: rgba(37,99,235,0.5); top: 50%;
+  animation: scan 2.2s ease-in-out infinite;
+}
+@keyframes scan {
+  0%,100% { top: 22%; }
+  50%     { top: 78%; }
+}
+
+/* Product card */
+.product-card-wrap {
+  background: var(--surface-soft); border-radius: var(--r-2xl);
+  padding: 14px 14px 12px; width: 280px;
+}
+.product-name-lbl { font-size: 15px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.2px; margin-bottom: 10px; }
+.product-per-lbl { font-size: 9px; font-weight: 700; color: var(--ink-500); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+.product-data-row { display: flex; align-items: center; justify-content: space-between; }
+.product-kcal-num { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--ink-900); }
+.product-kcal-unit { font-size: 10px; color: var(--ink-500); font-weight: 400; margin-left: 2px; }
+.product-macro-pills { display: flex; gap: 10px; }
+
+/* Status bar & dynamic island */
+.shell {
+  width: 280px;
+  background: #111;
+  border-radius: 32px;
+  padding: 8px;
+  position: relative;
+  box-shadow: 0 0 0 1px #3D3D3F, 0 12px 40px rgba(0,0,0,0.6);
+}
+.shell-screen {
+  background: #fff; border-radius: 26px;
+  position: relative; overflow: hidden;
+  height: 110px;
+}
+.di {
+  position: absolute; top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 90px; height: 27px;
+  background: #111; border-radius: 20px; z-index: 20;
+}
+.sb {
+  height: 44px; padding: 14px 20px 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sb-time { font-size: 14px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.3px; }
+.sb-right { display: flex; align-items: center; gap: 5px; }
+.sb-signal { display: flex; align-items: flex-end; gap: 1px; height: 9px; }
+.sb-bar { width: 2px; background: var(--ink-900); border-radius: 1px; }
+.sb-lte { font-size: 11px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.3px; }
+.sb-battery { font-size: 11px; font-weight: 600; color: var(--ink-900); }
+
+/* ── Icon tile */
+.icon-tile {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  border: 1px solid var(--cv-line);
+  transition: transform 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+}
+.icon-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+.icon-tile .nm { font-size: 11px; color: var(--ink-700); font-weight: 600; }
+.icon-tile .key {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--ink-500);
+}
+
+/* ── State pill */
+.state-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--cv-text-soft);
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  background: var(--cv-bg); border: 1px solid var(--cv-line);
+  border-radius: 999px;
+}
+.state-pill::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--brand-blue);
+}
+.state-pill.success::before { background: var(--macro-protein); }
+.state-pill.warn::before    { background: var(--macro-fat); }
+.state-pill.error::before   { background: var(--macro-calories); }
+.state-pill.muted::before   { background: var(--ink-500); }
+
+/* ── Footer note */
+.footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--cv-mute);
+  letter-spacing: 0.08em;
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--cv-line);
+}
+
+/* Util */
+.row-wrap { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.col-gap-10 { display: flex; flex-direction: column; gap: 10px; }
+.col-gap-6  { display: flex; flex-direction: column; gap: 6px; }
+
+.svg-check { stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body>
+
+<!-- ═══ TOOLBAR ═══ -->
+<div class="toolbar">
+  <div class="tb-dots">
+    <div class="tb-dot" style="background:#FF5F57;"></div>
+    <div class="tb-dot" style="background:#FEBC2E;"></div>
+    <div class="tb-dot" style="background:#28C840;"></div>
+  </div>
+  <div class="tb-title">KayFit 2.0 — Design System &nbsp;/&nbsp; v1.0</div>
+  <div class="tb-tag">tokens · components · states</div>
+</div>
+
+<div class="page">
+
+  <!-- ─── HERO ─── -->
+  <div class="hero">
+    <h1>KayFit 2.0 — Design System</h1>
+    <p>Полная дизайн-система, извлечённая из живых HTML-макетов 6 экранов приложения. Все токены, типографика, спейсинг, компоненты и состояния — pixel-точная копия того, что уже есть в продукте.</p>
+    <div class="hero-meta">
+      <span><strong>iOS · Flutter</strong></span>
+      <span>SCREENS&nbsp;·&nbsp;<strong>6</strong></span>
+      <span>COMPONENTS&nbsp;·&nbsp;<strong>15</strong></span>
+      <span>TOKENS&nbsp;·&nbsp;<strong>42</strong></span>
+      <span>ICONS&nbsp;·&nbsp;<strong>9</strong></span>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════
+       01 — COLOR TOKENS
+  ════════════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-hd">
+      <div class="sec-num">01</div>
+      <h2>Color Tokens</h2>
+      <p>Все цвета из приложения с реальными примерами использования. Hex-значения извлечены прямо из CSS экранов.</p>
+    </div>
+
+    <!-- Brand -->
+    <div class="sub">Brand</div>
+    <div class="grid g-4">
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#2563EB;"></div>
+        <div class="swatch-meta">
+          <div class="nm">Brand Blue</div>
+          <div class="hx">#2563EB</div>
+          <div class="us">Primary actions, AI avatar, active tab, mic button, checks, чипы ответа</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#DBEAFE;"></div>
+        <div class="swatch-meta">
+          <div class="nm">Brand Blue / Soft</div>
+          <div class="hx">#DBEAFE</div>
+          <div class="us">Фон clarification answer chip</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#1D4ED8;"></div>
+        <div class="swatch-meta">
+          <div class="nm">Brand Blue / Deep</div>
+          <div class="hx">#1D4ED8</div>
+          <div class="us">Текст внутри Brand Blue Soft</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:rgba(37,99,235,0.5);"></div>
+        <div class="swatch-meta">
+          <div class="nm">Brand Blue / 50%</div>
+          <div class="hx">rgba(37,99,235,0.5)</div>
+          <div class="us">Линия сканирования штрих-кода</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Macros -->
+    <div class="sub">Macros — кольца и пилюли БЖУ</div>
+    <div class="grid g-4">
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#EF4444;"></div>
+        <div class="swatch-meta">
+          <div class="nm">Calories — Red</div>
+          <div class="hx">#EF4444</div>
+          <div class="us">Внешнее кольцо калорий, пропущенные дни</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#22C55E;"></div>
+        <div class="swatch-meta">
+          <div class="nm">Protein — Green</div>
+          <div class="hx">#22C55E</div>
+          <div class="us">Кольцо белка, рамка залогированных дней</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#06B6D4;"></div>
+        <div class="swatch-meta">
+          <div class="nm">Carbs — Cyan</div>
+          <div class="hx">#06B6D4</div>
+          <div class="us">Кольцо углеводов, цифры пилюль</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#EAB308;"></div>
+        <div class="swatch-meta">
+          <div class="nm">Fat — Yellow</div>
+          <div class="hx">#EAB308 · text #CA8A04</div>
+          <div class="us">Кольцо жиров (fill #EAB308) / текст пилюль (#CA8A04)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Surfaces -->
+    <div class="sub">Surfaces & Text</div>
+    <div class="grid g-4">
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#FFFFFF; border-bottom: 1px solid var(--cv-line);"></div>
+        <div class="swatch-meta"><div class="nm">Surface</div><div class="hx">#FFFFFF</div><div class="us">Основа экрана, food-sheet, tabbar</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#F9FAFB;"></div>
+        <div class="swatch-meta"><div class="nm">Surface / Soft</div><div class="hx">#F9FAFB</div><div class="us">Product card, food kcal row, all-logged bar</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#F3F4F6;"></div>
+        <div class="swatch-meta"><div class="nm">Surface / Tint</div><div class="hx">#F3F4F6</div><div class="us">AI bubble фон, transcript box, clarification question</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#E5E7EB;"></div>
+        <div class="swatch-meta"><div class="nm">Border / Strong</div><div class="hx">#E5E7EB</div><div class="us">Граница tabbar, food-sheet верх</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#111827;"></div>
+        <div class="swatch-meta"><div class="nm">Ink 900</div><div class="hx">#111827</div><div class="us">Основной текст, цифры kcal, заголовки</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#374151;"></div>
+        <div class="swatch-meta"><div class="nm">Ink 700</div><div class="hx">#374151</div><div class="us">Вторичный текст, transcript, день календаря</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#9CA3AF;"></div>
+        <div class="swatch-meta"><div class="nm">Ink 500</div><div class="hx">#9CA3AF</div><div class="us">Подписи · meta · uppercase лейблы</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#6B7280;"></div>
+        <div class="swatch-meta"><div class="nm">Ink 400</div><div class="hx">#6B7280</div><div class="us">Hint внутри ingredient label overlays</div></div>
+      </div>
+    </div>
+
+    <!-- Accents -->
+    <div class="sub">Accent gradients & special fills</div>
+    <div class="grid g-3">
+      <div class="swatch">
+        <div class="swatch-fill" style="background: linear-gradient(135deg, #F97316 0%, #F43F5E 100%);"></div>
+        <div class="swatch-meta">
+          <div class="nm">Coral Gradient</div>
+          <div class="hx">#F97316 → #F43F5E · 135°</div>
+          <div class="us">"Your plan is ready!" goal card</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background: linear-gradient(145deg, #6B7C5A 0%, #8A9B73 35%, #5A6B4A 65%, #4A5A3E 100%);"></div>
+        <div class="swatch-meta">
+          <div class="nm">Plate Gradient (Photo placeholder)</div>
+          <div class="hx">4-stop · 145°</div>
+          <div class="us">Meal Scan photo preview area</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-fill" style="background:#FEF9C3;"></div>
+        <div class="swatch-meta">
+          <div class="nm">Barcode Yellow</div>
+          <div class="hx">#FEF9C3</div>
+          <div class="us">Фон зоны сканирования штрих-кода</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semantic -->
+    <div class="sub">Semantic mapping</div>
+    <div class="row">
+      <div class="state-pill success">SUCCESS · #22C55E (Protein Green)</div>
+      <div class="state-pill error">ERROR · #EF4444 (Calories Red)</div>
+      <div class="state-pill warn">WARN · #EAB308 (Fat Yellow)</div>
+      <div class="state-pill">INFO · #2563EB (Brand Blue)</div>
+      <div class="state-pill muted">MUTED · #9CA3AF (Ink 500)</div>
+    </div>
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════
+       02 — TYPOGRAPHY
+  ════════════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-hd">
+      <div class="sec-num">02</div>
+      <h2>Typography Scale</h2>
+      <p>Inter — для UI. JetBrains Mono — для всех цифр (калории, граммы, тайминги, монослы мыслей AI).</p>
+    </div>
+
+    <div class="sub">Inter — UI typeface</div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Hero Kcal</div>
+        <div class="ts">JetBrains Mono · 32 / 700 · -1px</div>
+      </div>
+      <div class="type-spec" style="font-family:'JetBrains Mono', monospace; font-size:32px; font-weight:700; letter-spacing:-1px;">1700</div>
+      <div class="type-code">.plan-coral-kcal<br>Coral plan card</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Scan Total</div>
+        <div class="ts">JetBrains Mono · 20 / 700</div>
+      </div>
+      <div class="type-spec" style="font-family:'JetBrains Mono', monospace; font-size:20px; font-weight:700;">301 <span style="font-size:10px; color:#9CA3AF; font-weight:400;">kcal</span></div>
+      <div class="type-code">.scan-total-num<br>.product-kcal-num</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Food Kcal</div>
+        <div class="ts">JetBrains Mono · 18 / 700</div>
+      </div>
+      <div class="type-spec" style="font-family:'JetBrains Mono', monospace; font-size:18px; font-weight:700;">540 <span style="font-size:10px; color:#9CA3AF; font-weight:400;">kcal</span></div>
+      <div class="type-code">.food-kcal-num<br>.plan-daily-num</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Screen Title</div>
+        <div class="ts">Inter · 15 / 700 · -0.2px</div>
+      </div>
+      <div class="type-spec" style="font-size:15px; font-weight:700; letter-spacing:-0.2px;">Meal Scan</div>
+      <div class="type-code">.nb-title<br>.food-sheet-name<br>.product-name-lbl</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">AI Name / Bold</div>
+        <div class="ts">Inter · 14 / 700</div>
+      </div>
+      <div class="type-spec" style="font-size:14px; font-weight:700;">Kayfit AI</div>
+      <div class="type-code">.ai-name-lbl</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Body / Chat bubble</div>
+        <div class="ts">Inter · 13 / 500 · line 1.4</div>
+      </div>
+      <div class="type-spec" style="font-size:13px; font-weight:500; line-height:1.4;">I had a chicken pilaf bowl</div>
+      <div class="type-code">.bubble-user / .bubble-ai</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Meal Name / Strong</div>
+        <div class="ts">Inter · 12-13 / 600 · -0.1px</div>
+      </div>
+      <div class="type-spec" style="font-size:13px; font-weight:600; letter-spacing:-0.1px;">Chicken bowl, rice</div>
+      <div class="type-code">.meal-name<br>.ing-name<br>.voice-ing-name</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Plan Body</div>
+        <div class="ts">Inter · 12 / 500 · line 1.55</div>
+      </div>
+      <div class="type-spec" style="font-size:12px; font-weight:500; line-height:1.55;">Vegan-friendly path to −5 kg. Lean on tofu and legumes, fill half your plate with vegetables.</div>
+      <div class="type-code">.plan-card-blue-text</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Caption / Meta</div>
+        <div class="ts">Inter · 10 / 400</div>
+      </div>
+      <div class="type-spec" style="font-size:10px; color:#9CA3AF;">breakfast · 08:24</div>
+      <div class="type-code">.meal-meta<br>.ing-sub</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">UPPERCASE Label</div>
+        <div class="ts">Inter · 9 / 700 · 0.1em</div>
+      </div>
+      <div class="type-spec" style="font-size:9px; font-weight:700; color:#9CA3AF; letter-spacing:0.1em; text-transform:uppercase;">RECOGNIZED · 3 ITEMS</div>
+      <div class="type-code">.recognized-hdr<br>.scan-total-lbl<br>.food-logged-lbl</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Tab Label</div>
+        <div class="ts">Inter · 9 / 500</div>
+      </div>
+      <div class="type-spec" style="font-size:9px; font-weight:500; color:#9CA3AF;">Journal · <span style="color:#2563EB;">Chat</span></div>
+      <div class="type-code">.tab-lbl / .tab-lbl.on</div>
+    </div>
+
+    <div class="sub" style="margin-top:36px;">JetBrains Mono — числа и мысли AI</div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Macro Value</div>
+        <div class="ts">Mono · 11 / 700</div>
+      </div>
+      <div class="type-spec" style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700;">72g<span style="color:#9CA3AF; font-weight:400; font-size:10px;">/130g</span></div>
+      <div class="type-code">.macro-val + .g</div>
+    </div>
+
+    <div class="type-row">
+      <div class="type-meta">
+        <div class="tn">Thinking Step</div>
+        <div class="ts">Mono · 10 / 400 · line 2</div>
+      </div>
+      <div class="type-spec" style="font-family:'JetBrains Mono', monospace; font-size:10px; line-height:2; color:#374151;">✅ identifying portion<br>🔵 <span style="color:#2563EB;">cross-checking nutrition databases</span></div>
+      <div class="type-code">.bubble-think .think-step</div>
+    </div>
+
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════
+       03 — SPACING & RADIUS
+  ════════════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-hd">
+      <div class="sec-num">03</div>
+      <h2>Spacing & Radius</h2>
+      <p>Шкала отступов и скруглений — все значения из исходных экранов, без выдуманных промежуточных шагов.</p>
+    </div>
+
+    <div class="sub">Spacing scale (px)</div>
+    <div class="card" style="padding:24px;">
+      <div class="scale-row"><div class="scale-name">sp-2</div>  <div class="scale-bar" style="width:2px;"></div>  <div class="scale-val">2 px</div></div>
+      <div class="scale-row"><div class="scale-name">sp-4</div>  <div class="scale-bar" style="width:4px;"></div>  <div class="scale-val">4 px</div></div>
+      <div class="scale-row"><div class="scale-name">sp-6</div>  <div class="scale-bar" style="width:6px;"></div>  <div class="scale-val">6 px · macro gap</div></div>
+      <div class="scale-row"><div class="scale-name">sp-8</div>  <div class="scale-bar" style="width:8px;"></div>  <div class="scale-val">8 px · food pad</div></div>
+      <div class="scale-row"><div class="scale-name">sp-10</div> <div class="scale-bar" style="width:10px;"></div> <div class="scale-val">10 px · body gap</div></div>
+      <div class="scale-row"><div class="scale-name">sp-12</div> <div class="scale-bar" style="width:12px;"></div> <div class="scale-val">12 px · sheet pad</div></div>
+      <div class="scale-row"><div class="scale-name">sp-14</div> <div class="scale-bar" style="width:14px;"></div> <div class="scale-val">14 px · screen pad</div></div>
+      <div class="scale-row"><div class="scale-name">sp-16</div> <div class="scale-bar" style="width:16px;"></div> <div class="scale-val">16 px · row pad</div></div>
+      <div class="scale-row"><div class="scale-name">sp-20</div> <div class="scale-bar" style="width:20px;"></div> <div class="scale-val">20 px · sb side</div></div>
+      <div class="scale-row"><div class="scale-name">sp-28</div> <div class="scale-bar" style="width:28px;"></div> <div class="scale-val">28 px · tabbar pad</div></div>
+    </div>
+
+    <div class="sub" style="margin-top:32px;">Radius scale</div>
+    <div class="grid g-6">
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:4px;"></div>
+        <div class="radius-meta"><strong>r-xs</strong><br>4px<br>think bubble tail</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:8px;"></div>
+        <div class="radius-meta"><strong>r-md</strong><br>8px<br>food kcal row</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:10px;"></div>
+        <div class="radius-meta"><strong>r-lg</strong><br>10px<br>plan daily, transcript</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:12px;"></div>
+        <div class="radius-meta"><strong>r-xl</strong><br>12px<br>scan photo wrap</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:14px;"></div>
+        <div class="radius-meta"><strong>r-2xl</strong><br>14px<br>clarify chip, product</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:16px;"></div>
+        <div class="radius-meta"><strong>r-3xl</strong><br>16px<br>plan cards</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:18px 18px 4px 18px;"></div>
+        <div class="radius-meta"><strong>bubble-user</strong><br>18·18·4·18<br>user message</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:4px 18px 18px 18px;"></div>
+        <div class="radius-meta"><strong>bubble-ai</strong><br>4·18·18·18<br>AI / thinking</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:50%;"></div>
+        <div class="radius-meta"><strong>full</strong><br>50%<br>checks, mic, avatars</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:38px;"></div>
+        <div class="radius-meta"><strong>r-screen</strong><br>38px<br>iPhone screen</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:46px;"></div>
+        <div class="radius-meta"><strong>r-frame</strong><br>46px<br>iPhone bezel</div>
+      </div>
+      <div class="radius-row">
+        <div class="radius-box" style="border-radius:999px;"></div>
+        <div class="radius-meta"><strong>pill</strong><br>999<br>state chips</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════
+       04 — COMPONENTS
+  ════════════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-hd">
+      <div class="sec-num">04</div>
+      <h2>Components</h2>
+      <p>Каждый компонент — живой HTML, готовый к копированию. Поведение, состояния и hover работают.</p>
+    </div>
+
+    <!-- 4.1 MACRO RINGS -->
+    <div class="sub">4.1 · MacroRings — 4-уровневые SVG-кольца</div>
+    <div class="stage">
+      <div class="stage-cell">
+        <div class="lbl">Default · 51 / 55 / 48 / 44 %</div>
+        <svg width="120" height="120" viewBox="0 0 100 100" style="transform:rotate(-90deg);">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="31" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="20" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="9"  fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#EF4444" stroke-width="7" stroke-dasharray="134.6 263.9" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="31" fill="none" stroke="#22C55E" stroke-width="7" stroke-dasharray="107.1 194.8" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="20" fill="none" stroke="#06B6D4" stroke-width="7" stroke-dasharray="60.3 125.7" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="9"  fill="none" stroke="#EAB308" stroke-width="7" stroke-dasharray="24.9 56.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="stage-cell">
+        <div class="lbl">Empty · 0%</div>
+        <svg width="120" height="120" viewBox="0 0 100 100" style="transform:rotate(-90deg);">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="31" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="20" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="9"  fill="none" stroke="#F3F4F6" stroke-width="7"/>
+        </svg>
+      </div>
+
+      <div class="stage-cell">
+        <div class="lbl">Hit goal · 100%</div>
+        <svg width="120" height="120" viewBox="0 0 100 100" style="transform:rotate(-90deg);">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="31" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="20" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="9"  fill="none" stroke="#F3F4F6" stroke-width="7"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#EF4444" stroke-width="7" stroke-dasharray="263.9 263.9" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="31" fill="none" stroke="#22C55E" stroke-width="7" stroke-dasharray="194.8 194.8" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="20" fill="none" stroke="#06B6D4" stroke-width="7" stroke-dasharray="125.7 125.7" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="9"  fill="none" stroke="#EAB308" stroke-width="7" stroke-dasharray="56.5 56.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="stage-cell" style="flex:1;">
+        <div class="lbl">Legend</div>
+        <div class="col-gap-6" style="background:#fff; padding:12px 16px; border-radius:10px; border:1px solid #F3F4F6;">
+          <div class="macro-row"><div class="macro-dot fill-red"></div><div class="macro-lbl">CALORIES</div><div class="macro-val">1070<span class="g">/2100</span></div></div>
+          <div class="macro-row"><div class="macro-dot fill-green"></div><div class="macro-lbl">PROTEIN</div><div class="macro-val">72g<span class="g">/130g</span></div></div>
+          <div class="macro-row"><div class="macro-dot fill-cyan"></div><div class="macro-lbl">CARBS</div><div class="macro-val">121g<span class="g">/250g</span></div></div>
+          <div class="macro-row"><div class="macro-dot fill-yel"></div><div class="macro-lbl">FAT</div><div class="macro-val">31g<span class="g">/70g</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="code" style="margin-top:8px;">Radius stack r=42/31/20/9 · stroke=7 · stroke-dasharray="filled total" · transform:rotate(-90deg)</div>
+
+    <!-- 4.2 CALENDAR STRIP -->
+    <div class="sub">4.2 · CalendarStrip — все 4 состояния дня</div>
+    <div class="stage">
+      <div class="stage-cell">
+        <div class="lbl">Empty</div>
+        <div class="cal-day"><div class="cal-dn">M</div><div class="cal-num empty">28</div></div>
+        <div class="desc">no border · default ink</div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">Logged · success</div>
+        <div class="cal-day"><div class="cal-dn">T</div><div class="cal-num logged">29</div></div>
+        <div class="desc">1.5px green border</div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">Missed · error</div>
+        <div class="cal-day"><div class="cal-dn">W</div><div class="cal-num missed">30</div></div>
+        <div class="desc">1.5px red border + red text</div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">Active · today</div>
+        <div class="cal-day"><div class="cal-dn">S</div><div class="cal-num active">4</div></div>
+        <div class="desc">filled blue · white text</div>
+      </div>
+      <div class="stage-cell" style="flex:1; min-width:260px;">
+        <div class="lbl">Full week strip</div>
+        <div style="display:flex; justify-content:space-between; gap:8px; background:#fff; padding:10px 14px; border-radius:10px; border:1px solid #F3F4F6; width:100%;">
+          <div class="cal-day"><div class="cal-dn">M</div><div class="cal-num logged">28</div></div>
+          <div class="cal-day"><div class="cal-dn">T</div><div class="cal-num logged">29</div></div>
+          <div class="cal-day"><div class="cal-dn">W</div><div class="cal-num logged">30</div></div>
+          <div class="cal-day"><div class="cal-dn">T</div><div class="cal-num missed">1</div></div>
+          <div class="cal-day"><div class="cal-dn">F</div><div class="cal-num logged">2</div></div>
+          <div class="cal-day"><div class="cal-dn">S</div><div class="cal-num logged">3</div></div>
+          <div class="cal-day"><div class="cal-dn">S</div><div class="cal-num active">4</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.3 MEAL ROW -->
+    <div class="sub">4.3 · MealRow — список приёмов пищи</div>
+    <div class="stage">
+      <div class="stage-cell">
+        <div class="lbl">Default</div>
+        <div class="meal-row">
+          <div><div class="meal-name">Oatmeal with berries</div><div class="meal-meta">breakfast · 08:24</div></div>
+          <div class="meal-kcal">320</div>
+        </div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">Hover (наведите)</div>
+        <div class="meal-row" style="background:#F9FAFB;">
+          <div><div class="meal-name">Chicken bowl, rice</div><div class="meal-meta">lunch · 13:10</div></div>
+          <div class="meal-kcal">540</div>
+        </div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">Active / pressed</div>
+        <div class="meal-row" style="background:#F3F4F6;">
+          <div><div class="meal-name">Greek yogurt, almonds</div><div class="meal-meta">snack · 16:30</div></div>
+          <div class="meal-kcal">210</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.4 CHAT BUBBLES -->
+    <div class="sub">4.4 · ChatBubble — user / AI / thinking</div>
+    <div class="stage" style="flex-direction:column; gap:10px; align-items:flex-start;">
+      <div class="bubble-ai">Hi! Tell me what you ate and I'll log it.</div>
+      <div class="bubble-user" style="align-self:flex-end;">I had a chicken pilaf bowl</div>
+      <div class="bubble-think">
+        <div class="think-step"><span class="step-icon">✅</span><span class="step-txt">identifying portion</span></div>
+        <div class="think-step"><span class="step-icon">✅</span><span class="step-txt">matching USDA database</span></div>
+        <div class="think-step"><span class="step-icon">🔵</span><span class="step-txt blue">cross-checking nutrition databases</span></div>
+        <div class="think-step"><span class="step-icon" style="opacity:0;">·</span><span class="step-txt gray">composing reply</span></div>
+      </div>
+    </div>
+
+    <!-- 4.5 FOOD RESULT SHEET -->
+    <div class="sub">4.5 · FoodResultSheet — bottom sheet с результатом</div>
+    <div class="stage">
+      <div class="food-sheet">
+        <div class="food-sheet-top">
+          <div class="food-sheet-name">Chicken pilaf bowl</div>
+          <div class="food-check-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" class="svg-check"><polyline points="2.5,7 5.5,10 11.5,4"/></svg>
+          </div>
+        </div>
+        <div class="food-logged-lbl">LOGGED</div>
+        <div class="food-bottom-row">
+          <div><span class="food-kcal-num">540</span><span class="food-kcal-unit">kcal</span></div>
+          <div class="food-macros-row">
+            <div class="food-m"><div class="food-m-val clr-green">42g</div><div class="food-m-lbl">prot</div></div>
+            <div class="food-m"><div class="food-m-val clr-yel">18g</div><div class="food-m-lbl">fat</div></div>
+            <div class="food-m"><div class="food-m-val clr-cyan">58g</div><div class="food-m-lbl">carbs</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.6 INGREDIENT CHECK ROW -->
+    <div class="sub">4.6 · IngredientCheckRow — checked / unchecked</div>
+    <div class="stage">
+      <div class="stage-cell">
+        <div class="lbl">Checked (default)</div>
+        <div class="ing-row">
+          <div class="ing-check">
+            <svg width="10" height="10" viewBox="0 0 10 10" class="svg-check"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg>
+          </div>
+          <div class="ing-info"><div class="ing-name">Trout</div><div class="ing-sub">240 kcal · 130 g</div></div>
+          <div class="ing-kcal">240</div>
+        </div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">Unchecked</div>
+        <div class="ing-row">
+          <div class="ing-check unchecked"></div>
+          <div class="ing-info"><div class="ing-name">Broccoli</div><div class="ing-sub">31 kcal · 90 g</div></div>
+          <div class="ing-kcal" style="color:#9CA3AF;">31</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.7 PLAN CARDS -->
+    <div class="sub">4.7 · PlanCard — blue variant + coral gradient variant</div>
+    <div class="stage">
+      <div class="plan-card-blue">
+        <div class="plan-card-blue-lbl">YOUR PERSONAL PLAN</div>
+        <div class="plan-card-blue-text">
+          Vegan-friendly path to −5 kg. Lean on tofu and legumes, fill half your plate with vegetables.
+        </div>
+      </div>
+      <div class="plan-card-coral">
+        <div style="font-size:22px;">🎯</div>
+        <div class="plan-coral-title">Your plan is ready!</div>
+        <div class="plan-coral-box"><div class="plan-coral-kcal">1700</div></div>
+        <div class="plan-coral-sub">kcal per day</div>
+      </div>
+    </div>
+
+    <!-- 4.8 MACRO PILLS -->
+    <div class="sub">4.8 · MacroNutrientPill — inline вертикальные пилюли БЖУ</div>
+    <div class="stage">
+      <div style="display:flex; gap:12px; background:#F9FAFB; padding:12px 16px; border-radius:10px;">
+        <div class="pmp"><div class="pmp-val clr-green">130g</div><div class="pmp-lbl">prot</div></div>
+        <div class="pmp"><div class="pmp-val clr-yel">70g</div><div class="pmp-lbl">fat</div></div>
+        <div class="pmp"><div class="pmp-val clr-cyan">250g</div><div class="pmp-lbl">carbs</div></div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">In daily-goal row</div>
+        <div style="background:#F9FAFB; border-radius:10px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:18px; width:260px;">
+          <div>
+            <div style="font-size:9px; font-weight:700; color:#9CA3AF; letter-spacing:0.1em; text-transform:uppercase;">DAILY GOAL</div>
+            <div><span style="font-family:'JetBrains Mono', monospace; font-size:18px; font-weight:700; color:#111827;">1700</span><span style="font-size:10px; color:#9CA3AF;"> kcal</span></div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <div class="pmp"><div class="pmp-val clr-green">130g</div><div class="pmp-lbl">prot</div></div>
+            <div class="pmp"><div class="pmp-val clr-yel">70g</div><div class="pmp-lbl">fat</div></div>
+            <div class="pmp"><div class="pmp-val clr-cyan">250g</div><div class="pmp-lbl">carbs</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.9 TABBAR -->
+    <div class="sub">4.9 · TabBar — Journal active / Chat active / + button</div>
+    <div class="stage" style="background:#0F1115; border-color:#1F2937;">
+      <div class="stage-cell">
+        <div class="lbl" style="color:#9CA3AF;">Journal active</div>
+        <div class="tabbar">
+          <div class="tab">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+            </svg>
+            <div class="tab-lbl on">Journal</div>
+          </div>
+          <div class="tab-add-btn"><span class="tab-plus">+</span></div>
+          <div class="tab">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+            <div class="tab-lbl">Chat</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-cell">
+        <div class="lbl" style="color:#9CA3AF;">Chat active</div>
+        <div class="tabbar">
+          <div class="tab">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+            </svg>
+            <div class="tab-lbl">Journal</div>
+          </div>
+          <div class="tab-add-btn"><span class="tab-plus">+</span></div>
+          <div class="tab">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+            <div class="tab-lbl on">Chat</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-cell">
+        <div class="lbl" style="color:#9CA3AF;">+ button states</div>
+        <div style="display:flex; gap:14px; align-items:center; background:#fff; padding:14px; border-radius:10px;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <div class="tab-add-btn" style="margin-top:0;"><span class="tab-plus">+</span></div>
+            <div style="font-size:9px; color:#9CA3AF; font-family:'JetBrains Mono', monospace;">default</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <div class="tab-add-btn" style="margin-top:0; transform:scale(1.06); box-shadow:0 6px 22px rgba(37,99,235,0.5);"><span class="tab-plus">+</span></div>
+            <div style="font-size:9px; color:#9CA3AF; font-family:'JetBrains Mono', monospace;">hover</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <div class="tab-add-btn" style="margin-top:0; transform:scale(0.96); box-shadow:0 2px 8px rgba(37,99,235,0.3);"><span class="tab-plus">+</span></div>
+            <div style="font-size:9px; color:#9CA3AF; font-family:'JetBrains Mono', monospace;">active</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <div class="tab-add-btn disabled" style="margin-top:0;"><span class="tab-plus">+</span></div>
+            <div style="font-size:9px; color:#9CA3AF; font-family:'JetBrains Mono', monospace;">disabled</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.10 MIC BUTTON -->
+    <div class="sub">4.10 · MicButton — с ring-эффектом и recording state</div>
+    <div class="stage">
+      <div class="stage-cell">
+        <div class="lbl">Idle</div>
+        <div class="mic-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+            <rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0014 0"/><line x1="12" y1="21" x2="12" y2="17"/><line x1="8" y1="21" x2="16" y2="21"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">Recording (pulsing)</div>
+        <div class="mic-btn recording">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+            <rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0014 0"/><line x1="12" y1="21" x2="12" y2="17"/><line x1="8" y1="21" x2="16" y2="21"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stage-cell">
+        <div class="lbl">Disabled</div>
+        <div class="mic-btn" style="background:#9CA3AF; box-shadow:none; opacity:0.6;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+            <rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0014 0"/><line x1="12" y1="21" x2="12" y2="17"/><line x1="8" y1="21" x2="16" y2="21"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.11 CLARIFICATION CHIP -->
+    <div class="sub">4.11 · ClarificationChip — AI вопрос + ответ пользователя</div>
+    <div class="stage" style="flex-direction:column; align-items:stretch; gap:8px;">
+      <div class="clarify-q"><span class="k-tag">K</span>About what weight of chips?</div>
+      <div class="clarify-a">≈ 40 g</div>
+      <div class="clarify-q"><span class="k-tag">K</span>Was it whole milk or skim?</div>
+      <div class="clarify-a">whole</div>
+    </div>
+
+    <!-- 4.12 BARCODE SCANNER -->
+    <div class="sub">4.12 · BarcodeScanner — frame с corners, бары, animated scanline</div>
+    <div class="stage">
+      <div class="barcode-scan-area">
+        <div class="bc-corner bc-tl"></div>
+        <div class="bc-corner bc-tr"></div>
+        <div class="bc-corner bc-bl"></div>
+        <div class="bc-corner bc-br"></div>
+        <div class="barcode-bars">
+          <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+          <div class="bb" style="width:2px;"></div><div class="bb" style="width:3px;"></div>
+          <div class="bb" style="width:1px;"></div><div class="bb" style="width:2px;"></div>
+          <div class="bb" style="width:1px;"></div><div class="bb" style="width:3px;"></div>
+          <div class="bb" style="width:2px;"></div><div class="bb" style="width:1px;"></div>
+          <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+          <div class="bb" style="width:2px;"></div><div class="bb" style="width:3px;"></div>
+          <div class="bb" style="width:1px;"></div><div class="bb" style="width:2px;"></div>
+          <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+          <div class="bb" style="width:2px;"></div><div class="bb" style="width:1px;"></div>
+          <div class="bb" style="width:3px;"></div><div class="bb" style="width:2px;"></div>
+          <div class="bb" style="width:1px;"></div><div class="bb" style="width:3px;"></div>
+          <div class="bb" style="width:1px;"></div><div class="bb" style="width:2px;"></div>
+          <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+          <div class="bb" style="width:2px;"></div><div class="bb" style="width:3px;"></div>
+        </div>
+        <div class="barcode-scanline"></div>
+      </div>
+    </div>
+
+    <!-- 4.13 PRODUCT CARD -->
+    <div class="sub">4.13 · ProductCard — результат сканирования штрих-кода</div>
+    <div class="stage">
+      <div class="product-card-wrap">
+        <div class="product-name-lbl">Protein Veggie Crisps</div>
+        <div class="product-per-lbl">PER PACK</div>
+        <div class="product-data-row">
+          <div><span class="product-kcal-num">112</span><span class="product-kcal-unit">kcal</span></div>
+          <div class="product-macro-pills">
+            <div class="pmp"><div class="pmp-val clr-green">10g</div><div class="pmp-lbl">prot</div></div>
+            <div class="pmp"><div class="pmp-val clr-yel">4g</div><div class="pmp-lbl">fat</div></div>
+            <div class="pmp"><div class="pmp-val clr-cyan">14g</div><div class="pmp-lbl">carbs</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.14 STATUS BAR + DYNAMIC ISLAND -->
+    <div class="sub">4.14 · StatusBar + Dynamic Island — iPhone shell</div>
+    <div class="stage">
+      <div class="shell">
+        <div class="di"></div>
+        <div class="shell-screen">
+          <div class="sb">
+            <div class="sb-time">9:41</div>
+            <div class="sb-right">
+              <div class="sb-signal">
+                <div class="sb-bar" style="height:3px;"></div>
+                <div class="sb-bar" style="height:5px;"></div>
+                <div class="sb-bar" style="height:7px;"></div>
+                <div class="sb-bar" style="height:9px;"></div>
+              </div>
+              <div class="sb-lte">LTE</div>
+              <div class="sb-battery">100</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stage-cell" style="flex:1; min-width:240px;">
+        <div class="lbl">Specs</div>
+        <div class="code">phone: 282 × 580 · radius 46 · pad 9<br>screen: radius 38<br>dynamic-island: 88 × 27 · top 10<br>sb: height 44 · pad 14 / 20 / 0</div>
+      </div>
+    </div>
+
+    <!-- 4.15 SCAN INGREDIENT LABEL -->
+    <div class="sub">4.15 · Photo Ingredient Label (overlay)</div>
+    <div class="stage">
+      <div style="position:relative; width:280px; height:160px; border-radius:12px; overflow:hidden; background:linear-gradient(145deg, #6B7C5A 0%, #8A9B73 35%, #5A6B4A 65%, #4A5A3E 100%);">
+        <div style="position:absolute; bottom:10px; left:50%; transform:translateX(-50%); width:140px; height:96px; background:rgba(255,255,255,0.12); border-radius:50%; border:1.5px solid rgba(255,255,255,0.2);"></div>
+        <div style="position:absolute; top:24px; left:14px; background:rgba(255,255,255,0.96); border-radius:6px; padding:4px 8px; font-size:9px; font-weight:600; color:#111827; box-shadow:0 2px 6px rgba(0,0,0,0.2); line-height:1.3;">
+          Trout<br><span style="font-weight:400; color:#6B7280; font-size:8px;">130 g</span>
+        </div>
+        <div style="position:absolute; top:18px; right:12px; background:rgba(255,255,255,0.96); border-radius:6px; padding:4px 8px; font-size:8.5px; font-weight:600; color:#111827; box-shadow:0 2px 6px rgba(0,0,0,0.2); line-height:1.3; max-width:108px;">
+          Fresh vegetable salad<br><span style="font-weight:400; color:#6B7280; font-size:8px;">90 g</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════
+       05 — STATES & INTERACTIONS
+  ════════════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-hd">
+      <div class="sec-num">05</div>
+      <h2>States & Interactions</h2>
+      <p>Normal · Hover · Active · Disabled — для каждого интерактивного элемента. CSS :hover работает прямо в этой документации.</p>
+    </div>
+
+    <div class="sub">+ Add button (центр tabbar)</div>
+    <div class="stage">
+      <div class="stage-cell"><div class="lbl">Normal</div><div class="tab-add-btn" style="margin:0;"><span class="tab-plus">+</span></div></div>
+      <div class="stage-cell"><div class="lbl">Hover</div><div class="tab-add-btn" style="margin:0; transform:scale(1.06); box-shadow:0 6px 22px rgba(37,99,235,0.5);"><span class="tab-plus">+</span></div></div>
+      <div class="stage-cell"><div class="lbl">Active</div><div class="tab-add-btn" style="margin:0; transform:scale(0.96); box-shadow:0 2px 8px rgba(37,99,235,0.3);"><span class="tab-plus">+</span></div></div>
+      <div class="stage-cell"><div class="lbl">Disabled</div><div class="tab-add-btn disabled" style="margin:0;"><span class="tab-plus">+</span></div></div>
+    </div>
+
+    <div class="sub">Food check button (внутри FoodResultSheet)</div>
+    <div class="stage">
+      <div class="stage-cell"><div class="lbl">Normal</div>
+        <div class="food-check-btn"><svg width="14" height="14" viewBox="0 0 14 14" class="svg-check"><polyline points="2.5,7 5.5,10 11.5,4"/></svg></div>
+      </div>
+      <div class="stage-cell"><div class="lbl">Hover</div>
+        <div class="food-check-btn" style="transform:scale(1.08); box-shadow:0 4px 18px rgba(37,99,235,0.38);"><svg width="14" height="14" viewBox="0 0 14 14" class="svg-check"><polyline points="2.5,7 5.5,10 11.5,4"/></svg></div>
+      </div>
+      <div class="stage-cell"><div class="lbl">Disabled</div>
+        <div class="food-check-btn" style="background:#9CA3AF; opacity:0.5;"><svg width="14" height="14" viewBox="0 0 14 14" class="svg-check"><polyline points="2.5,7 5.5,10 11.5,4"/></svg></div>
+      </div>
+    </div>
+
+    <div class="sub">Calendar day</div>
+    <div class="stage">
+      <div class="stage-cell"><div class="lbl">Empty</div><div class="cal-day"><div class="cal-dn">M</div><div class="cal-num empty">28</div></div></div>
+      <div class="stage-cell"><div class="lbl">Hover (наведи)</div><div class="cal-day"><div class="cal-dn">T</div><div class="cal-num empty" style="transform:scale(1.08);">29</div></div></div>
+      <div class="stage-cell"><div class="lbl">Logged</div><div class="cal-day"><div class="cal-dn">W</div><div class="cal-num logged">30</div></div></div>
+      <div class="stage-cell"><div class="lbl">Missed</div><div class="cal-day"><div class="cal-dn">T</div><div class="cal-num missed">1</div></div></div>
+      <div class="stage-cell"><div class="lbl">Active</div><div class="cal-day"><div class="cal-dn">F</div><div class="cal-num active">2</div></div></div>
+    </div>
+
+    <div class="sub">Tab item</div>
+    <div class="stage">
+      <div class="stage-cell"><div class="lbl">Inactive</div>
+        <div class="tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          <div class="tab-lbl">Journal</div>
+        </div>
+      </div>
+      <div class="stage-cell"><div class="lbl">Active</div>
+        <div class="tab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          <div class="tab-lbl on">Journal</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub">Meal row — hover/active</div>
+    <div class="stage" style="flex-direction:column; align-items:flex-start; gap:8px;">
+      <div class="meal-row" style="border-radius:10px; border:1px solid #F3F4F6;"><div><div class="meal-name">Normal</div><div class="meal-meta">background #FFFFFF</div></div><div class="meal-kcal">320</div></div>
+      <div class="meal-row" style="border-radius:10px; border:1px solid #F3F4F6; background:#F9FAFB;"><div><div class="meal-name">Hover</div><div class="meal-meta">background #F9FAFB</div></div><div class="meal-kcal">540</div></div>
+      <div class="meal-row" style="border-radius:10px; border:1px solid #F3F4F6; background:#F3F4F6;"><div><div class="meal-name">Active / pressed</div><div class="meal-meta">background #F3F4F6</div></div><div class="meal-kcal">210</div></div>
+    </div>
+
+  </section>
+
+  <!-- ═════════════════════════════════════════════════════
+       06 — ICONS
+  ════════════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-hd">
+      <div class="sec-num">06</div>
+      <h2>Icons</h2>
+      <p>Все иконки из приложения, inline SVG · 24×24 grid · stroke 2 · linecap round. Никаких иконочных шрифтов.</p>
+    </div>
+
+    <div class="grid g-5">
+      <!-- Journal -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+          <line x1="9" y1="21" x2="9" y2="9"/>
+        </svg>
+        <div class="nm">Journal</div>
+        <div class="key">tab.journal</div>
+      </div>
+
+      <!-- Chat -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <div class="nm">Chat</div>
+        <div class="key">tab.chat</div>
+      </div>
+
+      <!-- Plus -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        <div class="nm">Add</div>
+        <div class="key">tab.add</div>
+      </div>
+
+      <!-- Mic -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+          <rect x="9" y="2" width="6" height="11" rx="3"/>
+          <path d="M5 10a7 7 0 0014 0"/>
+          <line x1="12" y1="21" x2="12" y2="17"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+        </svg>
+        <div class="nm">Microphone</div>
+        <div class="key">action.mic</div>
+      </div>
+
+      <!-- Camera -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+        <div class="nm">Camera</div>
+        <div class="key">action.camera</div>
+      </div>
+
+      <!-- Barcode -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="6" x2="4" y2="18"/><line x1="7" y1="6" x2="7" y2="18"/>
+          <line x1="10" y1="6" x2="10" y2="18"/><line x1="14" y1="6" x2="14" y2="18"/>
+          <line x1="17" y1="6" x2="17" y2="18"/><line x1="20" y1="6" x2="20" y2="18"/>
+        </svg>
+        <div class="nm">Barcode</div>
+        <div class="key">action.barcode</div>
+      </div>
+
+      <!-- Check -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="4 12 10 18 20 6"/>
+        </svg>
+        <div class="nm">Check</div>
+        <div class="key">state.success</div>
+      </div>
+
+      <!-- Back -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 6 9 12 15 18"/>
+        </svg>
+        <div class="nm">Back</div>
+        <div class="key">nav.back</div>
+      </div>
+
+      <!-- Target / Goal -->
+      <div class="icon-tile">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F43F5E" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="9"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="12" cy="12" r="1.5" fill="#F43F5E"/>
+        </svg>
+        <div class="nm">Goal</div>
+        <div class="key">plan.goal</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">KAYFIT 2.0 &nbsp;·&nbsp; DESIGN SYSTEM &nbsp;·&nbsp; EXTRACTED FROM 6 LIVE SCREENS &nbsp;·&nbsp; v1.0</div>
+
+</div>
+
+</body>
+</html>

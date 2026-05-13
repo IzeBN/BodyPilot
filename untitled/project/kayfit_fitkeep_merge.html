@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>KayFit × FitKeep — Merge Exploration</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root {
+    --brand-blue:#2563EB;
+    --brand-blue-soft:#DBEAFE;
+    --brand-blue-deep:#1D4ED8;
+    --ink-900:#111827;
+    --ink-700:#374151;
+    --ink-500:#9CA3AF;
+    --ink-300:#D1D5DB;
+    --surface:#fff;
+    --surface-soft:#F9FAFB;
+    --surface-tint:#F3F4F6;
+    --border:#E5E7EB;
+    --border-row:#F3F4F6;
+    --kcal:#EF4444;
+    --prot:#22C55E;
+    --carb:#06B6D4;
+    --fat:#EAB308;
+    --train-coral-a:#F97316;
+    --train-coral-b:#F43F5E;
+    --train-violet-a:#8B5CF6;
+    --train-violet-b:#6366F1;
+    --train-graph-a:#1F2937;
+    --train-graph-b:#374151;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  #canvas-root { width: 100vw; height: 100vh; }
+
+  /* ─── Phone frame ─── */
+  .phone {
+    width: 320px; height: 690px;
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+    color: var(--ink-900);
+    font-family: 'Inter', sans-serif;
+  }
+  .phone::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 30px;
+    background: #fff; z-index: 5;
+  }
+  .phone::after {
+    content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 22px; background: #111; border-radius: 16px; z-index: 6;
+  }
+  .scroll { flex: 1; overflow: hidden; }
+
+  /* ─── App bar ─── */
+  .appbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 44px 18px 12px;
+    background: #fff;
+  }
+  .appbar-back {
+    width: 32px; height: 32px; border-radius: 16px;
+    background: #F3F4F6;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #111827; font-weight: 500;
+  }
+  .appbar-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.1; }
+  .appbar-sub { font-size: 11px; color: #9CA3AF; font-weight: 500; margin-top: 2px; }
+  .appbar-action {
+    width: 32px; height: 32px; border-radius: 16px;
+    background: #F3F4F6;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+
+  /* ─── Calendar strip (consv/balanced) ─── */
+  .cal-strip {
+    display: flex; justify-content: space-between;
+    padding: 6px 18px 12px;
+    background: #fff;
+  }
+  .cal-day {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    flex: 1;
+  }
+  .cal-dn { font-size: 9px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.4px; }
+  .cal-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: #111827;
+    border: 1.5px solid transparent;
+  }
+  .cal-num.logged { border-color: #22C55E; }
+  .cal-num.missed { border-color: #EF4444; color: #EF4444; }
+  .cal-num.active { background: #2563EB; color: #fff; border-color: transparent; }
+  .cal-num.empty  { color: #111827; }
+
+  /* dots/tags below day */
+  .cal-tag {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #F97316;
+  }
+  .cal-tag.empty { background: transparent; }
+  .cal-tag.violet { background: linear-gradient(135deg, #8B5CF6, #6366F1); height: 3px; border-radius: 999px; }
+  .cal-tag.coral  { background: linear-gradient(135deg, #F97316, #F43F5E); height: 3px; border-radius: 999px; }
+
+  /* ─── Section titles ─── */
+  .k-section-title {
+    font-size: 10px; font-weight: 700; color: #9CA3AF;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    padding: 10px 20px 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .k-section-title .more {
+    margin-left: auto;
+    background: #F3F4F6; padding: 1px 7px;
+    border-radius: 999px; color: #6B7280;
+    letter-spacing: 0; font-weight: 700;
+  }
+
+  /* ─── Meal row ─── */
+  .meal-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 0.5px solid #F3F4F6;
+  }
+  .meal-name { font-size: 13px; font-weight: 600; color: #111827; }
+  .meal-meta { font-size: 10px; color: #9CA3AF; margin-top: 2px; }
+  .meal-kcal { font-family: 'JetBrains Mono'; font-size: 16px; font-weight: 700; color: #111827; }
+  .meal-kcal-u { font-size: 10px; color: #9CA3AF; font-weight: 400; margin-left: 2px; }
+
+  /* ─── Macro nutrient pills (compact) ─── */
+  .mp { background: #F9FAFB; border-radius: 10px; padding: 8px 10px; flex: 1; text-align: center; }
+  .mp-val { font-family: 'JetBrains Mono'; font-size: 13px; font-weight: 800; }
+  .mp-lbl { font-size: 9px; color: #9CA3AF; font-weight: 600; margin-top: 2px; }
+
+  /* ─── Buttons ─── */
+  .btn-blue {
+    background: #2563EB; color: #fff;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    font-size: 14px; font-weight: 700;
+    box-shadow: 0 4px 18px rgba(37,99,235,0.3);
+  }
+  .btn-outline {
+    background: #fff; color: #111827;
+    border: 1.5px solid #E5E7EB;
+    padding: 14px 18px;
+    border-radius: 14px;
+    text-align: center;
+    font-size: 14px; font-weight: 700;
+  }
+
+  /* ─── Tab bar ─── */
+  .tabbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 24px 22px;
+    border-top: 0.5px solid #E5E7EB;
+    background: #fff;
+  }
+  .tab {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    min-width: 48px;
+  }
+  .tab-ic { font-size: 18px; opacity: 0.45; }
+  .tab-lbl { font-size: 10px; font-weight: 600; color: #9CA3AF; }
+  .tab.on .tab-ic { opacity: 1; }
+  .tab.on .tab-lbl { color: #2563EB; }
+  .tab-add-btn {
+    width: 48px; height: 48px; background: #2563EB;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 24px; font-weight: 300; line-height: 1;
+    box-shadow: 0 6px 18px rgba(37,99,235,0.4);
+    margin-top: -14px;
+  }
+
+  /* ─── Onboarding ─── */
+  .ob-progress { display: flex; gap: 5px; padding: 8px 20px 18px; }
+  .ob-seg { height: 4px; flex: 1; background: #E5E7EB; border-radius: 999px; }
+  .ob-seg.on { background: #2563EB; }
+  .ob-h1 { font-size: 22px; font-weight: 800; padding: 8px 20px 8px; letter-spacing: -0.3px; line-height: 1.15; }
+  .ob-sub { font-size: 13px; color: #6B7280; padding: 0 20px 20px; line-height: 1.5; }
+
+  /* Onboarding option cards (conservative + balanced) */
+  .goal-card {
+    background: #fff;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 14px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .goal-card.on { border-color: #2563EB; background: #EFF6FF; }
+  .goal-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: #F3F4F6;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .goal-name { font-size: 14px; font-weight: 700; color: #111827; }
+  .goal-desc { font-size: 11px; color: #6B7280; margin-top: 2px; }
+
+  /* Bold onboarding cards */
+  .goal-bold {
+    border-radius: 18px;
+    padding: 18px 18px 16px;
+    color: #fff;
+    position: relative;
+  }
+  .goal-bold.nutri { background: linear-gradient(135deg, #22C55E, #16A34A); }
+  .goal-bold.train { background: linear-gradient(135deg, #F97316, #F43F5E); }
+  .goal-bold.both  { background: linear-gradient(135deg, #2563EB, #1D4ED8); }
+  .goal-bold-name { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+  .goal-bold-desc { font-size: 11px; opacity: 0.85; margin-top: 4px; line-height: 1.5; padding-right: 30px; }
+  .goal-bold-arr { position: absolute; bottom: 16px; right: 16px; font-size: 18px; }
+
+  /* Equipment chips */
+  .eq-chip {
+    background: #fff; border: 1.5px solid #E5E7EB;
+    border-radius: 999px;
+    padding: 8px 14px; font-size: 12px; font-weight: 600; color: #374151;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .eq-chip.on { background: #2563EB; border-color: #2563EB; color: #fff; }
+  .eq-chip .ico { font-size: 14px; }
+
+  /* ─── Training cards ─── */
+  /* Conservative: simple row */
+  .train-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 0.5px solid #F3F4F6;
+  }
+  .train-row-ic {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: #FFEDD5;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .train-row-info { flex: 1; }
+  .train-row-name { font-size: 13px; font-weight: 600; }
+  .train-row-meta { font-size: 10px; color: #9CA3AF; margin-top: 2px; }
+  .train-row-tag {
+    font-family: 'JetBrains Mono'; font-size: 11px; font-weight: 700;
+    color: #F97316; background: #FFEDD5;
+    padding: 3px 8px; border-radius: 6px;
+  }
+
+  /* Balanced: hero card */
+  .train-card-bal {
+    background: #fff;
+    border-radius: 16px;
+    border: 0.5px solid #E5E7EB;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(17,24,39,0.04);
+  }
+  .train-hero {
+    height: 90px;
+    padding: 14px 16px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    color: #fff;
+  }
+  .gr-coral  { background: linear-gradient(135deg, #F97316, #F43F5E); }
+  .gr-violet { background: linear-gradient(135deg, #8B5CF6, #6366F1); }
+  .gr-graph  { background: linear-gradient(135deg, #1F2937, #374151); }
+  .train-hero-tag {
+    align-self: flex-start;
+    font-size: 9px; font-weight: 800; letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.22);
+    padding: 3px 8px; border-radius: 999px;
+  }
+  .train-hero-title { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+  .train-body { display: flex; padding: 12px 16px; justify-content: space-between; }
+  .train-body-item { font-size: 11px; color: #6B7280; }
+  .train-body-item .num { font-family: 'JetBrains Mono'; font-weight: 800; color: #111827; font-size: 14px; margin-right: 3px; }
+
+  /* Bold: wide gradient card */
+  .train-card-bold {
+    border-radius: 20px;
+    padding: 18px 18px 16px;
+    background: linear-gradient(135deg, #F97316, #F43F5E);
+    color: #fff;
+    position: relative; overflow: hidden;
+  }
+  .train-bold-decor {
+    position: absolute; top: -30px; right: -30px;
+    width: 140px; height: 140px;
+    border-radius: 50%; background: rgba(255,255,255,0.08);
+  }
+  .train-bold-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; position: relative; }
+  .train-bold-title { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; }
+  .train-bold-sub { font-size: 11px; opacity: 0.85; margin-top: 4px; }
+  .train-bold-cta {
+    background: #fff; color: #F43F5E;
+    padding: 10px 14px; border-radius: 999px;
+    font-size: 12px; font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* ─── Exercise row (detail screen) ─── */
+  .ex-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid #F3F4F6; }
+  .ex-num {
+    width: 28px; height: 28px; border-radius: 14px;
+    background: #F3F4F6; color: #6B7280;
+    font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-family: 'JetBrains Mono';
+  }
+  .ex-info { flex: 1; }
+  .ex-name { font-size: 13px; font-weight: 600; }
+  .ex-sets { font-size: 10px; color: #9CA3AF; margin-top: 1px; }
+  .ex-thumb {
+    width: 42px; height: 42px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  /* ─── Chat ─── */
+  /* Conservative: segmented */
+  .chat-modes {
+    display: flex; padding: 4px;
+    background: #F3F4F6; border-radius: 12px;
+    margin: 0 18px 14px;
+  }
+  .chat-mode {
+    flex: 1; padding: 8px 0;
+    text-align: center;
+    font-size: 12px; font-weight: 600;
+    color: #6B7280;
+    border-radius: 9px;
+  }
+  .chat-mode.on { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+
+  /* Balanced: prominent cards */
+  .chat-modes-bal {
+    display: flex; gap: 8px; padding: 4px 18px 14px;
+  }
+  .chat-mode-bal {
+    flex: 1; padding: 12px 12px 10px;
+    border-radius: 14px;
+    background: #F9FAFB; border: 1.5px solid transparent;
+  }
+  .chat-mode-bal .ic { font-size: 18px; }
+  .chat-mode-bal .lb { font-size: 12px; font-weight: 700; margin-top: 4px; }
+  .chat-mode-bal .desc { font-size: 9px; color: #9CA3AF; margin-top: 1px; line-height: 1.3; }
+  .chat-mode-bal.on { background: #EFF6FF; border-color: #2563EB; }
+  .chat-mode-bal.on .lb { color: #1D4ED8; }
+
+  /* Bold: dark top with on/off */
+  .chat-bold-hdr {
+    display: flex; gap: 6px; padding: 4px 18px 14px;
+  }
+  .chat-bold-mode {
+    flex: 1; padding: 10px;
+    border-radius: 999px; text-align: center;
+    font-size: 12px; font-weight: 700;
+    color: #9CA3AF; background: #F3F4F6;
+  }
+  .chat-bold-mode.on.nutri { background: #22C55E; color: #fff; }
+  .chat-bold-mode.on.train { background: linear-gradient(135deg, #F97316, #F43F5E); color: #fff; }
+
+  /* Bubbles */
+  .bubble {
+    max-width: 82%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 13px; line-height: 1.4;
+  }
+  .bubble.ai { background: #F3F4F6; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .bubble.ai .src { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .bubble.user { color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .bubble.user.blue { background: #2563EB; }
+  .bubble.user.coral { background: linear-gradient(135deg, #F97316, #F43F5E); }
+
+  /* Chat input */
+  .chat-input {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 18px 14px;
+    background: #fff;
+  }
+  .chat-input-txt {
+    flex: 1; background: #F3F4F6;
+    padding: 10px 14px; border-radius: 999px;
+    font-size: 12px; color: #9CA3AF;
+  }
+  .chat-input-mic {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #2563EB;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .chat-input-mic.coral { background: linear-gradient(135deg, #F97316, #F43F5E); }
+
+  /* ─── Live workout ─── */
+  .live-img {
+    margin: 0 20px;
+    height: 160px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px;
+  }
+  .live-name { padding: 14px 20px 0; font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
+  .live-meta { padding: 4px 20px 14px; font-size: 11px; color: #9CA3AF; font-weight: 600; }
+  .set-card {
+    margin: 0 20px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: #F9FAFB;
+    border: 0.5px solid #E5E7EB;
+  }
+  .counter-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0;
+  }
+  .counter-row + .counter-row { border-top: 0.5px solid #E5E7EB; }
+  .counter-label { font-size: 12px; color: #6B7280; font-weight: 600; }
+  .counter-controls { display: flex; align-items: center; gap: 12px; }
+  .counter-btn {
+    width: 26px; height: 26px; border-radius: 13px;
+    background: #fff; border: 1px solid #E5E7EB;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: #374151;
+  }
+  .counter-val { font-family: 'JetBrains Mono'; font-size: 16px; font-weight: 800; min-width: 24px; text-align: center; }
+</style>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="canvas-root"></div>
+
+<!-- Shared primitives: Phone frame + MacroRings + Tab bar -->
+<script type="text/babel">
+const TAB_DEFS = [
+  { id: "journal",  ic: "📓", lb: "Журнал" },
+  { id: "training", ic: "🏋️", lb: "Тренировки" },
+  { id: "chat",     ic: "💬", lb: "Чат" },
+];
+
+const TabBar = ({ active }) => (
+  <div className="tabbar">
+    <div className={`tab ${active === "journal" ? "on" : ""}`}>
+      <div className="tab-ic">🥗</div>
+      <div className="tab-lbl">Питание</div>
+    </div>
+    <div className={`tab ${active === "training" ? "on" : ""}`}>
+      <div className="tab-ic">🏋️</div>
+      <div className="tab-lbl">Тренировки</div>
+    </div>
+    <div className="tab-add-btn">+</div>
+    <div className={`tab ${active === "chat" ? "on" : ""}`}>
+      <div className="tab-ic">💬</div>
+      <div className="tab-lbl">Чат</div>
+    </div>
+    <div className="tab">
+      <div className="tab-ic">⚙️</div>
+      <div className="tab-lbl">Ещё</div>
+    </div>
+  </div>
+);
+
+const Phone = ({ children, tab, noTab }) => (
+  <div className="phone">
+    {children}
+    {!noTab && <TabBar active={tab}/>}
+  </div>
+);
+
+// Macro rings SVG (compact, kcal/protein/carbs/fat concentric arcs)
+const MacroRings = ({ size = 80 }) => {
+  const cx = size / 2, cy = size / 2;
+  const ring = (r, color, frac) => {
+    const C = 2 * Math.PI * r;
+    return (
+      <g>
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#F3F4F6" strokeWidth="4"/>
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth="4"
+                strokeDasharray={`${C * frac} ${C}`} strokeDashoffset="0"
+                transform={`rotate(-90 ${cx} ${cy})`} strokeLinecap="round"/>
+      </g>
+    );
+  };
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {ring(size/2 - 4, "#EF4444", 0.68)}
+      {ring(size/2 - 11, "#22C55E", 0.50)}
+      {ring(size/2 - 18, "#06B6D4", 0.72)}
+      {ring(size/2 - 25, "#EAB308", 0.55)}
+    </svg>
+  );
+};
+
+Object.assign(window, { Phone, TabBar, MacroRings });
+</script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="app-icons.jsx"></script>
+<script type="text/babel" src="merge-screens-conservative.jsx"></script>
+<script type="text/babel" src="merge-screens-balanced.jsx"></script>
+<script type="text/babel" src="merge-screens-bold.jsx"></script>
+<script type="text/babel" src="merge-app.jsx"></script>
+</body>
+</html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KayFit × FitKeep — Merge Exploration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────────────────────────────────
+   KAYFIT 2.0 TOKENS — наследуем 1:1 из kayfit_design_system.html
+───────────────────────────────────────────────────────── */
+:root {
+  --brand-blue:        #2563EB;
+  --brand-blue-soft:   #DBEAFE;
+  --brand-blue-deep:   #1D4ED8;
+  --brand-blue-50:     #EFF6FF;
+
+  --macro-calories:    #EF4444;
+  --macro-protein:     #22C55E;
+  --macro-carbs:       #06B6D4;
+  --macro-fat:         #EAB308;
+  --macro-fat-text:    #CA8A04;
+
+  --ink-900:           #111827;
+  --ink-700:           #374151;
+  --ink-500:           #9CA3AF;
+  --ink-400:           #6B7280;
+
+  --surface:           #FFFFFF;
+  --surface-soft:      #F9FAFB;
+  --surface-tint:      #F3F4F6;
+  --border-faint:      #F3F4F6;
+  --border-row:        #F9FAFB;
+  --border-strong:     #E5E7EB;
+
+  /* Workout-specific accents (новые, выведены из KayFit-палитры) */
+  --train-coral-a:     #F97316;
+  --train-coral-b:     #F43F5E;
+  --train-violet-a:    #8B5CF6;
+  --train-violet-b:    #6366F1;
+  --train-graphite-a:  #1F2937;
+  --train-graphite-b:  #374151;
+
+  --r-sm:  6px;
+  --r-md:  8px;
+  --r-lg:  10px;
+  --r-xl:  12px;
+  --r-2xl: 14px;
+  --r-3xl: 16px;
+  --r-4xl: 20px;
+  --r-pill: 999px;
+
+  --sh-blue-btn:  0 4px 18px rgba(37,99,235,0.38);
+  --sh-card:      0 2px 12px rgba(17,24,39,0.06);
+  --sh-card-lift: 0 6px 24px rgba(17,24,39,0.10);
+}
+
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+svg { display: block; }
+
+body {
+  background: #f0eee9;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--ink-900);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─────────────────────────────────────────────────────────
+   PHONE FRAME — фрейм iPhone-style для каждого артборда
+───────────────────────────────────────────────────────── */
+.phone {
+  width: 320px;
+  height: 690px;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink-900);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Status bar */
+.sb {
+  height: 42px;
+  padding: 14px 22px 0;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 5;
+}
+.sb-time { font-size: 14px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.3px; }
+.sb-right { display: flex; align-items: center; gap: 5px; }
+.sb-signal { display: flex; align-items: flex-end; gap: 1.5px; height: 9px; }
+.sb-bar { width: 2.5px; background: var(--ink-900); border-radius: 1px; }
+.sb-lte { font-size: 11px; font-weight: 700; color: var(--ink-900); }
+.sb-battery {
+  width: 22px; height: 11px; border: 1px solid var(--ink-900);
+  border-radius: 3px; padding: 1px; position: relative;
+}
+.sb-battery::after {
+  content: ''; position: absolute; right: -3px; top: 3px;
+  width: 2px; height: 4px; background: var(--ink-900); border-radius: 0 1px 1px 0;
+}
+.sb-battery .fill { width: 80%; height: 100%; background: var(--ink-900); border-radius: 1px; }
+.sb.dark { color: #fff; }
+.sb.dark .sb-time, .sb.dark .sb-lte { color: #fff; }
+.sb.dark .sb-bar, .sb.dark .sb-battery { background: #fff; border-color: #fff; }
+.sb.dark .sb-battery::after { background: #fff; }
+
+/* Dynamic island */
+.di {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 95px; height: 27px; background: #111; border-radius: 20px; z-index: 10;
+}
+
+/* Tab bar — 3 tabs + center "+" */
+.tabbar {
+  height: 78px;
+  padding: 10px 24px 18px;
+  background: #fff;
+  border-top: 0.5px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  min-width: 56px; cursor: pointer;
+}
+.tab svg { width: 22px; height: 22px; }
+.tab-lbl { font-size: 10px; font-weight: 500; color: var(--ink-500); }
+.tab.on .tab-lbl { color: var(--brand-blue); }
+.tab.on svg path, .tab.on svg circle { stroke: var(--brand-blue); }
+
+.tab-add-btn {
+  width: 52px; height: 52px;
+  background: var(--brand-blue); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--sh-blue-btn);
+  margin-top: -14px;
+  cursor: pointer;
+}
+.tab-plus { color: #fff; font-size: 28px; font-weight: 200; line-height: 1; margin-top: -2px; }
+
+/* App-bar */
+.appbar {
+  padding: 14px 20px 8px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: #fff;
+  flex-shrink: 0;
+}
+.appbar-title { font-size: 22px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.4px; }
+.appbar-sub { font-size: 12px; color: var(--ink-500); font-weight: 500; margin-top: 2px; }
+.appbar-action {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--surface-tint);
+  display: flex; align-items: center; justify-content: center;
+}
+.appbar-back {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.appbar-back:hover { background: var(--surface-tint); }
+
+/* Scroll area */
+.scroll {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+}
+.scroll::-webkit-scrollbar { display: none; }
+
+/* Generic card */
+.k-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--r-3xl);
+  padding: 14px 16px;
+}
+
+/* Section title */
+.k-section-title {
+  font-size: 13px; font-weight: 700; color: var(--ink-900);
+  letter-spacing: -0.1px;
+  padding: 18px 20px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.k-section-title .more { font-size: 11px; color: var(--brand-blue); font-weight: 600; }
+
+/* Primary button */
+.btn-blue {
+  width: 100%;
+  height: 48px;
+  background: var(--brand-blue);
+  border-radius: var(--r-xl);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 15px; font-weight: 700;
+  box-shadow: var(--sh-blue-btn);
+}
+.btn-blue.disabled { background: var(--surface-tint); color: var(--ink-500); box-shadow: none; }
+.btn-outline {
+  width: 100%; height: 48px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-xl);
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-900);
+  font-size: 14px; font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────────────────
+   ONBOARDING / SHARED PRIMITIVES
+───────────────────────────────────────────────────────── */
+.ob-progress {
+  display: flex; gap: 4px; padding: 0 20px 16px;
+}
+.ob-seg {
+  flex: 1; height: 3px; background: var(--surface-tint); border-radius: 2px;
+}
+.ob-seg.on { background: var(--brand-blue); }
+
+.ob-h1 {
+  font-size: 24px; font-weight: 800; color: var(--ink-900);
+  letter-spacing: -0.5px; line-height: 1.2;
+  padding: 8px 20px 8px;
+}
+.ob-sub {
+  font-size: 14px; color: var(--ink-500); font-weight: 500;
+  padding: 0 20px 24px;
+  line-height: 1.5;
+}
+
+/* Equipment chip */
+.eq-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 14px;
+  border-radius: var(--r-pill);
+  font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--border-strong);
+  background: #fff;
+  color: var(--ink-700);
+  cursor: pointer;
+}
+.eq-chip.on {
+  background: var(--brand-blue);
+  border-color: var(--brand-blue);
+  color: #fff;
+}
+.eq-chip .ico { font-size: 14px; }
+
+/* Macro ring (inline) */
+.macro-rings {
+  display: flex; justify-content: center; align-items: center; gap: 14px;
+  padding: 4px 0 14px;
+}
+
+/* Calendar strip — KayFit + workout markers */
+.cal-strip {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 6px 18px 10px;
+  background: #fff;
+}
+.cal-day {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  flex: 1;
+}
+.cal-dn { font-size: 9px; font-weight: 600; color: var(--ink-500); text-transform: uppercase; letter-spacing: 0.5px; }
+.cal-num {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: var(--ink-700);
+  background: transparent; border: 1.5px solid transparent;
+  position: relative;
+}
+.cal-num.logged  { border-color: var(--macro-protein); }
+.cal-num.missed  { border-color: var(--macro-calories); color: var(--macro-calories); }
+.cal-num.active  { background: var(--brand-blue); color: #fff; border-color: transparent; box-shadow: 0 2px 8px rgba(37,99,235,0.35); }
+.cal-tag {
+  height: 5px; min-width: 5px; border-radius: 999px; background: var(--brand-blue);
+  margin-top: 1px;
+}
+.cal-tag.coral { background: var(--train-coral-a); }
+.cal-tag.violet { background: var(--train-violet-a); }
+.cal-tag.empty { background: var(--surface-tint); opacity: 0.5; }
+
+/* Macro pill row */
+.mp-row { display: flex; gap: 10px; }
+.mp {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: var(--surface-soft); border-radius: 8px;
+  padding: 6px 10px; flex: 1;
+}
+.mp-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--ink-900); }
+.mp-lbl { font-size: 8px; font-weight: 600; color: var(--ink-500); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Meal row */
+.meal-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 0.5px solid var(--border-row);
+  background: #fff;
+}
+.meal-row:last-child { border-bottom: none; }
+.meal-name { font-size: 14px; font-weight: 600; color: var(--ink-900); letter-spacing: -0.1px; }
+.meal-meta { font-size: 11px; color: var(--ink-500); margin-top: 2px; }
+.meal-kcal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px; font-weight: 700; color: var(--ink-900);
+}
+.meal-kcal-u { font-size: 9px; color: var(--ink-500); font-weight: 500; }
+
+/* Plan blue card */
+.plan-blue {
+  background: var(--brand-blue);
+  border-radius: var(--r-3xl);
+  padding: 14px 16px;
+  margin: 0 18px;
+}
+.plan-blue-lbl {
+  font-size: 10px; font-weight: 700;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.plan-blue-text {
+  font-size: 13px; color: #fff; line-height: 1.5; font-weight: 500;
+}
+
+/* ─────────────────────────────────────────────────────────
+   WORKOUT-specific
+───────────────────────────────────────────────────────── */
+.train-card-cons {
+  background: #fff;
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--r-3xl);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.train-thumb-cons {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--brand-blue-soft);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.train-name { font-size: 14px; font-weight: 700; color: var(--ink-900); }
+.train-meta { font-size: 11px; color: var(--ink-500); margin-top: 2px; }
+
+/* Balanced — bigger card with hero gradient */
+.train-card-bal {
+  border-radius: var(--r-3xl);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: var(--sh-card);
+}
+.train-hero {
+  height: 96px;
+  position: relative;
+  display: flex; align-items: flex-end;
+  padding: 12px 14px;
+}
+.train-hero.gr-coral { background: linear-gradient(135deg, var(--train-coral-a), var(--train-coral-b)); }
+.train-hero.gr-violet { background: linear-gradient(135deg, var(--train-violet-a), var(--train-violet-b)); }
+.train-hero.gr-graph { background: linear-gradient(135deg, var(--train-graphite-a), var(--train-graphite-b)); }
+.train-hero-title { color: #fff; font-size: 15px; font-weight: 800; letter-spacing: -0.2px; z-index: 1; }
+.train-hero-tag {
+  position: absolute; top: 10px; left: 12px;
+  background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);
+  color: #fff; font-size: 9px; font-weight: 700;
+  padding: 3px 8px; border-radius: 999px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.train-body {
+  padding: 10px 14px;
+  display: flex; gap: 14px; align-items: center;
+}
+.train-body-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--ink-700); font-weight: 600; }
+.train-body-item .num { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--ink-900); }
+
+/* Bold — wide hero card + activity bars on calendar */
+.train-card-bold {
+  border-radius: var(--r-4xl);
+  background: linear-gradient(135deg, var(--train-coral-a), var(--train-coral-b));
+  padding: 16px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.train-bold-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.train-bold-title { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.15; max-width: 170px; }
+.train-bold-sub { font-size: 11px; opacity: 0.85; margin-top: 6px; font-weight: 500; }
+.train-bold-cta {
+  background: rgba(255,255,255,0.2);
+  border-radius: 999px; padding: 8px 14px;
+  font-size: 12px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; gap: 6px;
+}
+.train-bold-decor {
+  position: absolute; right: -30px; bottom: -30px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+
+/* Bold activity strip on calendar */
+.cal-bold-day {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  flex: 1; position: relative;
+}
+.cal-bold-bars {
+  display: flex; flex-direction: column; gap: 2px; width: 24px;
+}
+.cal-bold-bar {
+  height: 3px; border-radius: 999px; background: var(--surface-tint);
+}
+.cal-bold-bar.food { background: var(--macro-protein); }
+.cal-bold-bar.train { background: var(--train-coral-a); }
+
+/* Chat — mode switcher */
+.chat-modes {
+  display: flex; gap: 4px;
+  background: var(--surface-tint);
+  border-radius: 999px;
+  padding: 3px;
+  margin: 0 20px 14px;
+}
+.chat-mode {
+  flex: 1; padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  color: var(--ink-500);
+  cursor: pointer;
+}
+.chat-mode.on {
+  background: #fff;
+  color: var(--ink-900);
+  box-shadow: 0 1px 4px rgba(17,24,39,0.08);
+}
+.chat-mode .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.chat-mode.nutri.on .dot { background: var(--macro-protein); }
+.chat-mode.train.on .dot { background: var(--train-coral-a); }
+
+/* Chat balanced — large pills */
+.chat-modes-bal {
+  display: flex; gap: 8px;
+  padding: 0 20px 14px;
+}
+.chat-mode-bal {
+  flex: 1; padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 13px; font-weight: 700;
+  display: flex; flex-direction: column; gap: 4px;
+  border: 1.5px solid var(--border-strong);
+  background: #fff;
+  color: var(--ink-700);
+}
+.chat-mode-bal .ic { font-size: 18px; }
+.chat-mode-bal .lb { font-size: 12px; font-weight: 700; }
+.chat-mode-bal .desc { font-size: 10px; color: var(--ink-500); font-weight: 500; }
+.chat-mode-bal.on.nutri { background: var(--brand-blue-50); border-color: var(--brand-blue); color: var(--brand-blue-deep); }
+.chat-mode-bal.on.nutri .desc { color: var(--brand-blue); }
+.chat-mode-bal.on.train { background: #FFF7ED; border-color: var(--train-coral-a); color: var(--train-coral-b); }
+.chat-mode-bal.on.train .desc { color: var(--train-coral-a); }
+
+/* Chat bold — segmented top with active background bleed */
+.chat-bold-hdr {
+  margin: 0 20px 14px;
+  padding: 4px;
+  background: var(--ink-900);
+  border-radius: 999px;
+  display: flex; gap: 0;
+}
+.chat-bold-mode {
+  flex: 1; padding: 10px 14px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 12px; font-weight: 700;
+  color: rgba(255,255,255,0.5);
+}
+.chat-bold-mode.on.nutri { background: var(--brand-blue); color: #fff; }
+.chat-bold-mode.on.train { background: var(--train-coral-a); color: #fff; }
+
+/* Chat bubbles */
+.bubble {
+  max-width: 240px;
+  padding: 10px 14px;
+  font-size: 13px;
+  line-height: 1.45;
+  border-radius: 18px;
+}
+.bubble.ai { background: var(--surface-tint); color: var(--ink-900); border-top-left-radius: 4px; align-self: flex-start; }
+.bubble.user.blue { background: var(--brand-blue); color: #fff; border-top-right-radius: 4px; align-self: flex-end; }
+.bubble.user.coral { background: var(--train-coral-a); color: #fff; border-top-right-radius: 4px; align-self: flex-end; }
+.bubble .src {
+  font-size: 10px; font-weight: 700; opacity: 0.6;
+  margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* Chat input bar */
+.chat-input {
+  margin: 12px 14px 0;
+  background: var(--surface-tint);
+  border-radius: 24px;
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.chat-input-txt { flex: 1; font-size: 13px; color: var(--ink-500); }
+.chat-input-mic { width: 28px; height: 28px; background: var(--brand-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.chat-input-mic.coral { background: var(--train-coral-a); }
+
+/* Exercise row in detail */
+.ex-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0;
+  border-bottom: 0.5px solid var(--border-row);
+}
+.ex-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--brand-blue-soft); color: var(--brand-blue-deep);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  flex-shrink: 0;
+}
+.ex-info { flex: 1; }
+.ex-name { font-size: 13px; font-weight: 600; color: var(--ink-900); }
+.ex-sets { font-size: 11px; color: var(--ink-500); margin-top: 1px; }
+.ex-thumb {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: linear-gradient(135deg, #E5E7EB, #D1D5DB);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Live workout — light */
+.live-img {
+  height: 180px; margin: 0 20px;
+  background: linear-gradient(135deg, #F3F4F6, #E5E7EB);
+  border-radius: var(--r-3xl);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; color: var(--ink-500);
+}
+.live-name {
+  font-size: 22px; font-weight: 800; color: var(--ink-900);
+  padding: 14px 20px 4px; text-align: center;
+  letter-spacing: -0.4px;
+}
+.live-meta {
+  font-size: 12px; color: var(--ink-500); font-weight: 500;
+  text-align: center; padding-bottom: 14px;
+}
+.set-card {
+  margin: 0 20px;
+  background: var(--surface-soft);
+  border-radius: var(--r-3xl);
+  padding: 14px;
+}
+.set-card-title { font-size: 11px; font-weight: 700; color: var(--ink-500); text-transform: uppercase; letter-spacing: 0.06em; text-align: center; margin-bottom: 12px; }
+.counter-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 0;
+}
+.counter-row + .counter-row { border-top: 0.5px solid var(--border-row); margin-top: 8px; padding-top: 12px; }
+.counter-label { font-size: 12px; font-weight: 600; color: var(--ink-700); }
+.counter-controls { display: flex; align-items: center; gap: 12px; }
+.counter-btn {
+  width: 32px; height: 32px;
+  background: #fff; border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 300; color: var(--ink-900);
+}
+.counter-val { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 800; color: var(--ink-900); min-width: 48px; text-align: center; }
+
+/* Onboarding goal cards (бол. quiz question) */
+.goal-card {
+  background: #fff;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--r-3xl);
+  padding: 16px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer;
+}
+.goal-card.on { border-color: var(--brand-blue); background: var(--brand-blue-50); }
+.goal-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--surface-tint);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 22px;
+}
+.goal-card.on .goal-icon { background: #fff; }
+.goal-name { font-size: 15px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.2px; }
+.goal-desc { font-size: 12px; color: var(--ink-500); margin-top: 3px; font-weight: 500; }
+
+/* Bold goal — 3 large stacked */
+.goal-bold {
+  border-radius: var(--r-4xl);
+  padding: 18px 18px;
+  display: flex; flex-direction: column; gap: 8px;
+  cursor: pointer;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.goal-bold.nutri { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+.goal-bold.train { background: linear-gradient(135deg, var(--train-coral-a), var(--train-coral-b)); }
+.goal-bold.both { background: linear-gradient(135deg, #1F2937, #374151); }
+.goal-bold-name { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+.goal-bold-desc { font-size: 12px; opacity: 0.85; font-weight: 500; line-height: 1.4; }
+.goal-bold-arr {
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 22px; opacity: 0.7;
+}
+
+/* Variant label */
+.variant-cap {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(60,50,40,0.75);
+}
+.variant-cap .pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  background: rgba(0,0,0,0.06);
+  padding: 2px 6px; border-radius: 4px;
+}
+
+/* Hero header */
+.canvas-hero {
+  padding: 56px 48px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
+}
+.canvas-hero h1 {
+  font-size: 36px; font-weight: 800;
+  letter-spacing: -0.02em; color: #29261b;
+  margin-bottom: 12px;
+}
+.canvas-hero p {
+  font-size: 14px; color: rgba(60,50,40,0.7);
+  max-width: 640px; line-height: 1.6;
+}
+.canvas-hero .meta {
+  display: flex; gap: 16px; margin-top: 16px;
+  font-size: 11px; color: rgba(60,50,40,0.55);
+}
+.canvas-hero .meta span {
+  background: rgba(0,0,0,0.04); padding: 4px 10px; border-radius: 999px;
+}
+
+/* Quiz body card */
+.help-bullet {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+.help-bullet .check { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.help-bullet svg { width: 9px; height: 9px; }
+</style>
+</head>
+<body>
+
+<div class="canvas-hero">
+  <h1>KayFit × FitKeep — Объединение</h1>
+  <p>Три варианта интеграции тренировочного модуля FitKeep в дизайн-систему KayFit 2.0. Все экраны используют brand blue #2563EB. От минимального наслоения до смелого пересмотра паттернов.</p>
+  <div class="meta">
+    <span>3 варианта</span>
+    <span>7 экранов × 3 = 21 артборд</span>
+    <span>iPhone 320×690</span>
+    <span>EN/RU bilingual</span>
+  </div>
+</div>
+
+<div id="canvas-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="merge-screens-shared.jsx"></script>
+<script type="text/babel" src="merge-screens-conservative.jsx"></script>
+<script type="text/babel" src="merge-screens-balanced.jsx"></script>
+<script type="text/babel" src="merge-screens-bold.jsx"></script>
+<script type="text/babel" src="merge-app.jsx"></script>
+
+</body>
+</html>

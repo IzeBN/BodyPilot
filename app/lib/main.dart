@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +17,13 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
+
+  // Firebase — ignore if google-services.json / GoogleService-Info.plist not yet added
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    debugPrint('[Firebase] init skipped: $e');
+  }
 
   await initApiClient();
 

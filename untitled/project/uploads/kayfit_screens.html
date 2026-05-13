@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KayFit 2.0 — Screens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─────────────────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+svg { display: block; }
+
+/* ─────────────────────────────────────────────────────────
+   CANVAS
+───────────────────────────────────────────────────────── */
+body {
+  background: #1C1C1E;
+  min-height: 100vh;
+  overflow-x: auto;
+}
+
+/* Toolbar (decorative Figma-like) */
+.toolbar {
+  height: 44px;
+  background: #2C2C2E;
+  border-bottom: 1px solid #3A3A3C;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.toolbar-dots { display: flex; gap: 6px; }
+.toolbar-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.toolbar-project {
+  flex: 1;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8E8E93;
+  letter-spacing: 0.02em;
+}
+.toolbar-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: #48484A;
+  background: #3A3A3C;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+/* Canvas area */
+.canvas {
+  padding: 48px 48px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Section label */
+.section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #48484A;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* Row of phones */
+.phones-row {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Frame wrapper */
+.frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.frame-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #636366;
+  letter-spacing: 0.04em;
+}
+
+/* ─────────────────────────────────────────────────────────
+   PHONE SHELL
+───────────────────────────────────────────────────────── */
+.phone {
+  width: 282px;
+  height: 580px;
+  background: #111;
+  border-radius: 46px;
+  padding: 9px;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 1px #3D3D3F,
+    0 0 0 2px #1C1C1E,
+    0 28px 80px rgba(0,0,0,0.7),
+    inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  background: #FFFFFF;
+  border-radius: 38px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* Dynamic Island */
+.di {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 27px;
+  background: #111;
+  border-radius: 20px;
+  z-index: 20;
+}
+
+/* ─────────────────────────────────────────────────────────
+   STATUS BAR
+───────────────────────────────────────────────────────── */
+.sb {
+  height: 44px;
+  padding: 14px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 5;
+}
+.sb-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.3px;
+}
+.sb-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.sb-signal {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 9px;
+}
+.sb-bar {
+  width: 2px;
+  background: #111827;
+  border-radius: 1px;
+}
+.sb-lte {
+  font-size: 10px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.3px;
+}
+.sb-battery {
+  font-size: 10px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ─────────────────────────────────────────────────────────
+   NAV BAR
+───────────────────────────────────────────────────────── */
+.nb {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 50px;
+  flex-shrink: 0;
+  position: relative;
+}
+.nb-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.2px;
+}
+.nb-back {
+  position: absolute;
+  left: 14px;
+  font-size: 15px;
+  color: #2563EB;
+  font-weight: 400;
+}
+
+/* ─────────────────────────────────────────────────────────
+   BOTTOM TAB BAR
+───────────────────────────────────────────────────────── */
+.tabbar {
+  height: 74px;
+  padding: 8px 28px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 0.5px solid #E5E7EB;
+  flex-shrink: 0;
+  background: #fff;
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 52px;
+}
+.tab-lbl {
+  font-size: 9px;
+  font-weight: 500;
+  color: #9CA3AF;
+}
+.tab-lbl.on { color: #2563EB; }
+.tab-add-btn {
+  width: 50px; height: 50px;
+  background: #2563EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.38);
+  margin-top: -10px;
+}
+.tab-plus {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 200;
+  line-height: 1;
+  margin-top: -2px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   SCREEN 1 — JOURNAL
+───────────────────────────────────────────────────────── */
+.cal-strip {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 14px 10px;
+  flex-shrink: 0;
+}
+.cal-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.cal-dn {
+  font-size: 8.5px;
+  font-weight: 500;
+  color: #9CA3AF;
+  text-transform: uppercase;
+}
+.cal-num {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+.cal-num.logged  { border: 1.5px solid #22C55E; }
+.cal-num.missed  { border: 1.5px solid #EF4444; color: #EF4444; }
+.cal-num.active  { background: #2563EB; color: #fff; border: none; }
+
+.macro-section {
+  display: flex;
+  align-items: center;
+  padding: 2px 14px 14px;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.macro-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.macro-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.macro-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.macro-lbl {
+  font-size: 8px;
+  font-weight: 600;
+  color: #9CA3AF;
+  letter-spacing: 0.05em;
+  flex: 1;
+}
+.macro-val {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: #111827;
+}
+.macro-val .g { color: #9CA3AF; font-weight: 400; font-size: 9px; }
+
+.divider-line {
+  height: 0.5px;
+  background: #F3F4F6;
+  margin: 0 14px;
+  flex-shrink: 0;
+}
+
+.meal-list { flex: 1; overflow: hidden; }
+
+.meal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  border-bottom: 0.5px solid #F9FAFB;
+}
+.meal-left {}
+.meal-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.1px;
+}
+.meal-meta {
+  font-size: 9.5px;
+  color: #9CA3AF;
+  margin-top: 2px;
+}
+.meal-kcal {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* ─────────────────────────────────────────────────────────
+   SCREEN 2 — CHAT
+───────────────────────────────────────────────────────── */
+.chat-header {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 0.5px solid #F3F4F6;
+  flex-shrink: 0;
+  gap: 10px;
+}
+.ai-avatar {
+  width: 34px; height: 34px;
+  background: #2563EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.ai-name-lbl {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 14px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.bubble-user {
+  align-self: flex-end;
+  background: #2563EB;
+  color: #fff;
+  border-radius: 18px 18px 4px 18px;
+  padding: 9px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  max-width: 185px;
+  line-height: 1.4;
+}
+
+.bubble-think {
+  align-self: flex-start;
+  background: #F3F4F6;
+  border-radius: 4px 18px 18px 18px;
+  padding: 12px 14px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 9px;
+  max-width: 220px;
+  line-height: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.think-step {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.step-icon { font-size: 10px; line-height: 1; }
+.step-txt  { color: #374151; }
+.step-txt.blue { color: #2563EB; }
+.step-txt.gray { color: #9CA3AF; }
+
+.food-sheet {
+  background: #fff;
+  border-top: 0.5px solid #E5E7EB;
+  padding: 12px 16px 10px;
+  flex-shrink: 0;
+}
+.food-sheet-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.food-sheet-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.2px;
+}
+.food-check-btn {
+  width: 26px; height: 26px;
+  background: #2563EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.food-logged-lbl {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1px;
+}
+.food-bottom-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  background: #F9FAFB;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.food-kcal-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+.food-kcal-unit {
+  font-size: 9px;
+  color: #9CA3AF;
+  font-weight: 400;
+  margin-left: 2px;
+}
+.food-macros-row {
+  display: flex;
+  gap: 12px;
+}
+.food-m {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.food-m-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+}
+.food-m-lbl {
+  font-size: 7.5px;
+  color: #9CA3AF;
+}
+
+/* ─────────────────────────────────────────────────────────
+   SCREEN 3 — MEAL SCAN
+───────────────────────────────────────────────────────── */
+.scan-photo-wrap {
+  margin: 10px 13px 8px;
+  height: 155px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(145deg, #6B7C5A 0%, #8A9B73 35%, #5A6B4A 65%, #4A5A3E 100%);
+}
+/* Plate shape */
+.scan-plate {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 90px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+}
+/* Food on plate — abstract shapes */
+.scan-food-green {
+  position: absolute;
+  bottom: 18px;
+  left: 70px;
+  width: 50px;
+  height: 36px;
+  background: #4ADE80;
+  border-radius: 40% 60% 50% 70%;
+  opacity: 0.85;
+}
+.scan-food-brown {
+  position: absolute;
+  bottom: 22px;
+  right: 60px;
+  width: 60px;
+  height: 44px;
+  background: #92400E;
+  border-radius: 60% 40% 70% 50%;
+  opacity: 0.7;
+}
+.scan-food-red {
+  position: absolute;
+  bottom: 14px;
+  left: 55%;
+  width: 38px;
+  height: 28px;
+  background: #EF4444;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+/* Scan frame corners */
+.scan-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+.scan-corner::before, .scan-corner::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,255,255,0.9);
+  border-radius: 1px;
+}
+.scan-corner::before { width: 2px; height: 100%; }
+.scan-corner::after  { width: 100%; height: 2px; }
+.sc-tl { top: 8px; left: 8px; }
+.sc-tr { top: 8px; right: 8px; transform: scaleX(-1); }
+.sc-bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
+.sc-br { bottom: 8px; right: 8px; transform: scale(-1); }
+
+/* Ingredient labels overlaid on photo */
+.ing-label {
+  position: absolute;
+  background: rgba(255,255,255,0.96);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 8px;
+  font-weight: 600;
+  color: #111827;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+.scan-total-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px 8px;
+  flex-shrink: 0;
+}
+.scan-total-left {}
+.scan-total-lbl {
+  font-size: 8px;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.scan-total-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+}
+.scan-macros-inline {
+  display: flex;
+  gap: 8px;
+}
+.scan-mi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.scan-mi-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+}
+.scan-mi-lbl {
+  font-size: 7.5px;
+  color: #9CA3AF;
+}
+
+.ing-list { flex: 1; overflow: hidden; padding: 0 14px; }
+.ing-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 0.5px solid #F9FAFB;
+}
+.ing-check {
+  width: 18px; height: 18px;
+  background: #2563EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ing-info { flex: 1; }
+.ing-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #111827;
+}
+.ing-sub {
+  font-size: 9px;
+  color: #9CA3AF;
+  margin-top: 1px;
+}
+.ing-kcal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* ─────────────────────────────────────────────────────────
+   SCREEN 4 — PLAN
+───────────────────────────────────────────────────────── */
+.plan-body {
+  flex: 1;
+  padding: 14px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.plan-card-blue {
+  background: #2563EB;
+  border-radius: 16px;
+  padding: 14px 16px;
+  flex-shrink: 0;
+}
+.plan-card-blue-lbl {
+  font-size: 8px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.plan-card-blue-lbl::before {
+  content: '';
+  width: 18px; height: 18px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.plan-card-blue-text {
+  font-size: 11.5px;
+  color: #fff;
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+.plan-card-coral {
+  background: linear-gradient(135deg, #F97316 0%, #F43F5E 100%);
+  border-radius: 16px;
+  padding: 18px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.plan-coral-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+}
+.plan-coral-box {
+  background: rgba(255,255,255,0.18);
+  border-radius: 10px;
+  padding: 7px 28px;
+}
+.plan-coral-kcal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -1px;
+}
+.plan-coral-sub {
+  font-size: 9px;
+  color: rgba(255,255,255,0.65);
+}
+
+.plan-daily-row {
+  background: #F9FAFB;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.plan-daily-left {}
+.plan-daily-lbl {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.plan-daily-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+.plan-daily-kcal-lbl {
+  font-size: 9px;
+  color: #9CA3AF;
+  font-weight: 400;
+}
+.plan-macro-pills {
+  display: flex;
+  gap: 6px;
+}
+.plan-mp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+/* ─────────────────────────────────────────────────────────
+   SCREEN 5 — VOICE LOG
+───────────────────────────────────────────────────────── */
+.voice-body {
+  flex: 1;
+  padding: 10px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+.mic-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0 2px;
+}
+.mic-btn {
+  width: 54px; height: 54px;
+  background: #2563EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 0 6px rgba(37,99,235,0.1),
+    0 6px 20px rgba(37,99,235,0.4);
+}
+
+.transcript-box {
+  background: #F3F4F6;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.55;
+  font-style: italic;
+  flex-shrink: 0;
+}
+.transcript-box span { font-weight: 600; color: #111827; font-style: normal; }
+
+.clarify-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.clarify-q {
+  align-self: flex-start;
+  background: #F3F4F6;
+  border-radius: 14px;
+  padding: 5px 11px;
+  font-size: 10px;
+  color: #374151;
+}
+.clarify-a {
+  align-self: flex-end;
+  background: #DBEAFE;
+  border-radius: 14px;
+  padding: 5px 11px;
+  font-size: 10px;
+  color: #1D4ED8;
+  font-weight: 700;
+}
+
+.recognized-hdr {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.voice-ing-list { flex: 1; overflow: hidden; }
+.voice-ing-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 0.5px solid #F9FAFB;
+}
+.voice-ing-info { flex: 1; }
+.voice-ing-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #111827;
+}
+.voice-ing-sub {
+  font-size: 8.5px;
+  color: #9CA3AF;
+}
+.voice-ing-kcal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.all-logged-bar {
+  background: #F9FAFB;
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.all-logged-left {}
+.all-logged-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: #111827;
+}
+.all-logged-total {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #9CA3AF;
+}
+.all-logged-check {
+  width: 24px; height: 24px;
+  background: #2563EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─────────────────────────────────────────────────────────
+   SCREEN 6 — BARCODE
+───────────────────────────────────────────────────────── */
+.barcode-body {
+  flex: 1;
+  padding: 12px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+.barcode-scan-area {
+  background: #FEF9C3;
+  border-radius: 14px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+/* Corner marks */
+.bc-corner {
+  position: absolute;
+  width: 20px; height: 20px;
+}
+.bc-corner::before, .bc-corner::after {
+  content: '';
+  position: absolute;
+  background: #9CA3AF;
+  border-radius: 1px;
+}
+.bc-corner::before { width: 2px; height: 100%; }
+.bc-corner::after  { width: 100%; height: 2px; }
+.bc-tl { top: 10px; left: 10px; }
+.bc-tr { top: 10px; right: 10px; transform: scaleX(-1); }
+.bc-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+.bc-br { bottom: 10px; right: 10px; transform: scale(-1); }
+
+/* Barcode bars */
+.barcode-bars {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5px;
+  height: 64px;
+}
+.bb {
+  background: #111;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+.barcode-scanline {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: rgba(37,99,235,0.5);
+  top: 50%;
+}
+
+.product-card-wrap {
+  background: #F9FAFB;
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  flex-shrink: 0;
+}
+.product-name-lbl {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.2px;
+  margin-bottom: 10px;
+}
+.product-per-lbl {
+  font-size: 8px;
+  font-weight: 700;
+  color: #9CA3AF;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.product-data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.product-kcal-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+}
+.product-kcal-unit {
+  font-size: 9px;
+  color: #9CA3AF;
+  font-weight: 400;
+  margin-left: 2px;
+}
+.product-macro-pills {
+  display: flex;
+  gap: 10px;
+}
+.pmp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pmp-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+}
+.pmp-lbl { font-size: 7.5px; color: #9CA3AF; }
+
+.meal-pick-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 2px 2px;
+}
+.meal-pick-lbl { font-size: 13px; color: #111827; }
+.meal-pick-val { font-size: 13px; color: #9CA3AF; font-weight: 500; }
+
+/* ─────────────────────────────────────────────────────────
+   SHARED UTILITIES
+───────────────────────────────────────────────────────── */
+.clr-red   { color: #EF4444; }
+.clr-green { color: #22C55E; }
+.clr-cyan  { color: #06B6D4; }
+.clr-yel   { color: #CA8A04; }
+.clr-blue  { color: #2563EB; }
+
+.fill-red   { background: #EF4444; }
+.fill-green { background: #22C55E; }
+.fill-cyan  { background: #06B6D4; }
+.fill-yel   { background: #EAB308; }
+
+.svg-check {
+  stroke: white;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══ TOOLBAR ═══════════════════════════════════════════ -->
+<div class="toolbar">
+  <div class="toolbar-dots">
+    <div class="toolbar-dot" style="background:#FF5F57;"></div>
+    <div class="toolbar-dot" style="background:#FEBC2E;"></div>
+    <div class="toolbar-dot" style="background:#28C840;"></div>
+  </div>
+  <div class="toolbar-project">KayFit 2.0 — UI Screens &nbsp;/&nbsp; v1.0.2</div>
+  <div class="toolbar-tag">6 screens</div>
+</div>
+
+<!-- ═══ CANVAS ════════════════════════════════════════════ -->
+<div class="canvas">
+
+  <!-- ─── ROW 1 ─────────────────────────────────────────── -->
+  <div>
+    <div class="section-label">Main Screens</div>
+    <div class="phones-row">
+
+
+      <!-- ═══════════════════════════════════════════════════
+           SCREEN 1: JOURNAL
+      ════════════════════════════════════════════════════ -->
+      <div class="frame">
+        <div class="phone">
+          <div class="di"></div>
+          <div class="phone-screen">
+
+            <!-- Status bar -->
+            <div class="sb">
+              <div class="sb-time">9:41</div>
+              <div class="sb-right">
+                <div class="sb-signal">
+                  <div class="sb-bar" style="height:3px;"></div>
+                  <div class="sb-bar" style="height:5px;"></div>
+                  <div class="sb-bar" style="height:7px;"></div>
+                  <div class="sb-bar" style="height:9px;"></div>
+                </div>
+                <div class="sb-lte">LTE</div>
+                <div class="sb-battery">100</div>
+              </div>
+            </div>
+
+            <!-- Calendar strip -->
+            <div class="cal-strip">
+              <div class="cal-day">
+                <div class="cal-dn">M</div>
+                <div class="cal-num logged">28</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-dn">T</div>
+                <div class="cal-num logged">29</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-dn">W</div>
+                <div class="cal-num logged">30</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-dn">T</div>
+                <div class="cal-num missed">1</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-dn">F</div>
+                <div class="cal-num logged">2</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-dn">S</div>
+                <div class="cal-num logged">3</div>
+              </div>
+              <div class="cal-day">
+                <div class="cal-dn">S</div>
+                <div class="cal-num active">4</div>
+              </div>
+            </div>
+
+            <!-- Macro rings + legend -->
+            <div class="macro-section">
+              <!-- SVG Rings -->
+              <svg width="100" height="100" viewBox="0 0 100 100" style="flex-shrink:0; transform:rotate(-90deg);">
+                <!-- bg rings -->
+                <circle cx="50" cy="50" r="42" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+                <circle cx="50" cy="50" r="31" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+                <circle cx="50" cy="50" r="20" fill="none" stroke="#F3F4F6" stroke-width="7"/>
+                <circle cx="50" cy="50" r="9"  fill="none" stroke="#F3F4F6" stroke-width="7"/>
+                <!-- calories red 51% of 263.9 -->
+                <circle cx="50" cy="50" r="42" fill="none" stroke="#EF4444" stroke-width="7"
+                  stroke-dasharray="134.6 263.9" stroke-linecap="round"/>
+                <!-- protein green 55% of 194.8 -->
+                <circle cx="50" cy="50" r="31" fill="none" stroke="#22C55E" stroke-width="7"
+                  stroke-dasharray="107.1 194.8" stroke-linecap="round"/>
+                <!-- carbs cyan 48% of 125.7 -->
+                <circle cx="50" cy="50" r="20" fill="none" stroke="#06B6D4" stroke-width="7"
+                  stroke-dasharray="60.3 125.7" stroke-linecap="round"/>
+                <!-- fat yellow 44% of 56.5 -->
+                <circle cx="50" cy="50" r="9"  fill="none" stroke="#EAB308" stroke-width="7"
+                  stroke-dasharray="24.9 56.5" stroke-linecap="round"/>
+              </svg>
+
+              <!-- Legend -->
+              <div class="macro-legend">
+                <div class="macro-row">
+                  <div class="macro-dot fill-red"></div>
+                  <div class="macro-lbl">CALORIES</div>
+                  <div class="macro-val">1070<span class="g">/2100</span></div>
+                </div>
+                <div class="macro-row">
+                  <div class="macro-dot fill-green"></div>
+                  <div class="macro-lbl">PROTEIN</div>
+                  <div class="macro-val">72g<span class="g">/130g</span></div>
+                </div>
+                <div class="macro-row">
+                  <div class="macro-dot fill-cyan"></div>
+                  <div class="macro-lbl">CARBS</div>
+                  <div class="macro-val">121g<span class="g">/250g</span></div>
+                </div>
+                <div class="macro-row">
+                  <div class="macro-dot fill-yel"></div>
+                  <div class="macro-lbl">FAT</div>
+                  <div class="macro-val">31g<span class="g">/70g</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider-line"></div>
+
+            <!-- Meal list -->
+            <div class="meal-list">
+              <div class="meal-row">
+                <div class="meal-left">
+                  <div class="meal-name">Oatmeal with berries</div>
+                  <div class="meal-meta">breakfast · 08:24</div>
+                </div>
+                <div class="meal-kcal">320</div>
+              </div>
+              <div class="meal-row">
+                <div class="meal-left">
+                  <div class="meal-name">Chicken bowl, rice</div>
+                  <div class="meal-meta">lunch · 13:10</div>
+                </div>
+                <div class="meal-kcal">540</div>
+              </div>
+              <div class="meal-row">
+                <div class="meal-left">
+                  <div class="meal-name">Greek yogurt, almonds</div>
+                  <div class="meal-meta">snack · 16:30</div>
+                </div>
+                <div class="meal-kcal">210</div>
+              </div>
+            </div>
+
+            <!-- Tab bar -->
+            <div class="tabbar">
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9"/>
+                  <line x1="9" y1="21" x2="9" y2="9"/>
+                </svg>
+                <div class="tab-lbl on">Journal</div>
+              </div>
+              <div class="tab-add-btn">
+                <span class="tab-plus">+</span>
+              </div>
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <div class="tab-lbl">Chat</div>
+              </div>
+            </div>
+
+          </div><!-- /phone-screen -->
+        </div><!-- /phone -->
+        <div class="frame-name">Journal</div>
+      </div>
+
+
+      <!-- ═══════════════════════════════════════════════════
+           SCREEN 2: CHAT
+      ════════════════════════════════════════════════════ -->
+      <div class="frame">
+        <div class="phone">
+          <div class="di"></div>
+          <div class="phone-screen">
+
+            <div class="sb">
+              <div class="sb-time">9:41</div>
+              <div class="sb-right">
+                <div class="sb-signal">
+                  <div class="sb-bar" style="height:3px;"></div>
+                  <div class="sb-bar" style="height:5px;"></div>
+                  <div class="sb-bar" style="height:7px;"></div>
+                  <div class="sb-bar" style="height:9px;"></div>
+                </div>
+                <div class="sb-lte">LTE</div>
+                <div class="sb-battery">100</div>
+              </div>
+            </div>
+
+            <!-- Chat header with AI avatar -->
+            <div class="chat-header">
+              <div class="ai-avatar">K</div>
+              <div class="ai-name-lbl">Kayfit AI</div>
+            </div>
+
+            <!-- Chat messages -->
+            <div class="chat-body">
+
+              <!-- User message -->
+              <div class="bubble-user">I had a chicken pilaf bowl</div>
+
+              <!-- AI thinking bubble -->
+              <div class="bubble-think">
+                <div class="think-step">
+                  <span class="step-icon">✅</span>
+                  <span class="step-txt">identifying portion</span>
+                </div>
+                <div class="think-step">
+                  <span class="step-icon">✅</span>
+                  <span class="step-txt">matching USDA database</span>
+                </div>
+                <div class="think-step">
+                  <span class="step-icon">🔵</span>
+                  <span class="step-txt blue">cross-checking nutrition databases</span>
+                </div>
+                <div class="think-step">
+                  <span class="step-icon" style="opacity:0;">·</span>
+                  <span class="step-txt gray">composing reply</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Food result bottom sheet -->
+            <div class="food-sheet">
+              <div class="food-sheet-top">
+                <div class="food-sheet-name">Chicken pilaf bowl</div>
+                <div class="food-check-btn">
+                  <svg width="14" height="14" viewBox="0 0 14 14" class="svg-check">
+                    <polyline points="2.5,7 5.5,10 11.5,4"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="food-logged-lbl">LOGGED</div>
+              <div class="food-bottom-row">
+                <div>
+                  <span class="food-kcal-num">540</span>
+                  <span class="food-kcal-unit">kcal</span>
+                </div>
+                <div class="food-macros-row">
+                  <div class="food-m">
+                    <div class="food-m-val clr-green">42g</div>
+                    <div class="food-m-lbl">prot</div>
+                  </div>
+                  <div class="food-m">
+                    <div class="food-m-val clr-yel">18g</div>
+                    <div class="food-m-lbl">fat</div>
+                  </div>
+                  <div class="food-m">
+                    <div class="food-m-val clr-cyan">58g</div>
+                    <div class="food-m-lbl">carbs</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab bar -->
+            <div class="tabbar">
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9"/>
+                  <line x1="9" y1="21" x2="9" y2="9"/>
+                </svg>
+                <div class="tab-lbl">Journal</div>
+              </div>
+              <div class="tab-add-btn">
+                <span class="tab-plus">+</span>
+              </div>
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <div class="tab-lbl on">Chat</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="frame-name">Chat — AI Nutritionist</div>
+      </div>
+
+
+      <!-- ═══════════════════════════════════════════════════
+           SCREEN 3: MEAL SCAN
+      ════════════════════════════════════════════════════ -->
+      <div class="frame">
+        <div class="phone">
+          <div class="di"></div>
+          <div class="phone-screen">
+
+            <div class="sb">
+              <div class="sb-time">9:41</div>
+              <div class="sb-right">
+                <div class="sb-signal">
+                  <div class="sb-bar" style="height:3px;"></div>
+                  <div class="sb-bar" style="height:5px;"></div>
+                  <div class="sb-bar" style="height:7px;"></div>
+                  <div class="sb-bar" style="height:9px;"></div>
+                </div>
+                <div class="sb-lte">LTE</div>
+                <div class="sb-battery">100</div>
+              </div>
+            </div>
+
+            <div class="nb">
+              <div class="nb-title">Meal Scan</div>
+            </div>
+
+            <!-- Photo with ingredient overlays -->
+            <div class="scan-photo-wrap">
+              <div class="scan-plate"></div>
+              <div class="scan-food-brown"></div>
+              <div class="scan-food-green"></div>
+              <div class="scan-food-red"></div>
+              <!-- Scan corners -->
+              <div class="scan-corner sc-tl"></div>
+              <div class="scan-corner sc-tr"></div>
+              <div class="scan-corner sc-bl"></div>
+              <div class="scan-corner sc-br"></div>
+              <!-- Ingredient labels -->
+              <div class="ing-label" style="top:28px; left:12px;">
+                Trout<br><span style="font-weight:400;color:#6B7280;font-size:7px;">130 g</span>
+              </div>
+              <div class="ing-label" style="top:22px; right:10px; max-width:90px; font-size:7.5px;">
+                Fresh vegetable salad<br>cucumber, red pepper<br><span style="font-weight:400;color:#6B7280;font-size:7px;">90 g</span>
+              </div>
+              <div class="ing-label" style="bottom:16px; left:50%;">
+                Broccoli<br><span style="font-weight:400;color:#6B7280;font-size:7px;">90 g</span>
+              </div>
+            </div>
+
+            <!-- Total row -->
+            <div class="scan-total-bar">
+              <div class="scan-total-left">
+                <div class="scan-total-lbl">TOTAL</div>
+                <div>
+                  <span class="scan-total-num">301</span>
+                  <span style="font-size:9px; color:#9CA3AF; margin-left:2px;">kcal</span>
+                </div>
+              </div>
+              <div class="scan-macros-inline">
+                <div class="scan-mi">
+                  <div class="scan-mi-val clr-green">34g</div>
+                  <div class="scan-mi-lbl">prot</div>
+                </div>
+                <div class="scan-mi">
+                  <div class="scan-mi-val clr-yel">12g</div>
+                  <div class="scan-mi-lbl">fat</div>
+                </div>
+                <div class="scan-mi">
+                  <div class="scan-mi-val clr-cyan">12g</div>
+                  <div class="scan-mi-lbl">carbs</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider-line"></div>
+
+            <!-- Ingredient list -->
+            <div class="ing-list">
+              <div class="ing-row">
+                <div class="ing-check">
+                  <svg width="10" height="10" viewBox="0 0 10 10" class="svg-check">
+                    <polyline points="1.5,5 4,7.5 8.5,2.5"/>
+                  </svg>
+                </div>
+                <div class="ing-info">
+                  <div class="ing-name">Trout</div>
+                  <div class="ing-sub">240 kcal · 130 g</div>
+                </div>
+                <div class="ing-kcal">240</div>
+              </div>
+              <div class="ing-row">
+                <div class="ing-check">
+                  <svg width="10" height="10" viewBox="0 0 10 10" class="svg-check">
+                    <polyline points="1.5,5 4,7.5 8.5,2.5"/>
+                  </svg>
+                </div>
+                <div class="ing-info">
+                  <div class="ing-name">Broccoli</div>
+                  <div class="ing-sub">31 kcal · 90 g</div>
+                </div>
+                <div class="ing-kcal">31</div>
+              </div>
+              <div class="ing-row">
+                <div class="ing-check">
+                  <svg width="10" height="10" viewBox="0 0 10 10" class="svg-check">
+                    <polyline points="1.5,5 4,7.5 8.5,2.5"/>
+                  </svg>
+                </div>
+                <div class="ing-info">
+                  <div class="ing-name">Fresh vegetable salad</div>
+                  <div class="ing-sub">30 kcal · 90 g</div>
+                </div>
+                <div class="ing-kcal">30</div>
+              </div>
+            </div>
+
+            <!-- Tab bar -->
+            <div class="tabbar">
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9"/>
+                  <line x1="9" y1="21" x2="9" y2="9"/>
+                </svg>
+                <div class="tab-lbl">Journal</div>
+              </div>
+              <div class="tab-add-btn">
+                <span class="tab-plus">+</span>
+              </div>
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <div class="tab-lbl">Chat</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="frame-name">Meal Scan — Photo AI</div>
+      </div>
+
+
+    </div><!-- /phones-row 1 -->
+  </div>
+
+
+  <!-- ─── ROW 2 ─────────────────────────────────────────── -->
+  <div>
+    <div class="section-label">Input Screens</div>
+    <div class="phones-row">
+
+
+      <!-- ═══════════════════════════════════════════════════
+           SCREEN 4: PLAN
+      ════════════════════════════════════════════════════ -->
+      <div class="frame">
+        <div class="phone">
+          <div class="di"></div>
+          <div class="phone-screen">
+
+            <div class="sb">
+              <div class="sb-time">9:41</div>
+              <div class="sb-right">
+                <div class="sb-signal">
+                  <div class="sb-bar" style="height:3px;"></div>
+                  <div class="sb-bar" style="height:5px;"></div>
+                  <div class="sb-bar" style="height:7px;"></div>
+                  <div class="sb-bar" style="height:9px;"></div>
+                </div>
+                <div class="sb-lte">LTE</div>
+                <div class="sb-battery">100</div>
+              </div>
+            </div>
+
+            <div class="plan-body">
+
+              <!-- Blue plan card -->
+              <div class="plan-card-blue">
+                <div class="plan-card-blue-lbl">YOUR PERSONAL PLAN</div>
+                <div class="plan-card-blue-text">
+                  Vegan-friendly path to −5 kg. Lean on tofu and legumes, fill half your plate with vegetables.
+                </div>
+              </div>
+
+              <!-- Coral gradient goal card -->
+              <div class="plan-card-coral">
+                <div style="font-size:20px;">🎯</div>
+                <div class="plan-coral-title">Your plan is ready!</div>
+                <div class="plan-coral-box">
+                  <div class="plan-coral-kcal">1700</div>
+                </div>
+                <div class="plan-coral-sub">kcal per day</div>
+              </div>
+
+              <!-- Daily goal row -->
+              <div class="plan-daily-row">
+                <div class="plan-daily-left">
+                  <div class="plan-daily-lbl">DAILY GOAL</div>
+                  <div>
+                    <span class="plan-daily-num">1700</span>
+                    <span class="plan-daily-kcal-lbl"> kcal</span>
+                  </div>
+                </div>
+                <div class="plan-macro-pills">
+                  <div class="pmp clr-green" style="display:flex;flex-direction:column;align-items:center;">
+                    <div class="pmp-val">130g</div>
+                    <div class="pmp-lbl">prot</div>
+                  </div>
+                  <div class="pmp clr-yel" style="display:flex;flex-direction:column;align-items:center;">
+                    <div class="pmp-val">70g</div>
+                    <div class="pmp-lbl">fat</div>
+                  </div>
+                  <div class="pmp clr-cyan" style="display:flex;flex-direction:column;align-items:center;">
+                    <div class="pmp-val">250g</div>
+                    <div class="pmp-lbl">carbs</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Tab bar -->
+            <div class="tabbar">
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9"/>
+                  <line x1="9" y1="21" x2="9" y2="9"/>
+                </svg>
+                <div class="tab-lbl">Journal</div>
+              </div>
+              <div class="tab-add-btn">
+                <span class="tab-plus">+</span>
+              </div>
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <div class="tab-lbl">Chat</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="frame-name">Plan — AI Goal</div>
+      </div>
+
+
+      <!-- ═══════════════════════════════════════════════════
+           SCREEN 5: VOICE LOG
+      ════════════════════════════════════════════════════ -->
+      <div class="frame">
+        <div class="phone">
+          <div class="di"></div>
+          <div class="phone-screen">
+
+            <div class="sb">
+              <div class="sb-time">9:41</div>
+              <div class="sb-right">
+                <div class="sb-signal">
+                  <div class="sb-bar" style="height:3px;"></div>
+                  <div class="sb-bar" style="height:5px;"></div>
+                  <div class="sb-bar" style="height:7px;"></div>
+                  <div class="sb-bar" style="height:9px;"></div>
+                </div>
+                <div class="sb-lte">LTE</div>
+                <div class="sb-battery">100</div>
+              </div>
+            </div>
+
+            <div class="nb">
+              <div class="nb-title">Voice Log</div>
+            </div>
+
+            <div class="voice-body">
+
+              <!-- Mic button -->
+              <div class="mic-wrap">
+                <div class="mic-btn">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+                    <rect x="9" y="2" width="6" height="11" rx="3"/>
+                    <path d="M5 10a7 7 0 0014 0"/>
+                    <line x1="12" y1="21" x2="12" y2="17"/>
+                    <line x1="8" y1="21" x2="16" y2="21"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Transcript -->
+              <div class="transcript-box">
+                "I had <span>3 carnitas tacos</span> on tortillas with <span>chips</span> and <span>guacamole</span>"
+              </div>
+
+              <!-- Clarification chips -->
+              <div class="clarify-row">
+                <div class="clarify-q">
+                  <span style="font-size:8.5px; font-weight:700; background:#2563EB; color:#fff; border-radius:4px; padding:1px 5px; margin-right:4px;">K</span>
+                  About what weight of chips?
+                </div>
+                <div class="clarify-a">≈ 40 g</div>
+              </div>
+
+              <!-- Recognized label -->
+              <div class="recognized-hdr">RECOGNIZED &nbsp;·&nbsp; 3 ITEMS</div>
+
+              <!-- Ingredient list -->
+              <div class="voice-ing-list">
+                <div class="voice-ing-row">
+                  <div class="ing-check">
+                    <svg width="10" height="10" viewBox="0 0 10 10" class="svg-check">
+                      <polyline points="1.5,5 4,7.5 8.5,2.5"/>
+                    </svg>
+                  </div>
+                  <div class="voice-ing-info">
+                    <div class="voice-ing-name">Carnitas Tacos</div>
+                    <div class="voice-ing-sub">5 tacos · 95 g protein</div>
+                  </div>
+                  <div class="voice-ing-kcal">510</div>
+                </div>
+                <div class="voice-ing-row">
+                  <div class="ing-check">
+                    <svg width="10" height="10" viewBox="0 0 10 10" class="svg-check">
+                      <polyline points="1.5,5 4,7.5 8.5,2.5"/>
+                    </svg>
+                  </div>
+                  <div class="voice-ing-info">
+                    <div class="voice-ing-name">Tortilla Chips</div>
+                    <div class="voice-ing-sub">40 g · clarified by AI</div>
+                  </div>
+                  <div class="voice-ing-kcal">200</div>
+                </div>
+                <div class="voice-ing-row">
+                  <div class="ing-check">
+                    <svg width="10" height="10" viewBox="0 0 10 10" class="svg-check">
+                      <polyline points="1.5,5 4,7.5 8.5,2.5"/>
+                    </svg>
+                  </div>
+                  <div class="voice-ing-info">
+                    <div class="voice-ing-name">Guacamole</div>
+                    <div class="voice-ing-sub">65 g</div>
+                  </div>
+                  <div class="voice-ing-kcal">96</div>
+                </div>
+              </div>
+
+              <!-- All logged -->
+              <div class="all-logged-bar">
+                <div class="all-logged-left">
+                  <div class="all-logged-lbl">All logged</div>
+                  <div class="all-logged-total">TOTAL &nbsp;806 kcal&nbsp; · &nbsp;39g / 45g / 47g</div>
+                </div>
+                <div class="all-logged-check">
+                  <svg width="13" height="13" viewBox="0 0 13 13" class="svg-check">
+                    <polyline points="2,6.5 5,9.5 11,3.5"/>
+                  </svg>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Tab bar -->
+            <div class="tabbar">
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9"/>
+                  <line x1="9" y1="21" x2="9" y2="9"/>
+                </svg>
+                <div class="tab-lbl">Journal</div>
+              </div>
+              <div class="tab-add-btn">
+                <span class="tab-plus">+</span>
+              </div>
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <div class="tab-lbl">Chat</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="frame-name">Voice Log</div>
+      </div>
+
+
+      <!-- ═══════════════════════════════════════════════════
+           SCREEN 6: BARCODE
+      ════════════════════════════════════════════════════ -->
+      <div class="frame">
+        <div class="phone">
+          <div class="di"></div>
+          <div class="phone-screen">
+
+            <div class="sb">
+              <div class="sb-time">9:41</div>
+              <div class="sb-right">
+                <div class="sb-signal">
+                  <div class="sb-bar" style="height:3px;"></div>
+                  <div class="sb-bar" style="height:5px;"></div>
+                  <div class="sb-bar" style="height:7px;"></div>
+                  <div class="sb-bar" style="height:9px;"></div>
+                </div>
+                <div class="sb-lte">LTE</div>
+                <div class="sb-battery">100</div>
+              </div>
+            </div>
+
+            <div class="nb">
+              <div class="nb-title">Barcode Scan</div>
+            </div>
+
+            <div class="barcode-body">
+
+              <!-- Scanner area -->
+              <div class="barcode-scan-area">
+                <!-- Corners -->
+                <div class="bc-corner bc-tl"></div>
+                <div class="bc-corner bc-tr"></div>
+                <div class="bc-corner bc-bl"></div>
+                <div class="bc-corner bc-br"></div>
+                <!-- Barcode bars -->
+                <div class="barcode-bars">
+                  <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+                  <div class="bb" style="width:2px;"></div><div class="bb" style="width:3px;"></div>
+                  <div class="bb" style="width:1px;"></div><div class="bb" style="width:2px;"></div>
+                  <div class="bb" style="width:1px;"></div><div class="bb" style="width:3px;"></div>
+                  <div class="bb" style="width:2px;"></div><div class="bb" style="width:1px;"></div>
+                  <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+                  <div class="bb" style="width:2px;"></div><div class="bb" style="width:3px;"></div>
+                  <div class="bb" style="width:1px;"></div><div class="bb" style="width:2px;"></div>
+                  <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+                  <div class="bb" style="width:2px;"></div><div class="bb" style="width:1px;"></div>
+                  <div class="bb" style="width:3px;"></div><div class="bb" style="width:2px;"></div>
+                  <div class="bb" style="width:1px;"></div><div class="bb" style="width:3px;"></div>
+                  <div class="bb" style="width:1px;"></div><div class="bb" style="width:2px;"></div>
+                  <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+                  <div class="bb" style="width:2px;"></div><div class="bb" style="width:3px;"></div>
+                  <div class="bb" style="width:1px;"></div><div class="bb" style="width:2px;"></div>
+                  <div class="bb" style="width:3px;"></div><div class="bb" style="width:1px;"></div>
+                  <div class="bb" style="width:2px;"></div><div class="bb" style="width:1px;"></div>
+                  <div class="bb" style="width:3px;"></div>
+                </div>
+                <div class="barcode-scanline"></div>
+              </div>
+
+              <!-- Product card -->
+              <div class="product-card-wrap">
+                <div class="product-name-lbl">Protein Veggie Crisps</div>
+                <div class="product-per-lbl">PER PACK</div>
+                <div class="product-data-row">
+                  <div>
+                    <span class="product-kcal-num">112</span>
+                    <span class="product-kcal-unit">kcal</span>
+                  </div>
+                  <div class="product-macro-pills">
+                    <div class="pmp">
+                      <div class="pmp-val clr-green">10g</div>
+                      <div class="pmp-lbl">prot</div>
+                    </div>
+                    <div class="pmp">
+                      <div class="pmp-val clr-yel">4g</div>
+                      <div class="pmp-lbl">fat</div>
+                    </div>
+                    <div class="pmp">
+                      <div class="pmp-val clr-cyan">14g</div>
+                      <div class="pmp-lbl">carbs</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Meal picker -->
+              <div class="meal-pick-row" style="border-top:0.5px solid #F3F4F6; padding-top:12px;">
+                <div class="meal-pick-lbl">Meal</div>
+                <div class="meal-pick-val">Lunch ›</div>
+              </div>
+
+            </div>
+
+            <!-- Tab bar -->
+            <div class="tabbar">
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <line x1="3" y1="9" x2="21" y2="9"/>
+                  <line x1="9" y1="21" x2="9" y2="9"/>
+                </svg>
+                <div class="tab-lbl">Journal</div>
+              </div>
+              <div class="tab-add-btn">
+                <span class="tab-plus">+</span>
+              </div>
+              <div class="tab">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <div class="tab-lbl">Chat</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="frame-name">Barcode Scan</div>
+      </div>
+
+
+    </div><!-- /phones-row 2 -->
+  </div>
+
+</div><!-- /canvas -->
+
+</body>
+</html>

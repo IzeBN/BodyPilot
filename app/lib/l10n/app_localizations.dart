@@ -860,18 +860,82 @@ abstract class AppL10n {
   /// **'Повторить'**
   String get retry;
 
+  /// No description provided for @addMealTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить приём пищи'**
   String get addMealTitle;
+
+  /// No description provided for @mealTypeBreakfast.
+  ///
+  /// In ru, this message translates to:
+  /// **'Завтрак'**
   String get mealTypeBreakfast;
+
+  /// No description provided for @mealTypeLunch.
+  ///
+  /// In ru, this message translates to:
+  /// **'Обед'**
   String get mealTypeLunch;
+
+  /// No description provided for @mealTypeDinner.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ужин'**
   String get mealTypeDinner;
+
+  /// No description provided for @mealTypeSnack.
+  ///
+  /// In ru, this message translates to:
+  /// **'Перекус'**
   String get mealTypeSnack;
+
+  /// No description provided for @foodNameLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Название блюда'**
   String get foodNameLabel;
+
+  /// No description provided for @amountLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Количество, г'**
   String get amountLabel;
+
+  /// No description provided for @caloriesFieldLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ккал'**
   String get caloriesFieldLabel;
+
+  /// No description provided for @proteinLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Белки, г'**
   String get proteinLabel;
+
+  /// No description provided for @fatLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Жиры, г'**
   String get fatLabel;
+
+  /// No description provided for @carbsLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Углеводы, г'**
   String get carbsLabel;
+
+  /// No description provided for @saveMeal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить'**
   String get saveMeal;
+
+  /// No description provided for @mealSaved.
+  ///
+  /// In ru, this message translates to:
+  /// **'Приём пищи добавлен'**
   String get mealSaved;
 }
 

@@ -103,7 +103,7 @@ class _AddMealScreenState extends ConsumerState<AddMealScreen> {
             child: const Icon(Icons.arrow_back_ios_new_rounded, size: 16, color: AppColors.textPrimary),
           ),
         ),
-        title: Text(l.addMealTitle, style: AppText.h2()),
+        title: Text(l.addMealTitle, style: AppText.sectionHead()),
         centerTitle: false,
       ),
       body: SafeArea(

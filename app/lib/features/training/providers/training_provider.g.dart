@@ -6,7 +6,7 @@ part of 'training_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todayScheduleHash() => r'2708971f0c48666a84f30875432c13330ff5334a';
+String _$todayScheduleHash() => r'0d1a1eecf388bd43ff1363db3d277876015bfbc9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -159,7 +159,7 @@ class _TodayScheduleProviderElement
   String get date => (origin as TodayScheduleProvider).date;
 }
 
-String _$fullScheduleHash() => r'24f867dde59bd7a663d931a9670d781feecf1eea';
+String _$fullScheduleHash() => r'c9bb9fd76abf80f496c2c8c257e0d02c68560048';
 
 /// See also [fullSchedule].
 @ProviderFor(fullSchedule)
@@ -175,7 +175,7 @@ final fullScheduleProvider = AutoDisposeFutureProvider<ScheduleData>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FullScheduleRef = AutoDisposeFutureProviderRef<ScheduleData>;
-String _$scheduleExercisesHash() => r'6c5467d5f88a3cd2a780fb6996c74d6e76d6de5c';
+String _$scheduleExercisesHash() => r'fd2a083470842c71eb0642e3617ba35226afc9fb';
 
 /// See also [scheduleExercises].
 @ProviderFor(scheduleExercises)
@@ -309,7 +309,7 @@ class _ScheduleExercisesProviderElement
   String get scheduleId => (origin as ScheduleExercisesProvider).scheduleId;
 }
 
-String _$workoutDetailHash() => r'b1bce43a737783626467f38dad59c84e147f8063';
+String _$workoutDetailHash() => r'0c51a8c8f95f572c80e77046689d4caf84b7c3b8';
 
 /// See also [workoutDetail].
 @ProviderFor(workoutDetail)

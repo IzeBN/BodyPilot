@@ -87,7 +87,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                         children: [
                           for (final group in effectiveDay.meals)
                             for (final entry in group.entries) _MealRow(entry: entry),
-                          _AddMealLink(label: l.addMeal, onTap: () {}),
+                          _AddMealLink(label: l.addMeal, onTap: () => context.push('/add-meal?date=$_dateKey')),
                         ],
                       ),
                     ),
