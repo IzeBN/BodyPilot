@@ -1,7 +1,11 @@
+import asyncio
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from prometheus_fastapi_instrumentator import Instrumentator
+
+logger = logging.getLogger(__name__)
 
 from app.database import get_pool, close_pool
 from app.config import get_settings
@@ -26,13 +30,21 @@ OPENAPI_TAGS = [
 ]
 
 
+async def _init_assistant_bg(api_key: str, proxy: str | None) -> None:
+    try:
+        from app.neural.assistant import init_assistant
+        await init_assistant(api_key, proxy)
+        logger.info("Neural assistant initialized")
+    except Exception as e:
+        logger.warning("Neural assistant init failed (non-critical): %s", e)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await get_pool()
     s = get_settings()
     if s.effective_openai_key:
-        from app.neural.assistant import init_assistant
-        await init_assistant(s.effective_openai_key, s.openai_proxy or None)
+        asyncio.create_task(_init_assistant_bg(s.effective_openai_key, s.openai_proxy or None))
     yield
     await close_pool()
 
