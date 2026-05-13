@@ -1,3 +1,4 @@
+import asyncio
 import time
 import logging
 from pathlib import Path
@@ -11,20 +12,29 @@ logger = logging.getLogger("neural.embeddings")
 ASSETS_PATH = Path(__file__).parent / "assets"
 
 
+def _load_hf_embeddings() -> HuggingFaceEmbeddings:
+    return HuggingFaceEmbeddings(
+        model_name="deepvk/USER-bge-m3",
+        model_kwargs={"device": "cpu"},
+        encode_kwargs={"normalize_embeddings": True},
+    )
+
+
 class Embeddings:
     def __init__(self) -> None:
-        self.embeddings = HuggingFaceEmbeddings(
-            model_name="deepvk/USER-bge-m3",
-            model_kwargs={"device": "cpu"},
-            encode_kwargs={"normalize_embeddings": True},
-        )
+        self.embeddings: HuggingFaceEmbeddings | None = None
         self.vectorstore = None
         self._retriever = None
 
     async def initialize(self) -> None:
+        # Load HuggingFace model in a thread — it's CPU-heavy and blocks the event loop
+        self.embeddings = await asyncio.to_thread(_load_hf_embeddings)
+        logger.info("HuggingFace embeddings model loaded")
+
         faiss_path = ASSETS_PATH / "faiss" / "exercizes"
         if faiss_path.exists():
-            self.vectorstore = FAISS.load_local(
+            self.vectorstore = await asyncio.to_thread(
+                FAISS.load_local,
                 str(faiss_path),
                 self.embeddings,
                 allow_dangerous_deserialization=True,
@@ -32,9 +42,11 @@ class Embeddings:
             logger.info("FAISS index loaded from cache")
         else:
             docs = await self._load_document()
-            self.vectorstore = FAISS.from_documents(docs, self.embeddings)
+            self.vectorstore = await asyncio.to_thread(
+                FAISS.from_documents, docs, self.embeddings
+            )
             faiss_path.mkdir(parents=True, exist_ok=True)
-            self.vectorstore.save_local(str(faiss_path))
+            await asyncio.to_thread(self.vectorstore.save_local, str(faiss_path))
             logger.info("FAISS index built and saved")
 
         self._retriever = self.vectorstore.as_retriever(
@@ -44,7 +56,7 @@ class Embeddings:
 
     async def _load_document(self) -> list[Document]:
         docs_path = ASSETS_PATH / "docs" / "exercizes.md"
-        text = docs_path.read_text(encoding="utf-8")
+        text = await asyncio.to_thread(docs_path.read_text, encoding="utf-8")
         blocks = text.split("## Exercise")
         documents = []
         for block in blocks[1:]:
