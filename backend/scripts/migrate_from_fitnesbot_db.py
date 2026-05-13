@@ -56,7 +56,7 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
 
     try:
         # ── 1. Equipment categories (equipments) ──────────────────────────────
-        print("\n[1/8] Equipment categories (equipments) …")
+        print("\n[1/7] Equipment categories (equipments) …")
         rows = await src.fetch("""
             SELECT e.id, e.title, f.file_url AS photo_url
             FROM equipments e
@@ -81,7 +81,7 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
             print(f"      OK — {len(rows)} upserted")
 
         # ── 2. Equipment items (equipment_details) ────────────────────────────
-        print("\n[2/8] Equipment items (equipment_details) …")
+        print("\n[2/7] Equipment items (equipment_details) …")
         rows = await src.fetch("""
             SELECT ed.id, ed.equipment_id AS category_id, ed.name AS title,
                    f.file_url AS photo_url
@@ -111,7 +111,7 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
         # FitnesBot: equipment_options(id, equipment_id, detail_id, value)
         # Target:    equipment_options(id, item_id, title)
         # item_id maps to detail_id (the equipment_items FK)
-        print("\n[3/8] Equipment options …")
+        print("\n[3/7] Equipment options …")
         rows = await src.fetch("""
             SELECT id, detail_id AS item_id, value AS title
             FROM equipment_options
@@ -137,7 +137,7 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
 
         # ── 4. Exercises ──────────────────────────────────────────────────────
         # progression column may be NULL if not yet populated in FitnesBot
-        print("\n[4/8] Exercises (exercizes) …")
+        print("\n[4/7] Exercises (exercizes) …")
         rows = await src.fetch("""
             SELECT
                 e.id,
@@ -200,44 +200,8 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
                     """, r["exercise_id"], r["alternative_id"])
             print(f"      OK — {len(rows)} upserted")
 
-        # ── 6. Exercise defaults ──────────────────────────────────────────────
-        # workout_id is set to NULL because FitnesBot's training_sample_id
-        # references training_samples (not program_workouts) and those haven't
-        # been migrated here. Can be re-linked after training programs migration.
-        print("\n[6/8] Exercise defaults (exercize_default_parameters) …")
-        rows = await src.fetch("""
-            SELECT
-                exercize_id        AS exercise_id,
-                approach_number,
-                repetitions,
-                weight,
-                COALESCE(repetition_margin, 0) AS repetition_margin
-            FROM exercize_default_parameters
-            WHERE exercize_id IS NOT NULL
-        """)
-        print(f"      {len(rows)} rows found")
-        if not dry_run:
-            async with dst.transaction():
-                for r in rows:
-                    await dst.execute("""
-                        INSERT INTO exercise_defaults (
-                            exercise_id, workout_id, approach_number,
-                            repetitions, weight, repetition_margin
-                        )
-                        VALUES ($1, NULL, $2, $3, $4, $5)
-                        ON CONFLICT (exercise_id, workout_id, approach_number)
-                        DO UPDATE SET
-                            repetitions       = EXCLUDED.repetitions,
-                            weight            = EXCLUDED.weight,
-                            repetition_margin = EXCLUDED.repetition_margin
-                    """,
-                        r["exercise_id"], r["approach_number"],
-                        r["repetitions"], r["weight"], r["repetition_margin"],
-                    )
-            print(f"      OK — {len(rows)} upserted")
-
-        # ── 7. Exercise durations ─────────────────────────────────────────────
-        print("\n[7/8] Exercise durations (duration_exercizes) …")
+        # ── 6. Exercise durations ─────────────────────────────────────────────
+        print("\n[6/7] Exercise durations (duration_exercizes) …")
         rows = await src.fetch("""
             SELECT
                 exercize_id             AS exercise_id,
@@ -269,7 +233,7 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
             "equipments":        "equipment_categories",
             "equipment_details": "equipment_items",
         }
-        print("\n[8/8] Translations …")
+        print("\n[7/7] Translations …")
         rows = await src.fetch("""
             SELECT entity_type, entity_id, lang, field, value
             FROM translations
@@ -297,7 +261,6 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
                 SELECT 'equipment_options',          COUNT(*) FROM equipment_options UNION ALL
                 SELECT 'exercises',                  COUNT(*) FROM exercises UNION ALL
                 SELECT 'alternative_exercises',      COUNT(*) FROM alternative_exercises UNION ALL
-                SELECT 'exercise_defaults',          COUNT(*) FROM exercise_defaults UNION ALL
                 SELECT 'duration_exercizes',         COUNT(*) FROM duration_exercizes UNION ALL
                 SELECT 'translations',               COUNT(*) FROM translations
             """)
