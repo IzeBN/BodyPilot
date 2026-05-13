@@ -183,7 +183,7 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
             print(f"      OK — {len(rows)} upserted")
 
         # ── 5. Alternative exercises ──────────────────────────────────────────
-        print("\n[5/8] Alternative exercises …")
+        print("\n[5/7] Alternative exercises …")
         rows = await src.fetch("""
             SELECT DISTINCT exercize_id AS exercise_id, alternative_exercize AS alternative_id
             FROM alternative_exercizes
@@ -212,18 +212,21 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
         """)
         print(f"      {len(rows)} rows found")
         if not dry_run:
-            async with dst.transaction():
-                for r in rows:
-                    await dst.execute("""
-                        INSERT INTO duration_exercizes (
-                            exercise_id, repetition_duration, break_duration
-                        )
-                        VALUES ($1, $2, $3)
-                        ON CONFLICT (exercise_id) DO UPDATE SET
-                            repetition_duration = EXCLUDED.repetition_duration,
-                            break_duration      = EXCLUDED.break_duration
-                    """, r["exercise_id"], r["repetition_duration"], r["break_duration"])
-            print(f"      OK — {len(rows)} upserted")
+            try:
+                async with dst.transaction():
+                    for r in rows:
+                        await dst.execute("""
+                            INSERT INTO duration_exercizes (
+                                exercise_id, repetition_duration, break_duration
+                            )
+                            VALUES ($1, $2, $3)
+                            ON CONFLICT (exercise_id) DO UPDATE SET
+                                repetition_duration = EXCLUDED.repetition_duration,
+                                break_duration      = EXCLUDED.break_duration
+                        """, r["exercise_id"], r["repetition_duration"], r["break_duration"])
+                print(f"      OK — {len(rows)} upserted")
+            except Exception as e:
+                print(f"      SKIPPED — {e} (apply migrations/003_fixes.sql first)")
 
         # ── 8. Translations ───────────────────────────────────────────────────
         # Copy only rows that concern entity types relevant to us.
@@ -261,7 +264,6 @@ async def run(source_dsn: str, target_dsn: str, dry_run: bool) -> None:
                 SELECT 'equipment_options',          COUNT(*) FROM equipment_options UNION ALL
                 SELECT 'exercises',                  COUNT(*) FROM exercises UNION ALL
                 SELECT 'alternative_exercises',      COUNT(*) FROM alternative_exercises UNION ALL
-                SELECT 'duration_exercizes',         COUNT(*) FROM duration_exercizes UNION ALL
                 SELECT 'translations',               COUNT(*) FROM translations
             """)
             for row in counts:
