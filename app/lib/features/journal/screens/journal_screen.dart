@@ -10,6 +10,7 @@ import '../../../shared/widgets/avatar_button.dart';
 import '../../../shared/widgets/macro_rings.dart';
 import '../../training/providers/training_provider.dart';
 import '../../training/widgets/training_card.dart';
+import '../../add_meal/ai_meal_sheet.dart';
 import '../models/journal_models.dart';
 import '../providers/journal_provider.dart';
 
@@ -87,7 +88,15 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                         children: [
                           for (final group in effectiveDay.meals)
                             for (final entry in group.entries) _MealRow(entry: entry),
-                          _AddMealLink(label: l.addMeal, onTap: () => context.push('/add-meal?date=$_dateKey')),
+                          _AddMealLink(label: l.addMeal, onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              useRootNavigator: true,
+                              builder: (_) => AiMealSheet(date: _dateKey),
+                            );
+                          }),
                         ],
                       ),
                     ),

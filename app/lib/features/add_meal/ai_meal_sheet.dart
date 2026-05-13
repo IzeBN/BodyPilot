@@ -98,6 +98,7 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
+          useRootNavigator: true,
           builder: (_) => DraggableScrollableSheet(
             initialChildSize: 0.92, minChildSize: 0.5, maxChildSize: 0.95,
             builder: (_, __) => RecognitionResultSheet(
@@ -107,9 +108,11 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
             ),
           ),
         );
-        if (saved == true && mounted) Navigator.of(context).pop();
+        if (saved == true && mounted) Navigator.of(context, rootNavigator: true).pop();
         return;
       }
+      // Items empty — server returned 200 but couldn't parse the text
+      _showError(msg: AppL10n.of(context).errorGeneric);
     } catch (e) {
       _showError();
     } finally {
@@ -160,13 +163,14 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
           context: context,
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
+          useRootNavigator: true,
           builder: (_) => DraggableScrollableSheet(
             initialChildSize: 0.92, minChildSize: 0.5, maxChildSize: 0.95,
             builder: (_, __) => RecognitionResultSheet(
               date: widget.date, items: rawItems, dishName: dishName),
           ),
         );
-        if (saved == true && mounted) Navigator.of(context).pop();
+        if (saved == true && mounted) Navigator.of(context, rootNavigator: true).pop();
         return;
       }
       // Fallback: re-parse from transcript if items are empty
@@ -226,12 +230,13 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
+        useRootNavigator: true,
         builder: (_) => DraggableScrollableSheet(
           initialChildSize: 0.92, minChildSize: 0.5, maxChildSize: 0.95,
           builder: (_, __) => RecognitionResultSheet(date: widget.date, items: items, dishName: dishName),
         ),
       );
-      if (saved == true && mounted) Navigator.of(context).pop();
+      if (saved == true && mounted) Navigator.of(context, rootNavigator: true).pop();
     } catch (_) {
       _showError();
     } finally {

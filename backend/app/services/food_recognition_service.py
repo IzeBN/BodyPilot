@@ -4,11 +4,14 @@ import json
 import base64
 import asyncio
 import io
+import logging
 
 import httpx
 from asyncpg import Pool
 
 from app.config import get_settings
+
+logger = logging.getLogger(__name__)
 
 
 def _make_anthropic_client(api_key: str):
@@ -179,11 +182,15 @@ class FoodRecognitionService:
     async def recognize_text(self, text: str, language: str = "ru") -> dict:
         """Parse free-text meal description → list of items with nutrients."""
         lang = self._resolve_lang(language, text)
+        logger.info("recognize_text: text=%r lang=%s", text[:80], lang)
         items = await self._parse_text(text, lang)
+        logger.info("recognize_text: parsed %d items", len(items))
         if not items:
             return {"items": [], "total": self._zero_total()}
         enriched = await self._enrich_items(items, lang)
-        return self._build_result(enriched)
+        result = self._build_result(enriched)
+        logger.info("recognize_text: returning %d enriched items", len(result["items"]))
+        return result
 
     async def recognize_photo(self, image_data: bytes, language: str = "ru") -> dict:
         """Identify food in photo + estimate weights → items with nutrients."""
@@ -215,19 +222,24 @@ class FoodRecognitionService:
         settings = get_settings()
         key = settings.anthropic_api_key
         if not key:
+            logger.error("_parse_text: anthropic_api_key is not set")
             return []
         lang = language if language in _PARSE_PROMPTS else "ru"
         prompt = _PARSE_PROMPTS[lang] + text.strip()
         try:
             client = _make_anthropic_client(key)
+            logger.info("_parse_text: calling Claude model=%s", CLAUDE_MODEL)
             resp = await client.messages.create(
                 model=CLAUDE_MODEL,
                 max_tokens=600,
                 messages=[{"role": "user", "content": prompt}],
             )
-            data = _extract_json((resp.content[0].text or "").strip())
+            raw_text = (resp.content[0].text or "").strip()
+            logger.info("_parse_text: Claude response: %r", raw_text[:200])
+            data = _extract_json(raw_text)
             raw_items = data.get("items") or []
-        except Exception:
+        except Exception as e:
+            logger.error("_parse_text: exception: %s", e, exc_info=True)
             return []
 
         result = []
@@ -527,7 +539,8 @@ class FoodRecognitionService:
                 if orig not in result and idx < len(items_list):
                     result[orig] = items_list[idx]
             return result
-        except Exception:
+        except Exception as e:
+            logger.error("_claude_get_nutrients: exception: %s", e, exc_info=True)
             return {}
 
     # ── Helpers ───────────────────────────────────────────────────────────────

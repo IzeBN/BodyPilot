@@ -26,12 +26,13 @@ class AddSheet extends StatelessWidget {
         name: l.addSheetFood,
         desc: l.addSheetFoodDesc,
         onTap: () {
-          Navigator.of(context).pop();
           final today = DateTime.now().toIso8601String().substring(0, 10);
+          Navigator.of(context, rootNavigator: true).pop();
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
+            useRootNavigator: true,
             builder: (_) => AiMealSheet(date: today),
           );
         },
