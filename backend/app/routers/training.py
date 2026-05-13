@@ -4,7 +4,7 @@ from app.models.training import (
     AddExerciseResultRequest, ReplaceExercisesRequest,
     SelectProgramRequest, EditScheduleDateRequest,
     ProgramResponse, ProgramDetailResponse, ProgramMatchResponse,
-    WorkoutExerciseResponse, UserScheduleResponse, ExerciseDetailResponse,
+    WorkoutSummaryResponse, WorkoutExerciseResponse, UserScheduleResponse, ExerciseDetailResponse,
     GenerateTaskResponse, TaskStatusResponse,
     ExerciseLastWeekResult, AlternativeExerciseResponse,
 )
@@ -34,7 +34,7 @@ async def get_programs(
 
 @router.get(
     "/programs/free",
-    response_model=list[WorkoutExerciseResponse],
+    response_model=list[WorkoutSummaryResponse],
     summary="List free program workouts",
     description="Returns workouts from programs in the 'free' category (no subscription required).",
 )

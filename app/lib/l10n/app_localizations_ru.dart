@@ -417,4 +417,43 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get retry => 'Повторить';
+
+  @override
+  String get addMealTitle => 'Добавить приём пищи';
+
+  @override
+  String get mealTypeBreakfast => 'Завтрак';
+
+  @override
+  String get mealTypeLunch => 'Обед';
+
+  @override
+  String get mealTypeDinner => 'Ужин';
+
+  @override
+  String get mealTypeSnack => 'Перекус';
+
+  @override
+  String get foodNameLabel => 'Название блюда';
+
+  @override
+  String get amountLabel => 'Количество, г';
+
+  @override
+  String get caloriesFieldLabel => 'Ккал';
+
+  @override
+  String get proteinLabel => 'Белки, г';
+
+  @override
+  String get fatLabel => 'Жиры, г';
+
+  @override
+  String get carbsLabel => 'Углеводы, г';
+
+  @override
+  String get saveMeal => 'Добавить';
+
+  @override
+  String get mealSaved => 'Приём пищи добавлен';
 }

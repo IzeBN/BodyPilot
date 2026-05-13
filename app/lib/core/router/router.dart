@@ -8,6 +8,7 @@ import '../../features/auth/screens/register_screen.dart';
 import '../../features/onboarding/screens/module_selector_screen.dart';
 import '../../features/onboarding/screens/equipment_selector_screen.dart';
 import '../../features/journal/screens/journal_screen.dart';
+import '../../features/journal/screens/add_meal_screen.dart';
 import '../../features/chat/screens/chat_screen.dart';
 import '../../features/account/screens/account_screen.dart';
 import '../../features/training/screens/workout_detail_screen.dart';
@@ -56,6 +57,14 @@ GoRouter router(Ref ref) {
           GoRoute(path: '/journal', builder: (_, __) => const JournalScreen()),
           GoRoute(path: '/chat', builder: (_, __) => const ChatScreen()),
         ],
+      ),
+
+      // Add meal (pushed from FAB)
+      GoRoute(
+        path: '/add-meal',
+        builder: (_, state) => AddMealScreen(
+          date: state.uri.queryParameters['date'] ?? DateTime.now().toIso8601String().substring(0, 10),
+        ),
       ),
 
       // Account (pushed from journal avatar, not tab)

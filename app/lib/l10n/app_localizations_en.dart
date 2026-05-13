@@ -418,4 +418,43 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get addMealTitle => 'Add meal';
+
+  @override
+  String get mealTypeBreakfast => 'Breakfast';
+
+  @override
+  String get mealTypeLunch => 'Lunch';
+
+  @override
+  String get mealTypeDinner => 'Dinner';
+
+  @override
+  String get mealTypeSnack => 'Snack';
+
+  @override
+  String get foodNameLabel => 'Food name';
+
+  @override
+  String get amountLabel => 'Amount, g';
+
+  @override
+  String get caloriesFieldLabel => 'Kcal';
+
+  @override
+  String get proteinLabel => 'Protein, g';
+
+  @override
+  String get fatLabel => 'Fat, g';
+
+  @override
+  String get carbsLabel => 'Carbs, g';
+
+  @override
+  String get saveMeal => 'Add';
+
+  @override
+  String get mealSaved => 'Meal added';
 }

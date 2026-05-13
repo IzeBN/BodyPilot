@@ -13,6 +13,48 @@ from app.services.training_matching import match_training_program
 from app.services.schedule import build_schedule
 
 INTENSITY_COEFFICIENTS = {"tone": 4.0, "gain": 6.0, "fat_loss": 8.0}
+
+
+def _map_program(r) -> dict:
+    return {
+        "id": r["id"],
+        "name": r.get("display_title") or r["title"],
+        "description": r.get("display_description") or r.get("description"),
+        "category": r.get("category"),
+        "difficulty": r.get("experience"),
+        "duration_weeks": None,
+        "workouts_per_week": None,
+        "image_url": None,
+    }
+
+
+def _map_workout_exercise(r) -> dict:
+    import json
+    raw_defaults = r.get("defaults")
+    if raw_defaults is None:
+        approaches = []
+    else:
+        if isinstance(raw_defaults, str):
+            raw_defaults = json.loads(raw_defaults)
+        approaches = [
+            {
+                "approach_number": a["approach_number"],
+                "repetitions": a.get("repetitions") or 10,
+                "repetition_margin": a.get("repetition_margin") or 0,
+                "weight": a.get("weight"),
+            }
+            for a in (raw_defaults or [])
+            if a.get("approach_number") is not None
+        ]
+    return {
+        "exercise_id": r["exercise_id"],
+        "name": r.get("display_title") or r["title"],
+        "description": r.get("display_description") or r.get("description"),
+        "video_url": r.get("video_url"),
+        "muscle_group": r.get("muscle_group"),
+        "order": r.get("id"),
+        "approaches": approaches,
+    }
 GOAL_INTENSITY_MAP = {
     "lose_weight": "fat_loss", "жиросжигание": "fat_loss",
     "gain_mass": "gain", "набор": "gain",
@@ -39,7 +81,7 @@ class TrainingService:
 
     async def get_programs(self, category: str | None, lang: str) -> list[dict]:
         rows = await self._repo.get_programs(category, lang)
-        return [dict(r) for r in rows]
+        return [_map_program(r) for r in rows]
 
     async def get_free_programs(self, lang: str) -> list[dict]:
         async with self._pool.acquire() as conn:
@@ -52,22 +94,49 @@ class TrainingService:
                    ORDER BY pw.position""",
                 lang,
             )
-        return [dict(r) for r in rows]
+        return [
+            {
+                "id": r["id"],
+                "name": r["display_title"] or r["title"],
+                "day_number": r["position"],
+                "duration_min": r["duration_min"],
+            }
+            for r in rows
+        ]
 
     async def get_program_detail(self, program_id: int, lang: str) -> dict:
         program = await self._repo.get_program_by_id(program_id)
         if not program:
             raise HTTPException(404, detail="Program not found")
         workouts = await self._repo.get_program_workouts(program_id, lang)
-        return {"program": dict(program), "workouts": [dict(w) for w in workouts]}
+        result = _map_program(program)
+        result["workouts"] = [
+            {
+                "id": w["id"],
+                "name": w.get("display_title") or w["title"],
+                "day_number": w["position"],
+                "duration_min": w["duration_min"],
+            }
+            for w in workouts
+        ]
+        return result
 
     async def get_workout_exercises(self, workout_id: int, lang: str) -> list[dict]:
         rows = await self._repo.get_workout_exercises(workout_id, lang)
-        return [dict(r) for r in rows]
+        return [_map_workout_exercise(r) for r in rows]
 
     async def match_programs(self, user_id: int) -> list[dict]:
         results = await match_training_program(user_id, self._pool)
-        return [{"program_id": r.program_id, "score": r.score} for r in results]
+        if not results:
+            return []
+        program_rows = await self._repo.get_programs(None, "ru")
+        programs_by_id = {r["id"]: r for r in program_rows}
+        out = []
+        for r in results:
+            prog = programs_by_id.get(r.program_id)
+            if prog:
+                out.append({"program": _map_program(prog), "score": r.score})
+        return out
 
     async def select_program(self, user_id: int, program_id: int) -> None:
         program = await self._repo.get_program_by_id(program_id)
@@ -109,15 +178,46 @@ class TrainingService:
         rows = await self._repo.get_user_schedule(user_id)
         await self._users.add_action(user_id, "Opened schedule")
         return {
-            "program": dict(program) if program else None,
-            "schedule": [dict(r) for r in rows],
+            "program_id": program["id"] if program else None,
+            "program_name": program["title"] if program else None,
+            "entries": [
+                {
+                    "id": r["id"],
+                    "workout_id": r["workout_id"],
+                    "workout_name": r["workout_title"],
+                    "scheduled_date": str(r["scheduled_date"]),
+                    "status": r["status"],
+                }
+                for r in rows
+            ],
         }
 
     async def get_schedule_exercises(self, schedule_id: int, user_id: int, lang: str) -> list[dict]:
         await self._ensure_schedule_access(schedule_id, user_id)
         await self._users.add_action(user_id, f"Opened training exercises - {schedule_id}")
         rows = await self._repo.get_schedule_exercises(schedule_id, user_id, lang)
-        return [dict(r) for r in rows]
+        # Repo returns one row per exercise×approach — group into exercises with approaches list
+        exercises: dict[int, dict] = {}
+        for r in rows:
+            eid = r["exercise_id"]
+            if eid not in exercises:
+                exercises[eid] = {
+                    "exercise_id": eid,
+                    "name": r["display_title"] or r["title"],
+                    "description": r["description"],
+                    "video_url": r["video_url"],
+                    "muscle_group": r["muscle_group"],
+                    "order": None,
+                    "approaches": [],
+                }
+            if r["approach_number"] is not None:
+                exercises[eid]["approaches"].append({
+                    "approach_number": r["approach_number"],
+                    "repetitions": r["user_reps"] or r["default_reps"] or 10,
+                    "repetition_margin": r["repetition_margin"] or 0,
+                    "weight": r["user_weight"] or r["default_weight"],
+                })
+        return list(exercises.values())
 
     async def get_exercise_detail(self, schedule_id: int, exercise_id: int, user_id: int, lang: str) -> dict:
         await self._ensure_schedule_access(schedule_id, user_id)
@@ -175,28 +275,29 @@ class TrainingService:
         break_dur = (durations["break_duration"] if durations else None) or 30
 
         return {
-            "exercise": {
-                "title": exercise["display_title"],
-                "description": exercise["display_description"],
-                "photo_url": exercise["photo_url"],
-                "video_url": exercise["video_url"],
-                "muscle_group": exercise["muscle_group"],
-                "progression_level": exercise["progression_level"],
-            },
+            "exercise_id": exercise_id,
+            "name": exercise["display_title"],
+            "description": exercise["display_description"],
+            "video_url": exercise["video_url"],
+            "muscle_group": exercise["muscle_group"],
             "approaches": [
                 {
                     "approach_number": a["approach_number"],
-                    "repetitions": a["repetitions"] or a["default_reps"],
+                    "repetitions": a["repetitions"] or a["default_reps"] or 10,
                     "repetition_margin": a["repetition_margin"] or 0,
-                    "weight_percent": a["weight"] or a["default_weight"],
-                    "duration": rep_dur * (a["repetitions"] or a["default_reps"] or 10),
+                    "weight": a["weight"] or a["default_weight"],
                 }
                 for a in approaches
             ],
-            "break_duration": break_dur,
-            "next_exercise_id": next_exercise["exercise_id"] if next_exercise else None,
-            "user_max_weight": float(max_weight) if max_weight else None,
-            "last_results": [dict(r) for r in last_results],
+            "previous_results": [
+                {
+                    "approach_number": r["approach_number"],
+                    "repetitions": r["repetitions"],
+                    "weight": float(r["weight"]) if r["weight"] else None,
+                }
+                for r in last_results
+            ],
+            "next_exercise": next_exercise["title"] if next_exercise else None,
         }
 
     async def reschedule(self, schedule_id: int, user_id: int, new_date: datetime.date) -> None:
@@ -231,14 +332,32 @@ class TrainingService:
 
     async def get_last_week_results(self, user_id: int) -> list[dict]:
         rows = await self._repo.get_last_week_results(user_id)
-        return [dict(r) for r in rows]
+        return [
+            {
+                "exercise_id": r["exercise_id"],
+                "exercise_name": r["title"],
+                "max_weight_kg": float(r["max_weight"]) if r["max_weight"] else None,
+                "total_reps": r["total_reps"] or 0,
+                "sessions_count": r["sessions_count"],
+            }
+            for r in rows
+        ]
 
     # ── Exercises ─────────────────────────────────────────────────────────────
 
     async def get_alternatives(self, exercise_id: int, user_id: int, lang: str) -> list[dict]:
         await self._users.add_action(user_id, f"Got alternatives for exercise {exercise_id}")
         rows = await self._repo.get_alternatives(exercise_id, lang)
-        return [dict(r) for r in rows]
+        return [
+            {
+                "exercise_id": r["id"],
+                "name": r["display_title"] or r["title"],
+                "description": r.get("description"),
+                "muscle_group": r.get("muscle_group"),
+                "difficulty": r.get("progression_level"),
+            }
+            for r in rows
+        ]
 
     async def replace_exercises(self, schedule_id: int, user_id: int, replacements: list) -> None:
         await self._ensure_schedule_access(schedule_id, user_id)

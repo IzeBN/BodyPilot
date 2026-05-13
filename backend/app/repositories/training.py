@@ -248,7 +248,8 @@ class TrainingRepository(BaseRepository):
         async with self.pool.acquire() as conn:
             return await conn.fetch(
                 """SELECT er.exercise_id, e.title, MAX(er.weight) max_weight,
-                          SUM(er.repetitions) total_reps
+                          SUM(er.repetitions) total_reps,
+                          COUNT(DISTINCT er.schedule_id) sessions_count
                    FROM exercise_results er
                    JOIN exercises e ON e.id = er.exercise_id
                    WHERE er.user_id = $1 AND er.created_at > NOW() - INTERVAL '7 days'

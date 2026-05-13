@@ -859,6 +859,20 @@ abstract class AppL10n {
   /// In ru, this message translates to:
   /// **'Повторить'**
   String get retry;
+
+  String get addMealTitle;
+  String get mealTypeBreakfast;
+  String get mealTypeLunch;
+  String get mealTypeDinner;
+  String get mealTypeSnack;
+  String get foodNameLabel;
+  String get amountLabel;
+  String get caloriesFieldLabel;
+  String get proteinLabel;
+  String get fatLabel;
+  String get carbsLabel;
+  String get saveMeal;
+  String get mealSaved;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

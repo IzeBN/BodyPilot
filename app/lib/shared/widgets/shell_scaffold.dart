@@ -13,7 +13,10 @@ class ShellScaffold extends StatelessWidget {
     return Scaffold(
       body: child,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/chat'),
+        onPressed: () {
+          final today = DateTime.now().toIso8601String().substring(0, 10);
+          context.push('/add-meal?date=$today');
+        },
         backgroundColor: AppColors.brandBlue,
         elevation: 4,
         shape: const CircleBorder(),
