@@ -78,7 +78,7 @@ class _RecognitionResultSheetState extends ConsumerState<RecognitionResultSheet>
       if (mounted) {
         setState(() => _saving = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Не удалось сохранить'), behavior: SnackBarBehavior.floating),
+          SnackBar(content: Text(AppL10n.of(context).saveError), behavior: SnackBarBehavior.floating),
         );
       }
     }
@@ -141,10 +141,10 @@ class _RecognitionResultSheetState extends ConsumerState<RecognitionResultSheet>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _TotalChip(label: 'ккал', value: totalKcal.round().toString(), color: AppColors.calories),
-                _TotalChip(label: 'Б', value: '${totalP.round()}г', color: AppColors.protein),
-                _TotalChip(label: 'Ж', value: '${totalF.round()}г', color: AppColors.fat),
-                _TotalChip(label: 'У', value: '${totalC.round()}г', color: AppColors.carbs),
+                _TotalChip(label: l.unitKcal, value: totalKcal.round().toString(), color: AppColors.calories),
+                _TotalChip(label: l.macroProtein, value: '${totalP.round()}${l.unitG}', color: AppColors.protein),
+                _TotalChip(label: l.macroFat, value: '${totalF.round()}${l.unitG}', color: AppColors.fat),
+                _TotalChip(label: l.macroCarbs, value: '${totalC.round()}${l.unitG}', color: AppColors.carbs),
               ],
             ),
           ),
@@ -271,7 +271,7 @@ class _ItemRow extends StatelessWidget {
               children: [
                 Text(item.name, style: AppText.bodyName()),
                 const SizedBox(height: 4),
-                Text('$kcal ккал', style: AppText.meta()),
+                Text('$kcal ${AppL10n.of(context).unitKcal}', style: AppText.meta()),
               ],
             ),
           ),
@@ -285,7 +285,7 @@ class _ItemRow extends StatelessWidget {
               textAlign: TextAlign.center,
               style: AppText.counter(),
               decoration: InputDecoration(
-                suffix: const Text('г', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                suffix: Text(AppL10n.of(context).unitG, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
                 filled: true, fillColor: AppColors.surfaceTint,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),

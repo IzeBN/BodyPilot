@@ -47,7 +47,7 @@ class ProgramsScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
-        title: Text('Программы тренировок', style: AppText.sectionHead()),
+        title: Text(l.programsTitle, style: AppText.sectionHead()),
         backgroundColor: AppColors.surface,
         elevation: 0,
         leading: GestureDetector(
@@ -61,7 +61,7 @@ class ProgramsScreen extends ConsumerWidget {
       ),
       body: asyncPrograms.when(
         data: (programs) => programs.isEmpty
-            ? Center(child: Text('Нет доступных программ', style: AppText.meta()))
+            ? Center(child: Text(l.programsEmpty, style: AppText.meta()))
             : ListView.builder(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
                 itemCount: programs.length,
@@ -77,14 +77,14 @@ class ProgramsScreen extends ConsumerWidget {
                           await apiDio.post('/api/v1/training/programs/select', data: {'program_id': int.tryParse(p.id) ?? 0});
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Программа "${p.name}" выбрана'), behavior: SnackBarBehavior.floating),
+                              SnackBar(content: Text(l.programSelected(p.name)), behavior: SnackBarBehavior.floating),
                             );
                             context.pop();
                           }
                         } catch (_) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Ошибка выбора программы'), behavior: SnackBarBehavior.floating),
+                              SnackBar(content: Text(l.programSelectError), behavior: SnackBarBehavior.floating),
                             );
                           }
                         }
@@ -108,6 +108,7 @@ class _ProgramCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.trainingCard),
@@ -119,7 +120,6 @@ class _ProgramCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Hero gradient header
             Container(
               height: 90,
               decoration: BoxDecoration(gradient: gradient),
@@ -138,15 +138,14 @@ class _ProgramCard extends StatelessWidget {
                 ],
               ),
             ),
-            // Body
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
               child: Row(
                 children: [
-                  Expanded(child: _Metric(value: '${program.weeks}', label: 'НЕДЕЛЬ')),
+                  Expanded(child: _Metric(value: '${program.weeks}', label: l.labelWeeks)),
                   if (program.category.isNotEmpty)
-                    Expanded(child: _Metric(value: program.category, label: 'ТИП')),
-                  AppButton(label: 'Выбрать', onPressed: onSelect, small: true, expand: false),
+                    Expanded(child: _Metric(value: program.category, label: l.labelType)),
+                  AppButton(label: l.select, onPressed: onSelect, small: true, expand: false),
                 ],
               ),
             ),

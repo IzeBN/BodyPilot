@@ -33,7 +33,10 @@
       "Bash(adb -s emulator-5554 logcat -d flutter:V *:S)",
       "Bash(adb -s emulator-5554 logcat -d -t 200)",
       "Bash(grep -v \"^$\")",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(grep -n ['']\\\\\\([А-Яа-яЁё][^'']*\\\\\\)[''] C:/Data/projects/KayFit_Fitkeep/app/lib/features/account/screens/account_screen.dart C:/Data/projects/KayFit_Fitkeep/app/lib/features/onboarding/screens/equipment_selector_screen.dart)",
+      "Read(//c/Users/izeb/.claude/**)",
+      "Bash(curl:*)"
     ]
   }
 }

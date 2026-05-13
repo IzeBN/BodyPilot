@@ -457,4 +457,153 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get mealSaved => 'Meal added';
+
+  @override
+  String get addSheetFood => 'Food';
+
+  @override
+  String get addSheetFoodDesc => 'Photo, voice, text or barcode';
+
+  @override
+  String get addSheetWorkout => 'Workout';
+
+  @override
+  String get addSheetWorkoutDesc => 'Start or pick a program';
+
+  @override
+  String get addSheetWater => 'Water';
+
+  @override
+  String get addSheetWaterDesc => 'Log a glass of water';
+
+  @override
+  String get addSheetWeight => 'Weight';
+
+  @override
+  String get addSheetWeightDesc => 'Record weight measurement';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get dialogAddWater => 'Add water';
+
+  @override
+  String get dialogRecordWeight => 'Record weight';
+
+  @override
+  String get unitMl => 'ml';
+
+  @override
+  String get micNoAccess => 'Microphone access denied';
+
+  @override
+  String get recognizePhotoError => 'Could not recognize food in photo';
+
+  @override
+  String get errorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get addFoodTitle => 'Add food';
+
+  @override
+  String get methodPhotoTitle => 'Photo';
+
+  @override
+  String get methodPhotoDesc => 'Snap a photo — AI identifies macros in 5 sec';
+
+  @override
+  String get methodVoiceTitle => 'Voice';
+
+  @override
+  String get methodVoiceDesc => 'Say \"Ate soup 300ml\" — that\'s it';
+
+  @override
+  String get methodTextTitle => 'Text';
+
+  @override
+  String get methodTextDesc => 'Describe your meal — AI counts macros';
+
+  @override
+  String get methodBarcodeTitle => 'Barcode';
+
+  @override
+  String get methodBarcodeDesc => 'Scan product package barcode';
+
+  @override
+  String get textInputHint => 'What did you eat? Describe your meal…';
+
+  @override
+  String get voiceRecordingTitle => 'Recording…';
+
+  @override
+  String get voiceInputTitle => 'Voice input';
+
+  @override
+  String get voiceHintStop => 'Tap to stop recording';
+
+  @override
+  String get voiceHintStart => 'Tap the button and say what you ate';
+
+  @override
+  String get recognizingVoice => 'Recognizing speech…';
+
+  @override
+  String get recognizingPhoto => 'Analyzing photo…';
+
+  @override
+  String get parsingStep1 => 'Splitting into ingredients';
+
+  @override
+  String get parsingStep2 => 'Looking up nutrients';
+
+  @override
+  String get parsingStep3 => 'Calculating macros';
+
+  @override
+  String get parsingStep4 => 'Building result';
+
+  @override
+  String get analyzingTitle => 'Analyzing';
+
+  @override
+  String get photoSourceTitle => 'Photo';
+
+  @override
+  String get photoCamera => 'Take photo';
+
+  @override
+  String get photoGallery => 'Choose from gallery';
+
+  @override
+  String get barcodeNotFound => 'Product not found. Try another barcode.';
+
+  @override
+  String get barcodeScanHint => 'Point camera at barcode';
+
+  @override
+  String get saveError => 'Failed to save';
+
+  @override
+  String get programsTitle => 'Training programs';
+
+  @override
+  String get programsEmpty => 'No programs available';
+
+  @override
+  String programSelected(String name) {
+    return 'Program \"$name\" selected';
+  }
+
+  @override
+  String get programSelectError => 'Error selecting program';
+
+  @override
+  String get labelWeeks => 'WEEKS';
+
+  @override
+  String get labelType => 'TYPE';
+
+  @override
+  String get select => 'Select';
 }

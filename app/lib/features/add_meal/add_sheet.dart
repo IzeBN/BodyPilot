@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'ai_meal_sheet.dart';
 
 /// Bottom sheet shown when the centre "+" tab is tapped.
@@ -12,6 +13,7 @@ class AddSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     final bottom = MediaQuery.of(context).padding.bottom;
 
     final options = [
@@ -21,8 +23,8 @@ class AddSheet extends StatelessWidget {
           begin: Alignment.topLeft, end: Alignment.bottomRight,
         ),
         emoji: '🍽️',
-        name: 'Еда',
-        desc: 'Фото, голос, текст или штрихкод',
+        name: l.addSheetFood,
+        desc: l.addSheetFoodDesc,
         onTap: () {
           Navigator.of(context).pop();
           final today = DateTime.now().toIso8601String().substring(0, 10);
@@ -40,8 +42,8 @@ class AddSheet extends StatelessWidget {
           begin: Alignment.topLeft, end: Alignment.bottomRight,
         ),
         emoji: '🏋️',
-        name: 'Тренировка',
-        desc: 'Начать или выбрать программу',
+        name: l.addSheetWorkout,
+        desc: l.addSheetWorkoutDesc,
         onTap: () {
           Navigator.of(context).pop();
           context.push('/training/programs');
@@ -53,11 +55,11 @@ class AddSheet extends StatelessWidget {
           begin: Alignment.topLeft, end: Alignment.bottomRight,
         ),
         emoji: '💧',
-        name: 'Вода',
-        desc: 'Добавить стакан воды',
+        name: l.addSheetWater,
+        desc: l.addSheetWaterDesc,
         onTap: () {
           Navigator.of(context).pop();
-          _showWaterDialog(context);
+          _showWaterDialog(context, l);
         },
       ),
       _Option(
@@ -66,11 +68,11 @@ class AddSheet extends StatelessWidget {
           begin: Alignment.topLeft, end: Alignment.bottomRight,
         ),
         emoji: '⚖️',
-        name: 'Вес',
-        desc: 'Записать замер веса',
+        name: l.addSheetWeight,
+        desc: l.addSheetWeightDesc,
         onTap: () {
           Navigator.of(context).pop();
-          _showWeightDialog(context);
+          _showWeightDialog(context, l);
         },
       ),
     ];
@@ -84,7 +86,6 @@ class AddSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Grab handle
           Container(
             width: 40,
             height: 4,
@@ -94,7 +95,6 @@ class AddSheet extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          // Options
           ...options.map((o) => Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: _OptionTile(option: o),
@@ -104,52 +104,46 @@ class AddSheet extends StatelessWidget {
     );
   }
 
-  void _showWaterDialog(BuildContext context) {
+  void _showWaterDialog(BuildContext context, AppL10n l) {
     final ctrl = TextEditingController(text: '250');
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Добавить воду'),
+        title: Text(l.dialogAddWater),
         content: TextField(
           controller: ctrl,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(suffix: Text('мл')),
+          decoration: InputDecoration(suffix: Text(l.unitMl)),
           autofocus: true,
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Отмена')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l.cancel)),
           TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              // TODO: call water log API
-            },
-            child: const Text('Добавить'),
+            onPressed: () { Navigator.pop(ctx); },
+            child: Text(l.saveMeal),
           ),
         ],
       ),
     );
   }
 
-  void _showWeightDialog(BuildContext context) {
+  void _showWeightDialog(BuildContext context, AppL10n l) {
     final ctrl = TextEditingController();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Записать вес'),
+        title: Text(l.dialogRecordWeight),
         content: TextField(
           controller: ctrl,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          decoration: const InputDecoration(suffix: Text('кг')),
+          decoration: InputDecoration(suffix: Text(l.unitKg)),
           autofocus: true,
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Отмена')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l.cancel)),
           TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              // TODO: call body weight log API
-            },
-            child: const Text('Добавить'),
+            onPressed: () { Navigator.pop(ctx); },
+            child: Text(l.saveMeal),
           ),
         ],
       ),
@@ -216,7 +210,6 @@ class _OptionTileState extends State<_OptionTile>
           ),
           child: Row(
             children: [
-              // Icon
               Container(
                 width: 44,
                 height: 44,

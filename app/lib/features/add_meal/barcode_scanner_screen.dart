@@ -3,6 +3,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../core/api/api_client.dart';
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'recognition_result_sheet.dart';
 
 class BarcodeScannerScreen extends StatefulWidget {
@@ -63,8 +64,8 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   void _showNotFound() {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Продукт не найден. Попробуйте другой штрихкод.'),
+      SnackBar(
+        content: Text(AppL10n.of(context).barcodeNotFound),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -121,7 +122,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
           Align(
             alignment: const Alignment(0, 0.7),
             child: Text(
-              'Наведи камеру на штрихкод',
+              AppL10n.of(context).barcodeScanHint,
               style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
             ),
           ),

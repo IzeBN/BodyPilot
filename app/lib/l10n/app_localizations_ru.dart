@@ -456,4 +456,154 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get mealSaved => 'Приём пищи добавлен';
+
+  @override
+  String get addSheetFood => 'Еда';
+
+  @override
+  String get addSheetFoodDesc => 'Фото, голос, текст или штрихкод';
+
+  @override
+  String get addSheetWorkout => 'Тренировка';
+
+  @override
+  String get addSheetWorkoutDesc => 'Начать или выбрать программу';
+
+  @override
+  String get addSheetWater => 'Вода';
+
+  @override
+  String get addSheetWaterDesc => 'Добавить стакан воды';
+
+  @override
+  String get addSheetWeight => 'Вес';
+
+  @override
+  String get addSheetWeightDesc => 'Записать замер веса';
+
+  @override
+  String get cancel => 'Отмена';
+
+  @override
+  String get dialogAddWater => 'Добавить воду';
+
+  @override
+  String get dialogRecordWeight => 'Записать вес';
+
+  @override
+  String get unitMl => 'мл';
+
+  @override
+  String get micNoAccess => 'Нет доступа к микрофону';
+
+  @override
+  String get recognizePhotoError => 'Не удалось распознать еду на фото';
+
+  @override
+  String get errorGeneric => 'Что-то пошло не так. Попробуйте ещё раз.';
+
+  @override
+  String get addFoodTitle => 'Добавить еду';
+
+  @override
+  String get methodPhotoTitle => 'Фото';
+
+  @override
+  String get methodPhotoDesc => 'Сфотографируй — AI распознает за 5 сек';
+
+  @override
+  String get methodVoiceTitle => 'Голос';
+
+  @override
+  String get methodVoiceDesc => '«Съел борщ 300 мл» — просто скажи';
+
+  @override
+  String get methodTextTitle => 'Текст';
+
+  @override
+  String get methodTextDesc => 'Напиши что съел — AI посчитает КБЖУ';
+
+  @override
+  String get methodBarcodeTitle => 'Штрихкод';
+
+  @override
+  String get methodBarcodeDesc => 'Сканировать упаковку продукта';
+
+  @override
+  String get textInputHint => 'Что съел? Опиши приём пищи…';
+
+  @override
+  String get voiceRecordingTitle => 'Запись…';
+
+  @override
+  String get voiceInputTitle => 'Голосовой ввод';
+
+  @override
+  String get voiceHintStop => 'Нажми, чтобы остановить запись';
+
+  @override
+  String get voiceHintStart => 'Нажми на кнопку и скажи что ел';
+
+  @override
+  String get recognizingVoice => 'Распознаём речь…';
+
+  @override
+  String get recognizingPhoto => 'Анализируем фото…';
+
+  @override
+  String get parsingStep1 => 'Разбиваем на ингредиенты';
+
+  @override
+  String get parsingStep2 => 'Ищем нутриенты в базе';
+
+  @override
+  String get parsingStep3 => 'Рассчитываем КБЖУ';
+
+  @override
+  String get parsingStep4 => 'Формируем результат';
+
+  @override
+  String get analyzingTitle => 'Анализирую';
+
+  @override
+  String get photoSourceTitle => 'Фото';
+
+  @override
+  String get photoCamera => 'Сделать фото';
+
+  @override
+  String get photoGallery => 'Выбрать из галереи';
+
+  @override
+  String get barcodeNotFound =>
+      'Продукт не найден. Попробуйте другой штрихкод.';
+
+  @override
+  String get barcodeScanHint => 'Наведи камеру на штрихкод';
+
+  @override
+  String get saveError => 'Не удалось сохранить';
+
+  @override
+  String get programsTitle => 'Программы тренировок';
+
+  @override
+  String get programsEmpty => 'Нет доступных программ';
+
+  @override
+  String programSelected(String name) {
+    return 'Программа \"$name\" выбрана';
+  }
+
+  @override
+  String get programSelectError => 'Ошибка выбора программы';
+
+  @override
+  String get labelWeeks => 'НЕДЕЛЬ';
+
+  @override
+  String get labelType => 'ТИП';
+
+  @override
+  String get select => 'Выбрать';
 }

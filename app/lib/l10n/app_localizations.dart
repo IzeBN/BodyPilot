@@ -937,6 +937,300 @@ abstract class AppL10n {
   /// In ru, this message translates to:
   /// **'Приём пищи добавлен'**
   String get mealSaved;
+
+  /// No description provided for @addSheetFood.
+  ///
+  /// In ru, this message translates to:
+  /// **'Еда'**
+  String get addSheetFood;
+
+  /// No description provided for @addSheetFoodDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Фото, голос, текст или штрихкод'**
+  String get addSheetFoodDesc;
+
+  /// No description provided for @addSheetWorkout.
+  ///
+  /// In ru, this message translates to:
+  /// **'Тренировка'**
+  String get addSheetWorkout;
+
+  /// No description provided for @addSheetWorkoutDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Начать или выбрать программу'**
+  String get addSheetWorkoutDesc;
+
+  /// No description provided for @addSheetWater.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вода'**
+  String get addSheetWater;
+
+  /// No description provided for @addSheetWaterDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить стакан воды'**
+  String get addSheetWaterDesc;
+
+  /// No description provided for @addSheetWeight.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вес'**
+  String get addSheetWeight;
+
+  /// No description provided for @addSheetWeightDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Записать замер веса'**
+  String get addSheetWeightDesc;
+
+  /// No description provided for @cancel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отмена'**
+  String get cancel;
+
+  /// No description provided for @dialogAddWater.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить воду'**
+  String get dialogAddWater;
+
+  /// No description provided for @dialogRecordWeight.
+  ///
+  /// In ru, this message translates to:
+  /// **'Записать вес'**
+  String get dialogRecordWeight;
+
+  /// No description provided for @unitMl.
+  ///
+  /// In ru, this message translates to:
+  /// **'мл'**
+  String get unitMl;
+
+  /// No description provided for @micNoAccess.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет доступа к микрофону'**
+  String get micNoAccess;
+
+  /// No description provided for @recognizePhotoError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось распознать еду на фото'**
+  String get recognizePhotoError;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In ru, this message translates to:
+  /// **'Что-то пошло не так. Попробуйте ещё раз.'**
+  String get errorGeneric;
+
+  /// No description provided for @addFoodTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Добавить еду'**
+  String get addFoodTitle;
+
+  /// No description provided for @methodPhotoTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Фото'**
+  String get methodPhotoTitle;
+
+  /// No description provided for @methodPhotoDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сфотографируй — AI распознает за 5 сек'**
+  String get methodPhotoDesc;
+
+  /// No description provided for @methodVoiceTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Голос'**
+  String get methodVoiceTitle;
+
+  /// No description provided for @methodVoiceDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'«Съел борщ 300 мл» — просто скажи'**
+  String get methodVoiceDesc;
+
+  /// No description provided for @methodTextTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Текст'**
+  String get methodTextTitle;
+
+  /// No description provided for @methodTextDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Напиши что съел — AI посчитает КБЖУ'**
+  String get methodTextDesc;
+
+  /// No description provided for @methodBarcodeTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Штрихкод'**
+  String get methodBarcodeTitle;
+
+  /// No description provided for @methodBarcodeDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сканировать упаковку продукта'**
+  String get methodBarcodeDesc;
+
+  /// No description provided for @textInputHint.
+  ///
+  /// In ru, this message translates to:
+  /// **'Что съел? Опиши приём пищи…'**
+  String get textInputHint;
+
+  /// No description provided for @voiceRecordingTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Запись…'**
+  String get voiceRecordingTitle;
+
+  /// No description provided for @voiceInputTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Голосовой ввод'**
+  String get voiceInputTitle;
+
+  /// No description provided for @voiceHintStop.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нажми, чтобы остановить запись'**
+  String get voiceHintStop;
+
+  /// No description provided for @voiceHintStart.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нажми на кнопку и скажи что ел'**
+  String get voiceHintStart;
+
+  /// No description provided for @recognizingVoice.
+  ///
+  /// In ru, this message translates to:
+  /// **'Распознаём речь…'**
+  String get recognizingVoice;
+
+  /// No description provided for @recognizingPhoto.
+  ///
+  /// In ru, this message translates to:
+  /// **'Анализируем фото…'**
+  String get recognizingPhoto;
+
+  /// No description provided for @parsingStep1.
+  ///
+  /// In ru, this message translates to:
+  /// **'Разбиваем на ингредиенты'**
+  String get parsingStep1;
+
+  /// No description provided for @parsingStep2.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ищем нутриенты в базе'**
+  String get parsingStep2;
+
+  /// No description provided for @parsingStep3.
+  ///
+  /// In ru, this message translates to:
+  /// **'Рассчитываем КБЖУ'**
+  String get parsingStep3;
+
+  /// No description provided for @parsingStep4.
+  ///
+  /// In ru, this message translates to:
+  /// **'Формируем результат'**
+  String get parsingStep4;
+
+  /// No description provided for @analyzingTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Анализирую'**
+  String get analyzingTitle;
+
+  /// No description provided for @photoSourceTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Фото'**
+  String get photoSourceTitle;
+
+  /// No description provided for @photoCamera.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сделать фото'**
+  String get photoCamera;
+
+  /// No description provided for @photoGallery.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбрать из галереи'**
+  String get photoGallery;
+
+  /// No description provided for @barcodeNotFound.
+  ///
+  /// In ru, this message translates to:
+  /// **'Продукт не найден. Попробуйте другой штрихкод.'**
+  String get barcodeNotFound;
+
+  /// No description provided for @barcodeScanHint.
+  ///
+  /// In ru, this message translates to:
+  /// **'Наведи камеру на штрихкод'**
+  String get barcodeScanHint;
+
+  /// No description provided for @saveError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Не удалось сохранить'**
+  String get saveError;
+
+  /// No description provided for @programsTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Программы тренировок'**
+  String get programsTitle;
+
+  /// No description provided for @programsEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет доступных программ'**
+  String get programsEmpty;
+
+  /// No description provided for @programSelected.
+  ///
+  /// In ru, this message translates to:
+  /// **'Программа \"{name}\" выбрана'**
+  String programSelected(String name);
+
+  /// No description provided for @programSelectError.
+  ///
+  /// In ru, this message translates to:
+  /// **'Ошибка выбора программы'**
+  String get programSelectError;
+
+  /// No description provided for @labelWeeks.
+  ///
+  /// In ru, this message translates to:
+  /// **'НЕДЕЛЬ'**
+  String get labelWeeks;
+
+  /// No description provided for @labelType.
+  ///
+  /// In ru, this message translates to:
+  /// **'ТИП'**
+  String get labelType;
+
+  /// No description provided for @select.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбрать'**
+  String get select;
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

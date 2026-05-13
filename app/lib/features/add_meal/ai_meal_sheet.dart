@@ -124,7 +124,7 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
     final status = await Permission.microphone.request();
     if (!mounted) return;
     if (!status.isGranted) {
-      _showError(msg: 'Нет доступа к микрофону');
+      _showError(msg: AppL10n.of(context).micNoAccess);
       _switchMode(_Mode.choose);
       return;
     }
@@ -189,7 +189,7 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
       final rawItems = resp.data['items'] as List<dynamic>?;
       if (rawItems == null || rawItems.isEmpty) {
         setState(() => _loading = _Loading.none);
-        _showError(msg: 'Не удалось распознать еду на фото');
+        _showError(msg: AppL10n.of(context).recognizePhotoError);
         return;
       }
       final items = rawItems.map((e) => e as Map<String, dynamic>).toList();
@@ -226,7 +226,7 @@ class _AiMealSheetState extends State<AiMealSheet> with TickerProviderStateMixin
   void _showError({String? msg}) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(msg ?? 'Что-то пошло не так. Попробуйте ещё раз.'),
+      content: Text(msg ?? AppL10n.of(context).errorGeneric),
       behavior: SnackBarBehavior.floating,
       backgroundColor: AppColors.calories,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card)),
@@ -339,6 +339,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 12, 16),
       child: Row(
@@ -356,7 +357,7 @@ class _Header extends StatelessWidget {
           ],
           Expanded(
             child: Text(
-              'Добавить еду',
+              l.addFoodTitle,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.textPrimary, letterSpacing: -0.3),
             ),
           ),
@@ -395,12 +396,13 @@ class _ChooseViewState extends State<_ChooseView> with SingleTickerProviderState
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     final ru = Localizations.localeOf(context).languageCode == 'ru';
     final methods = [
-      _MethodData(emoji: '📸', title: ru ? '📸 Фото' : '📸 Photo', desc: ru ? 'Сфотографируй — AI распознает за 5 сек' : 'Snap a photo — AI identifies macros in 5 sec', onTap: widget.onPhoto),
-      _MethodData(emoji: '🎙️', title: ru ? '🎙️ Голос' : '🎙️ Voice', desc: ru ? '«Съел борщ 300 мл» — просто скажи' : 'Say "Ate soup 300ml" — that\'s it', onTap: widget.onVoice),
-      _MethodData(emoji: '✏️', title: ru ? '✏️ Текст' : '✏️ Text', desc: ru ? 'Напиши что съел — AI посчитает КБЖУ' : 'Describe your meal — AI counts macros', onTap: widget.onText),
-      _MethodData(emoji: '📱', title: ru ? '📱 Штрихкод' : '📱 Barcode', desc: ru ? 'Сканировать упаковку продукта' : 'Scan product package barcode', onTap: widget.onBarcode),
+      _MethodData(emoji: '📸', title: '📸 ' + l.methodPhotoTitle, desc: l.methodPhotoDesc, onTap: widget.onPhoto),
+      _MethodData(emoji: '🎙️', title: '🎙️ ' + l.methodVoiceTitle, desc: l.methodVoiceDesc, onTap: widget.onVoice),
+      _MethodData(emoji: '✏️', title: '✏️ ' + l.methodTextTitle, desc: l.methodTextDesc, onTap: widget.onText),
+      _MethodData(emoji: '📱', title: '📱 ' + l.methodBarcodeTitle, desc: l.methodBarcodeDesc, onTap: widget.onBarcode),
     ];
 
     return Column(
@@ -535,6 +537,7 @@ class _TextViewState extends State<_TextView> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     final ru = Localizations.localeOf(context).languageCode == 'ru';
     final hints = ru
         ? ['Гречка 200г, курица 150г', 'Борщ 300мл, хлеб 2 куска']
@@ -570,7 +573,7 @@ class _TextViewState extends State<_TextView> {
             maxLines: 4, minLines: 3,
             textCapitalization: TextCapitalization.sentences,
             decoration: InputDecoration(
-              hintText: ru ? 'Что съел? Опиши приём пищи…' : 'What did you eat? Describe your meal…',
+              hintText: l.textInputHint,
               border: InputBorder.none, filled: false,
               contentPadding: const EdgeInsets.all(16),
             ),
@@ -655,6 +658,7 @@ class _VoiceViewState extends State<_VoiceView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     final rec = widget.isRecording;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -662,7 +666,7 @@ class _VoiceViewState extends State<_VoiceView> with TickerProviderStateMixin {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            rec ? 'Запись...' : 'Голосовой ввод',
+            rec ? l.voiceRecordingTitle : l.voiceInputTitle,
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: rec ? AppColors.calories : AppColors.textMuted),
           ),
           const SizedBox(height: 28),
@@ -704,7 +708,7 @@ class _VoiceViewState extends State<_VoiceView> with TickerProviderStateMixin {
             ),
           const SizedBox(height: 8),
           Text(
-            rec ? 'Нажми, чтобы остановить запись' : 'Нажми на кнопку и скажи что ел',
+            rec ? l.voiceHintStop : l.voiceHintStart,
             style: const TextStyle(fontSize: 13, color: AppColors.textMuted, height: 1.4),
             textAlign: TextAlign.center,
           ),
@@ -789,6 +793,7 @@ class _RecognizingOverlayState extends State<_RecognizingOverlay> with SingleTic
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     final colors = widget.isVoice
         ? [const Color(0xFF059669), const Color(0xFF10B981)]
         : [const Color(0xFF7C3AED), const Color(0xFFA855F7)];
@@ -822,7 +827,7 @@ class _RecognizingOverlayState extends State<_RecognizingOverlay> with SingleTic
           ),
           const SizedBox(height: 24),
           Text(
-            widget.isVoice ? 'Распознаём речь…' : 'Анализируем фото…',
+            widget.isVoice ? l.recognizingVoice : l.recognizingPhoto,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary, letterSpacing: -0.2),
           ),
           const SizedBox(height: 6),
@@ -875,7 +880,8 @@ class _ParsingOverlayState extends State<_ParsingOverlay> with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
-    final steps = ['Разбиваем на ингредиенты', 'Ищем нутриенты в базе', 'Рассчитываем КБЖУ', 'Формируем результат'];
+    final l = AppL10n.of(context);
+    final steps = [l.parsingStep1, l.parsingStep2, l.parsingStep3, l.parsingStep4];
 
     return Container(
       decoration: BoxDecoration(
@@ -905,9 +911,9 @@ class _ParsingOverlayState extends State<_ParsingOverlay> with SingleTickerProvi
                 ),
               ),
               const SizedBox(width: 16),
-              const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('Анализирую', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
-                Text('AI считает КБЖУ', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(l.analyzingTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+                Text('AI считает КБЖУ', style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
               ]),
             ]),
             const SizedBox(height: 32),
@@ -948,6 +954,7 @@ class _PhotoSourceSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppL10n.of(context);
     return Container(
       decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.bottomSheet))),
       padding: EdgeInsets.fromLTRB(20, 16, 20, MediaQuery.of(context).padding.bottom + 20),
@@ -955,13 +962,13 @@ class _PhotoSourceSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(width: 36, height: 4, margin: const EdgeInsets.only(bottom: 20), decoration: BoxDecoration(color: AppColors.borderStrong, borderRadius: BorderRadius.circular(2))),
-          const Text('Фото', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          Text(l.photoSourceTitle, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
           const SizedBox(height: 16),
-          _SrcBtn(icon: Icons.camera_alt_rounded, gradient: const LinearGradient(colors: [Color(0xFF7C3AED), Color(0xFFA855F7)]), label: 'Сделать фото', onTap: () => Navigator.pop(context, ImageSource.camera)),
+          _SrcBtn(icon: Icons.camera_alt_rounded, gradient: const LinearGradient(colors: [Color(0xFF7C3AED), Color(0xFFA855F7)]), label: l.photoCamera, onTap: () => Navigator.pop(context, ImageSource.camera)),
           const SizedBox(height: 10),
-          _SrcBtn(icon: Icons.photo_library_rounded, gradient: const LinearGradient(colors: [Color(0xFF0EA5E9), Color(0xFF38BDF8)]), label: 'Выбрать из галереи', onTap: () => Navigator.pop(context, ImageSource.gallery)),
+          _SrcBtn(icon: Icons.photo_library_rounded, gradient: const LinearGradient(colors: [Color(0xFF0EA5E9), Color(0xFF38BDF8)]), label: l.photoGallery, onTap: () => Navigator.pop(context, ImageSource.gallery)),
           const SizedBox(height: 6),
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Отмена', style: TextStyle(color: AppColors.textMuted, fontSize: 15))),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(l.cancel, style: const TextStyle(color: AppColors.textMuted, fontSize: 15))),
         ],
       ),
     );
