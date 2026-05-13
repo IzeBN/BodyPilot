@@ -43,7 +43,8 @@
       "Bash(do echo:*)",
       "Read(//c/Data/projects/KayFit_Fitkeep/app/**)",
       "Bash(flutter build:*)",
-      "Bash(find /c/Data/projects/KayFit_Fitkeep/backend -name *.env -o -name docker-compose*.yml)"
+      "Bash(find /c/Data/projects/KayFit_Fitkeep/backend -name *.env -o -name docker-compose*.yml)",
+      "Bash(cat \"/c/Data/projects/KayFit_Fitkeep/backend/scripts/\"*.sh)"
     ]
   }
 }

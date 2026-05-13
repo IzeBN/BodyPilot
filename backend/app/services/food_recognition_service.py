@@ -432,31 +432,35 @@ class FoodRecognitionService:
         """Look up food_nutrients_cache and foods tables by English name."""
         if not name_en:
             return None
-        async with self._pool.acquire() as conn:
-            row = await conn.fetchrow(
-                "SELECT * FROM food_nutrients_cache WHERE LOWER(name_en) = LOWER($1)",
-                name_en,
-            )
-            if row:
-                return dict(row)
-            # Fallback: look in foods table (manually seeded DB)
-            foods_row = await conn.fetchrow(
-                """SELECT
-                    calories AS calories, protein AS protein,
-                    fat AS fat, carbs AS carbs,
-                    fiber, sugar, saturated_fat, unsaturated_fat,
-                    glycemic_index, sodium_mg, calcium_mg, iron_mg, potassium_mg,
-                    magnesium_mg, phosphorus_mg, zinc_mg, selenium_mcg, manganese_mg,
-                    copper_mg, cholesterol_mg, vitamin_a_mcg, vitamin_c_mg, vitamin_d_mcg,
-                    vitamin_e_mg, vitamin_k_mcg, vitamin_b1_mg, vitamin_b2_mg, vitamin_b3_mg,
-                    vitamin_b5_mg, vitamin_b6_mg, vitamin_b7_mcg, vitamin_b9_mcg, vitamin_b12_mcg,
-                    source_url, 'local_db' AS source
-                   FROM foods
-                   WHERE LOWER(name_en) = LOWER($1) OR LOWER(name) = LOWER($1)
-                   LIMIT 1""",
-                name_en,
-            )
-            return dict(foods_row) if foods_row else None
+        try:
+            async with self._pool.acquire() as conn:
+                row = await conn.fetchrow(
+                    "SELECT * FROM food_nutrients_cache WHERE LOWER(name_en) = LOWER($1)",
+                    name_en,
+                )
+                if row:
+                    return dict(row)
+                # Fallback: look in foods table (manually seeded DB)
+                foods_row = await conn.fetchrow(
+                    """SELECT
+                        calories AS calories, protein AS protein,
+                        fat AS fat, carbs AS carbs,
+                        fiber, sugar, saturated_fat, unsaturated_fat,
+                        glycemic_index, sodium_mg, calcium_mg, iron_mg, potassium_mg,
+                        magnesium_mg, phosphorus_mg, zinc_mg, selenium_mcg, manganese_mg,
+                        copper_mg, cholesterol_mg, vitamin_a_mcg, vitamin_c_mg, vitamin_d_mcg,
+                        vitamin_e_mg, vitamin_k_mcg, vitamin_b1_mg, vitamin_b2_mg, vitamin_b3_mg,
+                        vitamin_b5_mg, vitamin_b6_mg, vitamin_b7_mcg, vitamin_b9_mcg, vitamin_b12_mcg,
+                        source_url, 'local_db' AS source
+                       FROM foods
+                       WHERE LOWER(name_en) = LOWER($1) OR LOWER(name) = LOWER($1)
+                       LIMIT 1""",
+                    name_en,
+                )
+                return dict(foods_row) if foods_row else None
+        except Exception as e:
+            logger.error("_search_cache: DB error for %r: %s", name_en, e)
+            return None
 
     async def _cache_nutrients(self, name_en: str, data: dict, source: str) -> None:
         """Upsert nutrient data into food_nutrients_cache."""
@@ -516,8 +520,6 @@ class FoodRecognitionService:
             resp = await client.messages.create(
                 model=CLAUDE_MODEL,
                 max_tokens=max_tokens,
-                tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}],
-                betas=["web-search-2025-03-05"],
                 messages=[{"role": "user", "content": prompt}],
             )
             content = ""
