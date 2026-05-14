@@ -644,4 +644,148 @@ class AppL10nEn extends AppL10n {
 
   @override
   String get aiDetermines => 'AI determines meal composition';
+
+  @override
+  String get simpleMode => 'Simple';
+
+  @override
+  String get detailMode => 'Detailed';
+
+  @override
+  String get itemsLabel => 'items';
+
+  @override
+  String get selectedLabel => 'selected';
+
+  @override
+  String get skipButton => 'Skip';
+
+  @override
+  String get deselectAll => 'Deselect all';
+
+  @override
+  String get selectAll => 'Select all';
+
+  @override
+  String get obEquipDetailSubtitle => 'Pick specific gear from each category';
+
+  @override
+  String get equipScreenTitle => 'Equipment';
+
+  @override
+  String get equipSimpleTitle => 'How do you train?';
+
+  @override
+  String get equipSimpleSubtitle =>
+      'Pick your setup — we\'ll build your program';
+
+  @override
+  String get equipDetailedBtn => 'Detailed selection';
+
+  @override
+  String get equipStartWithout => 'Start without equipment';
+
+  @override
+  String get equipDetailedTitle => 'What do you have?';
+
+  @override
+  String get equipNoItems => 'No items';
+
+  @override
+  String get equipAutoSave => 'Selections are saved automatically';
+
+  @override
+  String get equipWeightsTitle => 'Pick available weights';
+
+  @override
+  String get equipOptBodyweightName => 'Bodyweight';
+
+  @override
+  String get equipOptBodyweightDesc => 'No equipment exercises';
+
+  @override
+  String get equipOptGymName => 'Gym machines';
+
+  @override
+  String get equipOptGymDesc => 'Full gym with equipment';
+
+  @override
+  String get equipOptDumbbellName => 'Dumbbells';
+
+  @override
+  String get equipOptDumbbellDesc => 'Free weights';
+
+  @override
+  String get equipOptBarbellName => 'Barbell';
+
+  @override
+  String get equipOptBarbellDesc => 'Weightlifting';
+
+  @override
+  String get equipOptCardioName => 'Cardio';
+
+  @override
+  String get equipOptCardioDesc => 'Treadmill, bike, cardio machines';
+
+  @override
+  String get equipOptBandsName => 'Resistance bands';
+
+  @override
+  String get equipOptBandsDesc => 'Light portable equipment';
+
+  @override
+  String get generatingTitle => 'Generating your program';
+
+  @override
+  String get generatingSubtitle =>
+      'Personalizing exercises for your profile and equipment';
+
+  @override
+  String generatingSeconds(int n) {
+    return '~$n sec';
+  }
+
+  @override
+  String get liveSetDone => 'Set complete';
+
+  @override
+  String get liveSkipSet => 'Skip';
+
+  @override
+  String get liveNextExercise => 'Next exercise';
+
+  @override
+  String get liveFinishWorkout => 'Finish workout';
+
+  @override
+  String get liveRestLabel => 'Rest';
+
+  @override
+  String get liveHistory => 'Last time';
+
+  @override
+  String get liveNoHistory => 'No data';
+
+  @override
+  String get liveEndConfirmTitle => 'Finish workout?';
+
+  @override
+  String get liveEndConfirmBody => 'Your progress will be saved.';
+
+  @override
+  String get liveEndConfirmFinish => 'Finish';
+
+  @override
+  String get liveRepsLabel => 'Reps';
+
+  @override
+  String get liveWeightLabel => 'Weight, kg';
+
+  @override
+  String get liveNoWeight => 'Bodyweight';
+
+  @override
+  String liveSetsOf(int current, int total) {
+    return '$current of $total';
+  }
 }

@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/api/api_client.dart';
 import '../../../core/auth/auth_provider.dart';
+import '../../onboarding/providers/onboarding_provider.dart';
 
 part 'auth_api_provider.g.dart';
 
@@ -23,6 +24,7 @@ class AuthApiService {
       data['access_token'] as String,
       data['refresh_token'] as String,
     );
+    await _syncOnboardingData();
   }
 
   Future<void> register({
@@ -40,5 +42,33 @@ class AuthApiService {
       data['access_token'] as String,
       data['refresh_token'] as String,
     );
+    await _syncOnboardingData();
+  }
+
+  Future<void> _syncOnboardingData() async {
+    try {
+      final obData = await loadOnboardingData();
+      if (obData == null) return;
+
+      // Sync nutrition profile
+      await apiDio.patch('/api/v1/user/profile', data: {
+        'weight_kg': obData.weight,
+        'height_cm': obData.height.round(),
+        'goal': obData.goal,
+      });
+
+      // Sync nutrition goals
+      final goal = await loadLocalNutritionGoal();
+      if (goal != null) {
+        await apiDio.post('/api/v1/nutrition/goals', data: {
+          'calories': goal.targetCalories,
+          'protein_g': goal.protein,
+          'fat_g': goal.fat,
+          'carbs_g': goal.carbs,
+        });
+      }
+    } catch (_) {
+      // Sync is best-effort; silently ignore failures
+    }
   }
 }

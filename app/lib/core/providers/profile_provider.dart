@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../api/api_client.dart';
+import '../../features/onboarding/providers/onboarding_provider.dart' as ob;
 
 part 'profile_provider.g.dart';
 
@@ -160,10 +161,19 @@ Future<NutritionGoals> nutritionGoals(NutritionGoalsRef ref) async {
     if (data is Map) {
       return NutritionGoals.fromJson(data as Map<String, dynamic>);
     }
-    return const NutritionGoals();
-  } catch (_) {
-    return const NutritionGoals();
+  } catch (_) {}
+
+  // Fallback: local onboarding-computed goal
+  final local = await ob.loadLocalNutritionGoal();
+  if (local != null) {
+    return NutritionGoals(
+      calories: local.targetCalories,
+      proteinG: local.protein,
+      fatG: local.fat,
+      carbsG: local.carbs,
+    );
   }
+  return const NutritionGoals();
 }
 
 // ── Weekly progress (for calendar tags) ──────────────────────────────────────

@@ -247,7 +247,7 @@ class _ExRow extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Center(child: Text('🏋️', style: TextStyle(fontSize: 20))),
+            child: const Center(child: Icon(Icons.fitness_center_rounded, size: 22, color: Colors.white)),
           ),
         ],
       ),

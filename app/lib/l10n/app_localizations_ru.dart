@@ -644,4 +644,148 @@ class AppL10nRu extends AppL10n {
 
   @override
   String get aiDetermines => 'AI определяет состав блюда';
+
+  @override
+  String get simpleMode => 'Просто';
+
+  @override
+  String get detailMode => 'Подробно';
+
+  @override
+  String get itemsLabel => 'ед.';
+
+  @override
+  String get selectedLabel => 'выбрано';
+
+  @override
+  String get skipButton => 'Пропустить';
+
+  @override
+  String get deselectAll => 'Снять все';
+
+  @override
+  String get selectAll => 'Выбрать все';
+
+  @override
+  String get obEquipDetailSubtitle =>
+      'Выбери конкретный инвентарь из каждой категории';
+
+  @override
+  String get equipScreenTitle => 'Оборудование';
+
+  @override
+  String get equipSimpleTitle => 'Как тренируешься?';
+
+  @override
+  String get equipSimpleSubtitle => 'Выбери подходящее — подберём программу';
+
+  @override
+  String get equipDetailedBtn => 'Детальный выбор';
+
+  @override
+  String get equipStartWithout => 'Начать без оборудования';
+
+  @override
+  String get equipDetailedTitle => 'Что у тебя есть?';
+
+  @override
+  String get equipNoItems => 'Нет предметов';
+
+  @override
+  String get equipAutoSave => 'Выборы сохраняются автоматически';
+
+  @override
+  String get equipWeightsTitle => 'Выбери доступные веса';
+
+  @override
+  String get equipOptBodyweightName => 'Собственный вес';
+
+  @override
+  String get equipOptBodyweightDesc => 'Упражнения без инвентаря';
+
+  @override
+  String get equipOptGymName => 'Тренажёры зала';
+
+  @override
+  String get equipOptGymDesc => 'Полный зал с оборудованием';
+
+  @override
+  String get equipOptDumbbellName => 'Гантели';
+
+  @override
+  String get equipOptDumbbellDesc => 'Свободные веса';
+
+  @override
+  String get equipOptBarbellName => 'Штанга';
+
+  @override
+  String get equipOptBarbellDesc => 'Тяжёлая атлетика';
+
+  @override
+  String get equipOptCardioName => 'Кардио';
+
+  @override
+  String get equipOptCardioDesc => 'Беговые, велотренажёры';
+
+  @override
+  String get equipOptBandsName => 'Резинки и эспандеры';
+
+  @override
+  String get equipOptBandsDesc => 'Лёгкое портативное оборудование';
+
+  @override
+  String get generatingTitle => 'Генерируем программу';
+
+  @override
+  String get generatingSubtitle =>
+      'Подбираем упражнения под твой профиль и оборудование';
+
+  @override
+  String generatingSeconds(int n) {
+    return '~$n сек';
+  }
+
+  @override
+  String get liveSetDone => 'Подход выполнен';
+
+  @override
+  String get liveSkipSet => 'Пропустить';
+
+  @override
+  String get liveNextExercise => 'Следующее упражнение';
+
+  @override
+  String get liveFinishWorkout => 'Завершить тренировку';
+
+  @override
+  String get liveRestLabel => 'Отдых';
+
+  @override
+  String get liveHistory => 'Прошлый раз';
+
+  @override
+  String get liveNoHistory => 'Нет данных';
+
+  @override
+  String get liveEndConfirmTitle => 'Завершить тренировку?';
+
+  @override
+  String get liveEndConfirmBody => 'Прогресс этой тренировки будет сохранён.';
+
+  @override
+  String get liveEndConfirmFinish => 'Завершить';
+
+  @override
+  String get liveRepsLabel => 'Повторений';
+
+  @override
+  String get liveWeightLabel => 'Вес, кг';
+
+  @override
+  String get liveNoWeight => 'Без веса';
+
+  @override
+  String liveSetsOf(int current, int total) {
+    return '$current из $total';
+  }
 }

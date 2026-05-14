@@ -309,7 +309,7 @@ class _ScheduleExercisesProviderElement
   String get scheduleId => (origin as ScheduleExercisesProvider).scheduleId;
 }
 
-String _$workoutDetailHash() => r'0c51a8c8f95f572c80e77046689d4caf84b7c3b8';
+String _$workoutDetailHash() => r'b62efcce9c0be13313f6f46239393383ca666ac3';
 
 /// See also [workoutDetail].
 @ProviderFor(workoutDetail)
@@ -322,10 +322,10 @@ class WorkoutDetailFamily extends Family<AsyncValue<WorkoutDetail>> {
 
   /// See also [workoutDetail].
   WorkoutDetailProvider call(
-    String workoutId,
+    String scheduleId,
   ) {
     return WorkoutDetailProvider(
-      workoutId,
+      scheduleId,
     );
   }
 
@@ -334,7 +334,7 @@ class WorkoutDetailFamily extends Family<AsyncValue<WorkoutDetail>> {
     covariant WorkoutDetailProvider provider,
   ) {
     return call(
-      provider.workoutId,
+      provider.scheduleId,
     );
   }
 
@@ -357,11 +357,11 @@ class WorkoutDetailFamily extends Family<AsyncValue<WorkoutDetail>> {
 class WorkoutDetailProvider extends AutoDisposeFutureProvider<WorkoutDetail> {
   /// See also [workoutDetail].
   WorkoutDetailProvider(
-    String workoutId,
+    String scheduleId,
   ) : this._internal(
           (ref) => workoutDetail(
             ref as WorkoutDetailRef,
-            workoutId,
+            scheduleId,
           ),
           from: workoutDetailProvider,
           name: r'workoutDetailProvider',
@@ -372,7 +372,7 @@ class WorkoutDetailProvider extends AutoDisposeFutureProvider<WorkoutDetail> {
           dependencies: WorkoutDetailFamily._dependencies,
           allTransitiveDependencies:
               WorkoutDetailFamily._allTransitiveDependencies,
-          workoutId: workoutId,
+          scheduleId: scheduleId,
         );
 
   WorkoutDetailProvider._internal(
@@ -382,10 +382,10 @@ class WorkoutDetailProvider extends AutoDisposeFutureProvider<WorkoutDetail> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.workoutId,
+    required this.scheduleId,
   }) : super.internal();
 
-  final String workoutId;
+  final String scheduleId;
 
   @override
   Override overrideWith(
@@ -400,7 +400,7 @@ class WorkoutDetailProvider extends AutoDisposeFutureProvider<WorkoutDetail> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        workoutId: workoutId,
+        scheduleId: scheduleId,
       ),
     );
   }
@@ -412,13 +412,13 @@ class WorkoutDetailProvider extends AutoDisposeFutureProvider<WorkoutDetail> {
 
   @override
   bool operator ==(Object other) {
-    return other is WorkoutDetailProvider && other.workoutId == workoutId;
+    return other is WorkoutDetailProvider && other.scheduleId == scheduleId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, workoutId.hashCode);
+    hash = _SystemHash.combine(hash, scheduleId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -427,8 +427,8 @@ class WorkoutDetailProvider extends AutoDisposeFutureProvider<WorkoutDetail> {
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin WorkoutDetailRef on AutoDisposeFutureProviderRef<WorkoutDetail> {
-  /// The parameter `workoutId` of this provider.
-  String get workoutId;
+  /// The parameter `scheduleId` of this provider.
+  String get scheduleId;
 }
 
 class _WorkoutDetailProviderElement
@@ -437,7 +437,7 @@ class _WorkoutDetailProviderElement
   _WorkoutDetailProviderElement(super.provider);
 
   @override
-  String get workoutId => (origin as WorkoutDetailProvider).workoutId;
+  String get scheduleId => (origin as WorkoutDetailProvider).scheduleId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

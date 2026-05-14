@@ -1,20 +1,39 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/api/api_client.dart';
+import '../../onboarding/providers/onboarding_provider.dart';
 import '../models/journal_models.dart';
 
 part 'journal_provider.g.dart';
 
 @riverpod
 Future<JournalDay> journalDay(JournalDayRef ref, String date) async {
-  final resp = await apiDio.get(
-    '/api/v1/nutrition/meals',
-    queryParameters: {'date': date},
-  );
+  // Load meals and nutrition goals in parallel
+  final results = await Future.wait([
+    apiDio.get('/api/v1/nutrition/meals', queryParameters: {'date': date}),
+    apiDio.get('/api/v1/nutrition/goals').catchError((_) => null),
+  ]);
+
+  final resp = results[0];
+  final goalsResp = results[1];
 
   final data = resp.data as Map<String, dynamic>;
   final meals = (data['meals'] as List? ?? []);
   final summary = data['summary'] as Map<String, dynamic>? ?? {};
+
+  // Load goal calories from API, fallback to local, then 2000
+  int goalKcal = 2000;
+  if (goalsResp != null) {
+    try {
+      final gd = goalsResp.data as Map<String, dynamic>?;
+      goalKcal = (gd?['calories'] as num?)?.toInt() ?? 2000;
+    } catch (_) {}
+  }
+  if (goalKcal == 2000) {
+    // Fallback: try local stored goal
+    final local = await loadLocalNutritionGoal();
+    if (local != null) goalKcal = local.targetCalories;
+  }
 
   // Group meals by meal_type
   final groups = <String, List<MealEntry>>{};
@@ -43,7 +62,7 @@ Future<JournalDay> journalDay(JournalDayRef ref, String date) async {
   return JournalDay(
     date: date,
     totalKcal: (summary['total_calories'] as num?)?.toInt() ?? 0,
-    goalKcal: 2000,
+    goalKcal: goalKcal,
     protein: (summary['total_protein'] as num?)?.toInt() ?? 0,
     fat: (summary['total_fat'] as num?)?.toInt() ?? 0,
     carbs: (summary['total_carbs'] as num?)?.toInt() ?? 0,

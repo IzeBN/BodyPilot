@@ -92,28 +92,43 @@ Future<List<ExerciseEntry>> scheduleExercises(ScheduleExercisesRef ref, String s
   }).toList();
 }
 
-// ── Workout detail (from programs endpoint) ───────────────────────────────────
+// ── Workout detail (from schedule entry + exercises) ──────────────────────────
 
 @riverpod
-Future<WorkoutDetail> workoutDetail(WorkoutDetailRef ref, String workoutId) async {
-  // Try to get from training programs
+Future<WorkoutDetail> workoutDetail(WorkoutDetailRef ref, String scheduleId) async {
+  // Fetch exercises via schedule endpoint
+  List<ExerciseEntry> exercises = [];
   try {
-    final resp = await apiDio.get('/api/v1/training/programs/$workoutId');
+    exercises = await ref.read(scheduleExercisesProvider(scheduleId).future);
+  } catch (_) {}
+
+  // Get workout name from full schedule list
+  String name = '';
+  String tag = '';
+  int durationMin = 45;
+  try {
+    final resp = await apiDio.get('/api/v1/training/schedule');
     final data = resp.data as Map<String, dynamic>;
-    return WorkoutDetail.fromJson(data);
-  } catch (_) {
-    // Fallback: minimal detail
-    return WorkoutDetail(
-      id: workoutId,
-      name: '',
-      tag: '',
-      durationMin: 45,
-      exerciseCount: 0,
-      kcal: 0,
-      gradient: WorkoutGradient.coral,
-      exercises: [],
-    );
-  }
+    final entries = data['entries'] as List? ?? [];
+    final entry = entries.firstWhere(
+      (e) => (e as Map<String, dynamic>)['id']?.toString() == scheduleId,
+      orElse: () => <String, dynamic>{},
+    ) as Map<String, dynamic>;
+    name = entry['workout_name'] as String? ?? '';
+    tag = entry['muscle_groups'] as String? ?? '';
+    durationMin = (entry['duration_minutes'] as num?)?.toInt() ?? 45;
+  } catch (_) {}
+
+  return WorkoutDetail(
+    id: scheduleId,
+    name: name,
+    tag: tag,
+    durationMin: durationMin,
+    exerciseCount: exercises.length,
+    kcal: 0,
+    gradient: WorkoutGradient.coral,
+    exercises: exercises,
+  );
 }
 
 // ── Submit workout result ─────────────────────────────────────────────────────

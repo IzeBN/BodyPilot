@@ -44,7 +44,13 @@
       "Read(//c/Data/projects/KayFit_Fitkeep/app/**)",
       "Bash(flutter build:*)",
       "Bash(find /c/Data/projects/KayFit_Fitkeep/backend -name *.env -o -name docker-compose*.yml)",
-      "Bash(cat \"/c/Data/projects/KayFit_Fitkeep/backend/scripts/\"*.sh)"
+      "Bash(cat \"/c/Data/projects/KayFit_Fitkeep/backend/scripts/\"*.sh)",
+      "Bash(flutter clean:*)",
+      "Bash(adb shell:*)",
+      "Bash(docker exec:*)",
+      "Bash(1:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker:*)"
     ]
   }
 }

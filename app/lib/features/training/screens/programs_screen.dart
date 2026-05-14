@@ -74,17 +74,27 @@ class ProgramsScreen extends ConsumerWidget {
                       gradient: _gradient(i),
                       onSelect: () async {
                         try {
-                          await apiDio.post('/api/v1/training/programs/select', data: {'program_id': int.tryParse(p.id) ?? 0});
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l.programSelected(p.name)), behavior: SnackBarBehavior.floating),
-                            );
-                            context.pop();
-                          }
+                          final resp = await apiDio.post(
+                            '/api/v1/training/programs/select',
+                            data: {'program_id': int.tryParse(p.id) ?? 0},
+                          );
+                          if (!context.mounted) return;
+                          // Backend may return a task_id if generation is async
+                          final data = resp.data;
+                          final taskId = data is Map
+                              ? data['task_id']?.toString()
+                              : null;
+                          context.go(
+                            '/training/generating',
+                            extra: taskId,
+                          );
                         } catch (_) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(l.programSelectError), behavior: SnackBarBehavior.floating),
+                              SnackBar(
+                                content: Text(l.programSelectError),
+                                behavior: SnackBarBehavior.floating,
+                              ),
                             );
                           }
                         }

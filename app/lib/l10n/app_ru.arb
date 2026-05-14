@@ -322,5 +322,67 @@
   "fillFoodFields": "Заполните название, количество и калории",
   "foodNameHint": "Гречка с курицей",
   "aiRecognize": "AI распознать",
-  "aiDetermines": "AI определяет состав блюда"
+  "aiDetermines": "AI определяет состав блюда",
+
+  "simpleMode": "Просто",
+  "detailMode": "Подробно",
+  "itemsLabel": "ед.",
+  "selectedLabel": "выбрано",
+  "skipButton": "Пропустить",
+  "deselectAll": "Снять все",
+  "selectAll": "Выбрать все",
+  "obEquipDetailSubtitle": "Выбери конкретный инвентарь из каждой категории",
+
+  "equipScreenTitle": "Оборудование",
+  "equipSimpleTitle": "Как тренируешься?",
+  "equipSimpleSubtitle": "Выбери подходящее — подберём программу",
+  "equipDetailedBtn": "Детальный выбор",
+  "equipStartWithout": "Начать без оборудования",
+  "equipDetailedTitle": "Что у тебя есть?",
+  "equipNoItems": "Нет предметов",
+  "equipAutoSave": "Выборы сохраняются автоматически",
+  "equipWeightsTitle": "Выбери доступные веса",
+
+  "equipOptBodyweightName": "Собственный вес",
+  "equipOptBodyweightDesc": "Упражнения без инвентаря",
+  "equipOptGymName": "Тренажёры зала",
+  "equipOptGymDesc": "Полный зал с оборудованием",
+  "equipOptDumbbellName": "Гантели",
+  "equipOptDumbbellDesc": "Свободные веса",
+  "equipOptBarbellName": "Штанга",
+  "equipOptBarbellDesc": "Тяжёлая атлетика",
+  "equipOptCardioName": "Кардио",
+  "equipOptCardioDesc": "Беговые, велотренажёры",
+  "equipOptBandsName": "Резинки и эспандеры",
+  "equipOptBandsDesc": "Лёгкое портативное оборудование",
+
+  "generatingTitle": "Генерируем программу",
+  "generatingSubtitle": "Подбираем упражнения под твой профиль и оборудование",
+  "generatingSeconds": "~{n} сек",
+  "@generatingSeconds": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+
+  "liveSetDone": "Подход выполнен",
+  "liveSkipSet": "Пропустить",
+  "liveNextExercise": "Следующее упражнение",
+  "liveFinishWorkout": "Завершить тренировку",
+  "liveRestLabel": "Отдых",
+  "liveHistory": "Прошлый раз",
+  "liveNoHistory": "Нет данных",
+  "liveEndConfirmTitle": "Завершить тренировку?",
+  "liveEndConfirmBody": "Прогресс этой тренировки будет сохранён.",
+  "liveEndConfirmFinish": "Завершить",
+  "liveRepsLabel": "Повторений",
+  "liveWeightLabel": "Вес, кг",
+  "liveNoWeight": "Без веса",
+  "liveSetsOf": "{current} из {total}",
+  "@liveSetsOf": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  }
 }

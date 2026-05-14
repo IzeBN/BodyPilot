@@ -1303,6 +1303,282 @@ abstract class AppL10n {
   /// In ru, this message translates to:
   /// **'AI определяет состав блюда'**
   String get aiDetermines;
+
+  /// No description provided for @simpleMode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Просто'**
+  String get simpleMode;
+
+  /// No description provided for @detailMode.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подробно'**
+  String get detailMode;
+
+  /// No description provided for @itemsLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'ед.'**
+  String get itemsLabel;
+
+  /// No description provided for @selectedLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'выбрано'**
+  String get selectedLabel;
+
+  /// No description provided for @skipButton.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пропустить'**
+  String get skipButton;
+
+  /// No description provided for @deselectAll.
+  ///
+  /// In ru, this message translates to:
+  /// **'Снять все'**
+  String get deselectAll;
+
+  /// No description provided for @selectAll.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбрать все'**
+  String get selectAll;
+
+  /// No description provided for @obEquipDetailSubtitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбери конкретный инвентарь из каждой категории'**
+  String get obEquipDetailSubtitle;
+
+  /// No description provided for @equipScreenTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оборудование'**
+  String get equipScreenTitle;
+
+  /// No description provided for @equipSimpleTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Как тренируешься?'**
+  String get equipSimpleTitle;
+
+  /// No description provided for @equipSimpleSubtitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбери подходящее — подберём программу'**
+  String get equipSimpleSubtitle;
+
+  /// No description provided for @equipDetailedBtn.
+  ///
+  /// In ru, this message translates to:
+  /// **'Детальный выбор'**
+  String get equipDetailedBtn;
+
+  /// No description provided for @equipStartWithout.
+  ///
+  /// In ru, this message translates to:
+  /// **'Начать без оборудования'**
+  String get equipStartWithout;
+
+  /// No description provided for @equipDetailedTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Что у тебя есть?'**
+  String get equipDetailedTitle;
+
+  /// No description provided for @equipNoItems.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет предметов'**
+  String get equipNoItems;
+
+  /// No description provided for @equipAutoSave.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выборы сохраняются автоматически'**
+  String get equipAutoSave;
+
+  /// No description provided for @equipWeightsTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Выбери доступные веса'**
+  String get equipWeightsTitle;
+
+  /// No description provided for @equipOptBodyweightName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Собственный вес'**
+  String get equipOptBodyweightName;
+
+  /// No description provided for @equipOptBodyweightDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Упражнения без инвентаря'**
+  String get equipOptBodyweightDesc;
+
+  /// No description provided for @equipOptGymName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Тренажёры зала'**
+  String get equipOptGymName;
+
+  /// No description provided for @equipOptGymDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Полный зал с оборудованием'**
+  String get equipOptGymDesc;
+
+  /// No description provided for @equipOptDumbbellName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Гантели'**
+  String get equipOptDumbbellName;
+
+  /// No description provided for @equipOptDumbbellDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Свободные веса'**
+  String get equipOptDumbbellDesc;
+
+  /// No description provided for @equipOptBarbellName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Штанга'**
+  String get equipOptBarbellName;
+
+  /// No description provided for @equipOptBarbellDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Тяжёлая атлетика'**
+  String get equipOptBarbellDesc;
+
+  /// No description provided for @equipOptCardioName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Кардио'**
+  String get equipOptCardioName;
+
+  /// No description provided for @equipOptCardioDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Беговые, велотренажёры'**
+  String get equipOptCardioDesc;
+
+  /// No description provided for @equipOptBandsName.
+  ///
+  /// In ru, this message translates to:
+  /// **'Резинки и эспандеры'**
+  String get equipOptBandsName;
+
+  /// No description provided for @equipOptBandsDesc.
+  ///
+  /// In ru, this message translates to:
+  /// **'Лёгкое портативное оборудование'**
+  String get equipOptBandsDesc;
+
+  /// No description provided for @generatingTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Генерируем программу'**
+  String get generatingTitle;
+
+  /// No description provided for @generatingSubtitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подбираем упражнения под твой профиль и оборудование'**
+  String get generatingSubtitle;
+
+  /// No description provided for @generatingSeconds.
+  ///
+  /// In ru, this message translates to:
+  /// **'~{n} сек'**
+  String generatingSeconds(int n);
+
+  /// No description provided for @liveSetDone.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подход выполнен'**
+  String get liveSetDone;
+
+  /// No description provided for @liveSkipSet.
+  ///
+  /// In ru, this message translates to:
+  /// **'Пропустить'**
+  String get liveSkipSet;
+
+  /// No description provided for @liveNextExercise.
+  ///
+  /// In ru, this message translates to:
+  /// **'Следующее упражнение'**
+  String get liveNextExercise;
+
+  /// No description provided for @liveFinishWorkout.
+  ///
+  /// In ru, this message translates to:
+  /// **'Завершить тренировку'**
+  String get liveFinishWorkout;
+
+  /// No description provided for @liveRestLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Отдых'**
+  String get liveRestLabel;
+
+  /// No description provided for @liveHistory.
+  ///
+  /// In ru, this message translates to:
+  /// **'Прошлый раз'**
+  String get liveHistory;
+
+  /// No description provided for @liveNoHistory.
+  ///
+  /// In ru, this message translates to:
+  /// **'Нет данных'**
+  String get liveNoHistory;
+
+  /// No description provided for @liveEndConfirmTitle.
+  ///
+  /// In ru, this message translates to:
+  /// **'Завершить тренировку?'**
+  String get liveEndConfirmTitle;
+
+  /// No description provided for @liveEndConfirmBody.
+  ///
+  /// In ru, this message translates to:
+  /// **'Прогресс этой тренировки будет сохранён.'**
+  String get liveEndConfirmBody;
+
+  /// No description provided for @liveEndConfirmFinish.
+  ///
+  /// In ru, this message translates to:
+  /// **'Завершить'**
+  String get liveEndConfirmFinish;
+
+  /// No description provided for @liveRepsLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Повторений'**
+  String get liveRepsLabel;
+
+  /// No description provided for @liveWeightLabel.
+  ///
+  /// In ru, this message translates to:
+  /// **'Вес, кг'**
+  String get liveWeightLabel;
+
+  /// No description provided for @liveNoWeight.
+  ///
+  /// In ru, this message translates to:
+  /// **'Без веса'**
+  String get liveNoWeight;
+
+  /// No description provided for @liveSetsOf.
+  ///
+  /// In ru, this message translates to:
+  /// **'{current} из {total}'**
+  String liveSetsOf(int current, int total);
 }
 
 class _AppL10nDelegate extends LocalizationsDelegate<AppL10n> {

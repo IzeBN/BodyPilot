@@ -320,5 +320,67 @@
   "fillFoodFields": "Fill in name, amount and calories",
   "foodNameHint": "Buckwheat with chicken",
   "aiRecognize": "AI Recognize",
-  "aiDetermines": "AI determines meal composition"
+  "aiDetermines": "AI determines meal composition",
+
+  "simpleMode": "Simple",
+  "detailMode": "Detailed",
+  "itemsLabel": "items",
+  "selectedLabel": "selected",
+  "skipButton": "Skip",
+  "deselectAll": "Deselect all",
+  "selectAll": "Select all",
+  "obEquipDetailSubtitle": "Pick specific gear from each category",
+
+  "equipScreenTitle": "Equipment",
+  "equipSimpleTitle": "How do you train?",
+  "equipSimpleSubtitle": "Pick your setup — we'll build your program",
+  "equipDetailedBtn": "Detailed selection",
+  "equipStartWithout": "Start without equipment",
+  "equipDetailedTitle": "What do you have?",
+  "equipNoItems": "No items",
+  "equipAutoSave": "Selections are saved automatically",
+  "equipWeightsTitle": "Pick available weights",
+
+  "equipOptBodyweightName": "Bodyweight",
+  "equipOptBodyweightDesc": "No equipment exercises",
+  "equipOptGymName": "Gym machines",
+  "equipOptGymDesc": "Full gym with equipment",
+  "equipOptDumbbellName": "Dumbbells",
+  "equipOptDumbbellDesc": "Free weights",
+  "equipOptBarbellName": "Barbell",
+  "equipOptBarbellDesc": "Weightlifting",
+  "equipOptCardioName": "Cardio",
+  "equipOptCardioDesc": "Treadmill, bike, cardio machines",
+  "equipOptBandsName": "Resistance bands",
+  "equipOptBandsDesc": "Light portable equipment",
+
+  "generatingTitle": "Generating your program",
+  "generatingSubtitle": "Personalizing exercises for your profile and equipment",
+  "generatingSeconds": "~{n} sec",
+  "@generatingSeconds": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+
+  "liveSetDone": "Set complete",
+  "liveSkipSet": "Skip",
+  "liveNextExercise": "Next exercise",
+  "liveFinishWorkout": "Finish workout",
+  "liveRestLabel": "Rest",
+  "liveHistory": "Last time",
+  "liveNoHistory": "No data",
+  "liveEndConfirmTitle": "Finish workout?",
+  "liveEndConfirmBody": "Your progress will be saved.",
+  "liveEndConfirmFinish": "Finish",
+  "liveRepsLabel": "Reps",
+  "liveWeightLabel": "Weight, kg",
+  "liveNoWeight": "Bodyweight",
+  "liveSetsOf": "{current} of {total}",
+  "@liveSetsOf": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  }
 }

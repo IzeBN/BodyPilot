@@ -5,8 +5,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../auth/auth_provider.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
+import '../../features/onboarding/screens/onboarding_screen.dart';
 import '../../features/onboarding/screens/module_selector_screen.dart';
 import '../../features/onboarding/screens/equipment_selector_screen.dart';
+import '../../features/onboarding/providers/onboarding_provider.dart';
 import '../../features/journal/screens/journal_screen.dart';
 import '../../features/journal/screens/add_meal_screen.dart';
 import '../../features/chat/screens/chat_screen.dart';
@@ -14,6 +16,7 @@ import '../../features/account/screens/account_screen.dart';
 import '../../features/training/screens/workout_detail_screen.dart';
 import '../../features/training/screens/live_workout_screen.dart';
 import '../../features/training/screens/programs_screen.dart';
+import '../../features/training/screens/training_generating_screen.dart';
 import '../../shared/widgets/shell_scaffold.dart';
 
 part 'router.g.dart';
@@ -21,6 +24,9 @@ part 'router.g.dart';
 @riverpod
 GoRouter router(Ref ref) {
   final authState = ref.watch(authProvider);
+  final obAsync = ref.watch(onboardingDoneProvider);
+
+  final equipSetupAsync = ref.watch(equipmentSetupDoneProvider);
 
   return GoRouter(
     initialLocation: '/journal',
@@ -30,10 +36,31 @@ GoRouter router(Ref ref) {
 
       if (status == AuthStatus.unknown) return null;
 
+      final obDone = obAsync.valueOrNull; // null = still loading
+      if (obDone == null) return null;
+
       final isAuth = status == AuthStatus.authenticated;
+      final isObRoute = loc.startsWith('/onboarding');
       final isAuthRoute = loc.startsWith('/login') || loc.startsWith('/register');
-      if (!isAuth && !isAuthRoute) return '/login';
-      if (isAuth && isAuthRoute) return '/journal';
+
+      if (!isAuth) {
+        if (!obDone && !isObRoute) return '/onboarding';
+        if (obDone && !isAuthRoute) return '/login';
+        return null;
+      }
+      // authenticated
+      if (isAuthRoute || isObRoute) {
+        // Allow equipment setup screen through
+        if (loc == '/onboarding/equipment') return null;
+        return '/journal';
+      }
+
+      // Redirect to equipment setup if not done yet
+      final equipDone = equipSetupAsync.valueOrNull ?? true;
+      if (!equipDone && loc != '/onboarding/equipment' && !loc.startsWith('/training/generating')) {
+        return '/onboarding/equipment';
+      }
+
       return null;
     },
     routes: [
@@ -42,6 +69,7 @@ GoRouter router(Ref ref) {
       GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
 
       // Onboarding
+      GoRoute(path: '/onboarding', builder: (_, __) => const OnboardingScreen()),
       GoRoute(
         path: '/onboarding/modules',
         builder: (_, __) => const ModuleSelectorScreen(),
@@ -73,6 +101,14 @@ GoRouter router(Ref ref) {
 
       // Training programs list
       GoRoute(path: '/training/programs', builder: (_, __) => const ProgramsScreen()),
+
+      // Training program generation (async polling)
+      GoRoute(
+        path: '/training/generating',
+        builder: (_, state) => TrainingGeneratingScreen(
+          taskId: state.extra as String?,
+        ),
+      ),
 
       // Training detail / live
       GoRoute(

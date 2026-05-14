@@ -22,7 +22,7 @@ final userProfileProvider = AutoDisposeFutureProvider<UserProfile>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserProfileRef = AutoDisposeFutureProviderRef<UserProfile>;
-String _$nutritionGoalsHash() => r'a098bf4e49a5a55fc0e90f693b1a8cf25c5857ef';
+String _$nutritionGoalsHash() => r'311805537cba1e99855dc6d17656112d9ae4d190';
 
 /// See also [nutritionGoals].
 @ProviderFor(nutritionGoals)
